@@ -1,3 +1,5 @@
 # microservice specific routes
 
-GET        /hello-world             uk.gov.hmrc.frontendtemplateprovider.controllers.MicroserviceHelloWorld.hello
+GET        /hello-world             uk.gov.hmrc.frontendtemplateprovider.controllers.GovUkTemplateRenderer.hello
+POST       /render-template         uk.gov.hmrc.frontendtemplateprovider.controllers.GovUkTemplateRenderer.renderTemplate
+GET        /assets/*file            @controllers.AssetsController.at(path="/public", file)
