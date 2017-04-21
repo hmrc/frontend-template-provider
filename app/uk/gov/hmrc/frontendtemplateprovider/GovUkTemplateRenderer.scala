@@ -16,14 +16,11 @@
 
 package uk.gov.hmrc.frontendtemplateprovider.controllers
 
-import uk.gov.hmrc.play.microservice.controller.BaseController
-import uk.gov.hmrc.play.http.logging.MdcLoggingExecutionContext._
-import play.api.libs.json.{JsSuccess, Json}
+import play.api.Play
 import play.api.Play.current
-import play.api.i18n.Messages.Implicits._
 import play.api.mvc._
 import play.twirl.api.Html
-import uk.gov.hmrc.frontendtemplateprovider.model.TemplateRequest
+import uk.gov.hmrc.play.microservice.controller.BaseController
 
 import scala.concurrent.Future
 
@@ -35,29 +32,12 @@ trait GovUkTemplateRenderer extends BaseController {
 		Future.successful(Ok(Html("Hello world")))
 	}
 
-	def renderTemplate(): Action[AnyContent] = Action.async { implicit request =>
-		request.body.asJson.map { body =>
-			body.validate[TemplateRequest] match {
-				case maybeTemplateRequest: JsSuccess[TemplateRequest] =>
-					val templateRequest = maybeTemplateRequest.get
-					Future.successful(
-						Ok(views.html.govMain(templateRequest.title, templateRequest.bodyClasses)(
-							templateRequest.head,
-							templateRequest.bodyEnd,
-							templateRequest.insideHeader,
-							templateRequest.afterHeader,
-							templateRequest.footerTop,
-							templateRequest.footerLinks,
-							templateRequest.nav,
-							templateRequest.content
-						))
-					)
-				case _ => Future.successful(BadRequest)
-
-			}
-
-		}.getOrElse {
-			Future.successful(BadRequest)
-		}
+	def serveMustacheTemplate(): Action[AnyContent] = Action.async { implicit request =>
+		val mustacheInputStream = Play.resourceAsStream("gov_main.mustache").get
+		val mustacheString = scala.io.Source.fromInputStream(mustacheInputStream).mkString
+		val assetsPrefix = uk.gov.hmrc.play.config.AssetsConfig.assetsPrefix
+		val mustache = mustacheString.replace("{{assetPath}}", assetsPrefix)
+		Future.successful(Ok(mustache))
 	}
+
 }
