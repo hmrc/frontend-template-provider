@@ -20,24 +20,22 @@ import play.api.Play
 import play.api.Play.current
 import play.api.mvc._
 import play.twirl.api.Html
+import uk.gov.hmrc.play.config.ServicesConfig
 import uk.gov.hmrc.play.microservice.controller.BaseController
 
 import scala.concurrent.Future
 
 object GovUkTemplateRenderer extends GovUkTemplateRenderer
 
-trait GovUkTemplateRenderer extends BaseController {
+trait GovUkTemplateRenderer extends BaseController with ServicesConfig {
 
 	def hello(): Action[AnyContent] = Action.async { implicit request =>
 		Future.successful(Ok(Html("Hello world")))
 	}
 
 	def serveMustacheTemplate(): Action[AnyContent] = Action.async { implicit request =>
-		val mustacheInputStream = Play.resourceAsStream("gov_main.mustache").get
-		val mustacheString = scala.io.Source.fromInputStream(mustacheInputStream).mkString
-		val assetsPrefix = uk.gov.hmrc.play.config.AssetsConfig.assetsPrefix
-		val mustache = mustacheString.replace("{{assetPath}}", assetsPrefix)
-		Future.successful(Ok(mustache))
+		val resolveUrl: (String) => String = a => s"${baseUrl("frontend-template-provider")}/template/assets/$a"
+		Future.successful(Ok(views.txt.Application.gov_main_mustache(resolveUrl)))
 	}
 
 }
