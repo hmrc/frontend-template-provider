@@ -26,12 +26,11 @@ class GovUkTemplateRendererControllerSpec extends UnitSpec with WithFakeApplicat
   val fakeRequest = FakeRequest("GET", "/")
 
 
-  "GET /" should {
-    "return 200" in {
-      val result = GovUkTemplateRenderer.hello()(fakeRequest)
+  "GET /serve-template" should {
+    "return 200 with the template rendered correctly" in {
+      val result = GovUkTemplateRenderer.serveMustacheTemplate()(fakeRequest)
       status(result) shouldBe Status.OK
+      result.body.toString should not contain("@resolveUrl")
     }
   }
-
-
 }

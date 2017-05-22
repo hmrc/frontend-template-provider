@@ -16,10 +16,7 @@
 
 package uk.gov.hmrc.frontendtemplateprovider.controllers
 
-import play.api.Play
-import play.api.Play.current
 import play.api.mvc._
-import play.twirl.api.Html
 import uk.gov.hmrc.play.config.ServicesConfig
 import uk.gov.hmrc.play.microservice.controller.BaseController
 
@@ -29,9 +26,6 @@ object GovUkTemplateRenderer extends GovUkTemplateRenderer
 
 trait GovUkTemplateRenderer extends BaseController with ServicesConfig {
 
-	def hello(): Action[AnyContent] = Action.async { implicit request =>
-		Future.successful(Ok(Html("Hello world")))
-	}
 
 	def serveMustacheTemplate(): Action[AnyContent] = Action.async { implicit request =>
 		val resolveUrl: (String) => String = a => s"${baseUrl("frontend-template-provider")}/template/assets/$a"
