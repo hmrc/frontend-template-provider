@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.frontendtemplateprovider.controllers
 
+import play.api.Play
 import play.api.mvc._
 import uk.gov.hmrc.play.config.ServicesConfig
 import uk.gov.hmrc.play.microservice.controller.BaseController
@@ -28,8 +29,10 @@ trait GovUkTemplateRenderer extends BaseController with ServicesConfig {
 
 
 	def serveMustacheTemplate(): Action[AnyContent] = Action.async { implicit request =>
-		val resolveUrl: (String) => String = a => s"${baseUrl("frontend-template-provider")}/template/assets/$a"
-		Future.successful(Ok(views.txt.Application.gov_main_mustache(resolveUrl)))
+		val templateLocation = Play.current.configuration.getString("template.url").getOrElse("")
+		val resolveUrl: (String) => String = a => s"${templateLocation}assets/$a"
+		val assetsPath = Play.current.configuration.getString("assets.url").getOrElse("")
+		Future.successful(Ok(views.txt.Application.gov_main_mustache(resolveUrl, assetsPath)))
 	}
 
 }
