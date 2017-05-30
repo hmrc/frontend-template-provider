@@ -77,7 +77,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta property="og:image" content="@resolveUrl("images/opengraph-image.png")">
 
-    {{{ head }}}
+    <!-- head -->
+    <!--[if lt IE 8 ]>
+    <link rel='stylesheet' href='@{assetsConfig.assetsPrefix}/stylesheets/application-ie7.min.css' />
+    <![endif]-->
+    <!--[if IE 8 ]>
+    <link rel='stylesheet' href='@{assetsConfig.assetsPrefix}/stylesheets/application-ie.min.css' />
+    <![endif]-->
+    <!--[if gt IE 8]><!-->
+    <link rel='stylesheet' href='@{assetsConfig.assetsPrefix}/stylesheets/application.min.css' />
+    <!--<![endif]-->
+
+    {{#optimizelyProjectId}}
+    <script src='{{{optimizelyBaseUrl}}}{{{optimizelyProjectId}}}.js' type='text/javascript'></script>
+    {{/optimizelyProjectId}}
+    <script src='@{assetsPath}javascripts/vendor/modernizr.js' type='text/javascript'></script>
+
+    {{{ headScripts }}}
+    {{{ linkElem }}}
+
 </head>
 
 <body class="{{{ bodyClasses }}}">
