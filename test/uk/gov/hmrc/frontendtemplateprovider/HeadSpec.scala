@@ -102,6 +102,14 @@ class HeadSpec extends UnitSpec with Results with WithFakeApplication {
       )).body
       renderedHtml should include(myTitle)
     }
+
+    "contains no headScripts even if you specify them SDT 472" in new Setup {
+      val headScript = "<script src='www.example.com/script.js' type='text/javascript'></script>"
+      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
+        "headScript" -> headScript
+      )).body
+      renderedHtml should not include(headScript)
+    }
   }
 
   trait Setup {
