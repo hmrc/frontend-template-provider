@@ -23,9 +23,9 @@ import uk.gov.hmrc.play.microservice.controller.BaseController
 
 import scala.concurrent.Future
 
-object GovUkTemplateRenderer extends GovUkTemplateRenderer
+object GovUkTemplateRendererController extends GovUkTemplateRendererController
 
-trait GovUkTemplateRenderer extends BaseController with ServicesConfig {
+trait GovUkTemplateRendererController extends BaseController with ServicesConfig {
 
 
 	def serveMustacheTemplate(): Action[AnyContent] = Action.async { implicit request =>

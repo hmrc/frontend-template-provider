@@ -14,23 +14,28 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.frontendtemplateprovider.controllers
+package uk.gov.hmrc.frontendtemplateprovider
 
-import play.api.http.Status
+import play.api.mvc.Results
 import play.api.test.FakeRequest
+import play.api.test.Helpers._
+import uk.gov.hmrc.frontendtemplateprovider.controllers.GovUkTemplateRendererController
 import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 
 
-class GovUkTemplateRendererControllerSpec extends UnitSpec with WithFakeApplication{
+class GovUkTemplateRendererControllerControllerSpec extends UnitSpec with WithFakeApplication with Results   {
+
 
   val fakeRequest = FakeRequest("GET", "/")
 
 
   "GET /serve-template" should {
     "return 200 with the template rendered correctly" in {
-      val result = GovUkTemplateRenderer.serveMustacheTemplate()(fakeRequest)
-      status(result) shouldBe Status.OK
-      result.body.toString should not contain("@resolveUrl")
+      val result = GovUkTemplateRendererController.serveMustacheTemplate()(fakeRequest)
+      val bodyText = contentAsString(result)
+      status(result) shouldBe OK
+      bodyText should not contain "@resolveUrl"
+      bodyText should include("html")
     }
   }
 }
