@@ -68,21 +68,21 @@ class HeadSpec extends UnitSpec with Results with WithFakeApplication {
       renderedHtml should not include("<script src=''") // should not include a script with no src
     }
 
-    "contains no optimizely script if only baseUrl is provided SBT-470" in new Setup {
+    "contain no optimizely script if only baseUrl is provided SBT-470" in new Setup {
       val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
         "optimizelyBaseUrl" -> "cdn.optimizely.com"
       )).body
       renderedHtml should not include("cdn.optimizely.com")
     }
 
-    "contains no optimizely script if only projectId is provided SBT-470" in new Setup {
+    "contain optimizely script if only projectId is provided SBT-470" in new Setup {
       val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
         "optimizelyProjectId" -> "id123"
       )).body
-      renderedHtml should not include("id123")
+      renderedHtml should include("<script src='//cdn.optimizely.com/js/id123.js' type='text/javascript'></script>")
     }
 
-    "contains optimizely script if both url and projectId is provided SBT-470" in new Setup {
+    "contain optimizely script if both url and projectId is provided SBT-470" in new Setup {
       val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
         "optimizelyBaseUrl" -> "cdn.optimizely.com/",
         "optimizelyProjectId" -> "id123"
@@ -90,12 +90,12 @@ class HeadSpec extends UnitSpec with Results with WithFakeApplication {
       renderedHtml should include("<script src='cdn.optimizely.com/id123.js' type='text/javascript'></script>")
     }
 
-    "contains default title if not specified SDT 480" in new Setup {
+    "contain default title if not specified SDT 480" in new Setup {
       val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map()).body
       renderedHtml should include("GOV.UK - The best place to find government services and information")
     }
 
-    "contains default title if not specified in SDT 480" in new Setup {
+    "contain default title if not specified in SDT 480" in new Setup {
       val myTitle = "My very own title."
       val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
         "pageTitle" -> myTitle
@@ -103,7 +103,7 @@ class HeadSpec extends UnitSpec with Results with WithFakeApplication {
       renderedHtml should include(myTitle)
     }
 
-    "contains no headScripts even if you specify them SDT 472" in new Setup {
+    "contain no headScripts even if you specify them SDT 472" in new Setup {
       val headScript = "<script src='www.example.com/script.js' type='text/javascript'></script>"
       val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
         "headScript" -> headScript
