@@ -94,7 +94,9 @@
     {{/optimizelyProjectId}}
     <script src='@{assetsPath}javascripts/vendor/modernizr.js' type='text/javascript'></script>
 
-    {{{ linkElem }}}
+    {{#linkElems}}
+    <link rel='stylesheet' type='text/css' href='{{href}}' {{#media}}media='{{media}}'{{/media}}/>
+    {{/linkElems}}
 
 </head>
 

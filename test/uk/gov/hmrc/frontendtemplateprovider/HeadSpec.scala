@@ -110,6 +110,39 @@ class HeadSpec extends UnitSpec with Results with WithFakeApplication {
       )).body
       renderedHtml should not include(headScript)
     }
+
+    "contain link elem if url is passed through in a list of maps SDT-552" in new Setup {
+      val link = "www.example.com/some.css"
+      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
+        "linkElems" -> Map("href" -> link)
+      )).body
+      renderedHtml should include(s"<link rel='stylesheet' type='text/css' href='$link' />")
+    }
+
+    "support passing through media ofr linkElems SDT-552" in new Setup {
+      val link = "www.example.com/some.css"
+      val media = "print"
+      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
+        "linkElems" -> Map("href" -> link, "media" -> media)
+      )).body
+      renderedHtml should include(s"<link rel='stylesheet' type='text/css' href='$link' media='$media'/>")
+    }
+
+    "contain multiple link elems multiple elements in the list SDT-552" in new Setup {
+      val link1 = "www.example.com/some.css"
+      val link2 = "www.example.com/other.css"
+      val media1 = "screen"
+      val media2 = "print"
+      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
+        "linkElems" -> List(
+          Map("href" -> link1, "media" -> media1),
+          Map("href" -> link2, "media" -> media2)
+        )
+      )).body
+      renderedHtml should include(s"<link rel='stylesheet' type='text/css' href='$link1' media='$media1'/>")
+      renderedHtml should include(s"<link rel='stylesheet' type='text/css' href='$link2' media='$media2'/>")
+
+    }
   }
 
   trait Setup {
