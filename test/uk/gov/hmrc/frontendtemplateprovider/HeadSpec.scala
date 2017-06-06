@@ -141,7 +141,51 @@ class HeadSpec extends UnitSpec with Results with WithFakeApplication {
       )).body
       renderedHtml should include(s"<link rel='stylesheet' type='text/css' href='$link1' media='$media1'/>")
       renderedHtml should include(s"<link rel='stylesheet' type='text/css' href='$link2' media='$media2'/>")
+    }
 
+    "not contain navigation element if there is no navTitle specified SDT-474" in new Setup {
+      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map()).body
+      renderedHtml should not include("""<div class="header-proposition">""")
+    }
+
+    "contain correct navigation header when only navTitle is specified SDT-474" in new Setup {
+      val navTitle = "My service"
+      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
+        "navTitle" -> navTitle
+      )).body
+      renderedHtml should include("""<div class="header-proposition">""")
+      renderedHtml should include(s"""<span class="header__menu__proposition-name">$navTitle</span>""")
+      renderedHtml should not include(s"""<a href="#proposition-links" class="js-header-toggle menu">Menu</a>""")
+      renderedHtml should not include(s"""<a href="{{navTitleLink}}" class="header__menu__proposition-name">""")
+    }
+
+    "contain correct navigation when navTitle and navTitleLink is specified SDT-474" in new Setup {
+      val navTitle = "My service"
+      val navTitleLink = "www.example.com/my-service"
+      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
+        "navTitle" -> navTitle,
+        "navTitleLink" -> navTitleLink
+      )).body
+      renderedHtml should include("""<div class="header-proposition">""")
+      renderedHtml should not include(s"""<span class="header__menu__proposition-name">$navTitle</span>""")
+      renderedHtml should not include(s"""<a href="#proposition-links" class="js-header-toggle menu">Menu</a>""")
+      renderedHtml should include(s"""<a href="$navTitleLink" class="header__menu__proposition-name">$navTitle</a>""")
+    }
+
+    "contain correct navigation header when navTitle and navLinks is specified SDT-474" in new Setup {
+      val navTitle = "My service"
+      val navLink1 = "www.example.com/my-service"
+      val navLink2 = "www.example.com/another-service"
+      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
+        "navTitle" -> navTitle,
+        "navLinks" -> Seq(navLink1, navLink2)
+      )).body
+      renderedHtml should include("""<div class="header-proposition">""")
+      renderedHtml should include(s"""<span class="header__menu__proposition-name">$navTitle</span>""")
+      renderedHtml should include(s"""<a href="#proposition-links" class="js-header-toggle menu">Menu</a>""")
+      renderedHtml should include(s"""<ul id="proposition-links" class="header__menu__proposition-links">""")
+      renderedHtml should include(navLink1)
+      renderedHtml should include(navLink2)
     }
   }
 

@@ -120,7 +120,31 @@
             </div>
 
         </div>
-        {{{ insideHeader }}}
+
+        {{#navTitle}}
+        <div class="header-proposition">
+            <div class="content">
+                {{#navLinks}}
+                <a href="#proposition-links" class="js-header-toggle menu">Menu</a>
+                {{/navLinks}}
+                <nav id="proposition-menu" class="header__menu" role="navigation">
+                    {{#navTitleLink}}
+                    <a href="{{navTitleLink}}" class="header__menu__proposition-name">{{navTitle}}</a>
+                    {{/navTitleLink}}
+                    {{^navTitleLink}}
+                    <span class="header__menu__proposition-name">{{navTitle}}</span>
+                    {{/navTitleLink}}
+
+                    {{#navLinks}}
+                    <ul id="proposition-links" class="header__menu__proposition-links">
+                        {{.}}
+                    </ul>
+                    {{/navLinks}}
+
+                </nav>
+            </div>
+        </div>
+        {{/navTitle}}
 
     </div>
 </header>
