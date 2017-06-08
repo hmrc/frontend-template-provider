@@ -186,7 +186,6 @@ class HeadSpec extends UnitSpec with Results with WithFakeApplication {
           Map("navLink" -> navLink2, "text" -> text2)
         )
       )).body
-      println(renderedHtml)
       renderedHtml should include("""<div class="header-proposition">""")
       renderedHtml should include(s"""<span class="header__menu__proposition-name">$navTitle</span>""")
       renderedHtml should include(s"""<a href="#proposition-links" class="js-header-toggle menu">Menu</a>""")
@@ -194,6 +193,22 @@ class HeadSpec extends UnitSpec with Results with WithFakeApplication {
       renderedHtml should include(s"""<li><a href="$navLink1">$text1</a></li>""")
       renderedHtml should include(s"""<li><a href="$navLink2">$text2</a></li>""")
       renderedHtml should include(navLink2)
+    }
+
+    "not add a main class for main tag if non specified SDT 571" in new Setup {
+      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map()).body
+      val mainTagRegex = "<main\\b[^>]*>".r
+      val main = mainTagRegex.findFirstIn(renderedHtml).get
+      main should not include("class")
+    }
+
+    "allow main tag to have it's mainClass SDT 571" in new Setup {
+      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
+        "mainClass" -> "clazz"
+      )).body
+      val mainTagRegex = "<main\\b[^>]*>".r
+      val main = mainTagRegex.findFirstIn(renderedHtml).get
+      main should include("""class="clazz"""")
     }
   }
 

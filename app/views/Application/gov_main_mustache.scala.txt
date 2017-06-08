@@ -163,7 +163,24 @@
 
 </div>
 
-{{{ content }}}
+<main id="wrapper" role="main" {{#mainClass}}class="{{mainClass}}"{{/mainClass}} {{mainAttributes}}>
+    <div class="centered-content">
+        {{ serviceInfo }}
+    </div>
+    <div id="content">
+
+        {{ actingAttorneyBanner }}
+
+        {{ mainContentHeader }}
+
+        {{ article }}
+
+        {{ sidebar }}
+
+        {{ getHelpForm }}
+
+    </div>
+</main>
 
 <footer class="group js-footer" id="footer" role="contentinfo">
 
