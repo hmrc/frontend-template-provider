@@ -217,6 +217,19 @@ class HeadSpec extends UnitSpec with Results with WithFakeApplication {
       val main = mainTagRegex.findFirstIn(renderedHtml).get
       main should include(attribute)
     }
+
+    "not show beta banner if there is no service name SDT 476" in new Setup {
+      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map()).body
+      renderedHtml should not include("""<div class="beta-banner">""")
+    }
+
+    "show beta banner when you specify a service name SDT 476" in new Setup {
+      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
+        "betaServiceName" -> "PTA"
+      )).body
+      renderedHtml should include("""<div class="beta-banner">""")
+      renderedHtml should include("""href="beta-feedback-unauthenticated?service=PTA"""")
+    }
   }
 
   trait Setup {

@@ -164,6 +164,20 @@
 </div>
 
 <main id="wrapper" role="main" {{#mainClass}}class="{{mainClass}}"{{/mainClass}} {{{mainAttributes}}}>
+
+    {{#betaServiceName}}
+    <div class="beta-banner">
+        <p>
+            <strong class="phase-tag">BETA</strong>
+            <span>This is a new service<a id="feedback-link"
+                   href="beta-feedback-unauthenticated?service={{betaServiceName}}"
+                   data-sso="false"
+                   data-journey-click="other-global:Click:Feedback">feedback</a> will help us to improve it.
+            </span>
+        </p>
+    </div>
+    {{/betaServiceName}}
+
     <div class="centered-content">
         {{ serviceInfo }}
     </div>
