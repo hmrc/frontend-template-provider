@@ -163,7 +163,7 @@
 
 </div>
 
-<main id="wrapper" role="main" {{#mainClass}}class="{{mainClass}}"{{/mainClass}} {{mainAttributes}}>
+<main id="wrapper" role="main" {{#mainClass}}class="{{mainClass}}"{{/mainClass}} {{{mainAttributes}}}>
     <div class="centered-content">
         {{ serviceInfo }}
     </div>

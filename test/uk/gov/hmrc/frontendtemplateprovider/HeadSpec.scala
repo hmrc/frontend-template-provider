@@ -197,7 +197,6 @@ class HeadSpec extends UnitSpec with Results with WithFakeApplication {
 
     "not add a main class for main tag if non specified SDT 571" in new Setup {
       val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map()).body
-      val mainTagRegex = "<main\\b[^>]*>".r
       val main = mainTagRegex.findFirstIn(renderedHtml).get
       main should not include("class")
     }
@@ -206,9 +205,17 @@ class HeadSpec extends UnitSpec with Results with WithFakeApplication {
       val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
         "mainClass" -> "clazz"
       )).body
-      val mainTagRegex = "<main\\b[^>]*>".r
       val main = mainTagRegex.findFirstIn(renderedHtml).get
       main should include("""class="clazz"""")
+    }
+
+    "allow main attributes to be specified in main tag SDT 572" in new Setup {
+      val attribute = "id=\"main\""
+      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
+        "mainAttributes" -> attribute
+      )).body
+      val main = mainTagRegex.findFirstIn(renderedHtml).get
+      main should include(attribute)
     }
   }
 
@@ -218,6 +225,7 @@ class HeadSpec extends UnitSpec with Results with WithFakeApplication {
     val bodyText: String = contentAsString(result)
     status(result) shouldBe OK
 
+    val mainTagRegex = "<main\\b[^>]*>".r
 
     val localTemplateRenderer = new MustacheRendererTrait {
       override lazy val templateServiceAddress: String = ???
