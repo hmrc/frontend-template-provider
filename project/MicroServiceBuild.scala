@@ -33,4 +33,5 @@ object MicroServiceBuild extends Build with MicroService {
     "org.scalatestplus.play" %% "scalatestplus-play"      % "2.0.0"             % scope
   )
 
+
 }

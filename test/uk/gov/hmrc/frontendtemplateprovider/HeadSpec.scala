@@ -58,31 +58,31 @@ class HeadSpec extends UnitSpec with Results with WithFakeApplication {
       bodyText should include("<link rel='stylesheet' href='www.example.com/stylesheets/application.min.css' />")
     }
 
-    "contain a body opening tag that does not contain a class SBT-470" in new Setup {
+    "contain a body opening tag that does not contain a class SDT-470" in new Setup {
       bodyText should include("<body>")
     }
 
-    "contains no optimizely script SBT-471" in new Setup {
+    "contains no optimizely script SDT-471" in new Setup {
       val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map()).body
       renderedHtml should not include("optimizely")
       renderedHtml should not include("<script src=''") // should not include a script with no src
     }
 
-    "contain no optimizely script if only baseUrl is provided SBT-470" in new Setup {
+    "contain no optimizely script if only baseUrl is provided SDT-471" in new Setup {
       val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
         "optimizelyBaseUrl" -> "cdn.optimizely.com"
       )).body
       renderedHtml should not include("cdn.optimizely.com")
     }
 
-    "contain optimizely script if only projectId is provided SBT-470" in new Setup {
+    "contain optimizely script if only projectId is provided SDT-471" in new Setup {
       val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
         "optimizelyProjectId" -> "id123"
       )).body
       renderedHtml should include("<script src='//cdn.optimizely.com/js/id123.js' type='text/javascript'></script>")
     }
 
-    "contain optimizely script if both url and projectId is provided SBT-470" in new Setup {
+    "contain optimizely script if both url and projectId is provided SDT-470" in new Setup {
       val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
         "optimizelyBaseUrl" -> "cdn.optimizely.com/",
         "optimizelyProjectId" -> "id123"
@@ -116,36 +116,36 @@ class HeadSpec extends UnitSpec with Results with WithFakeApplication {
       val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
         "linkElems" -> Map("href" -> link)
       )).body
-      renderedHtml should include(s"<link rel='stylesheet' type='text/css' href='$link' />")
+      renderedHtml should include(s"""<link rel="stylesheet" type="text/css" href="$link" />""")
     }
 
-    "support passing through media ofr linkElems SDT-552" in new Setup {
+    "support specifying print media type for linkElems SDT-552" in new Setup {
       val link = "www.example.com/some.css"
       val media = "print"
       val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
-        "linkElems" -> Map("href" -> link, "media" -> media)
+        "linkElems" -> Map("href" -> link, "print" -> true)
       )).body
-      renderedHtml should include(s"<link rel='stylesheet' type='text/css' href='$link' media='$media'/>")
+      renderedHtml should include(s"""<link rel="stylesheet" type="text/css" href="$link" media="print"/>""")
     }
 
     "contain multiple link elems multiple elements in the list SDT-552" in new Setup {
       val link1 = "www.example.com/some.css"
       val link2 = "www.example.com/other.css"
-      val media1 = "screen"
-      val media2 = "print"
       val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
         "linkElems" -> List(
-          Map("href" -> link1, "media" -> media1),
-          Map("href" -> link2, "media" -> media2)
+          Map("href" -> link1),
+          Map("href" -> link2, "print" -> true)
         )
       )).body
-      renderedHtml should include(s"<link rel='stylesheet' type='text/css' href='$link1' media='$media1'/>")
-      renderedHtml should include(s"<link rel='stylesheet' type='text/css' href='$link2' media='$media2'/>")
+      renderedHtml should include(s"""<link rel="stylesheet" type="text/css" href="$link1" />""")
+      renderedHtml should include(s"""<link rel="stylesheet" type="text/css" href="$link2" media="print"/>""")
     }
 
     "not contain navigation element if there is no navTitle specified SDT-474" in new Setup {
       val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map()).body
-      renderedHtml should not include("""<div class="header-proposition">""")
+      renderedHtml should include("""<div class="header-proposition">""")
+      renderedHtml should not include("""<a href="#proposition-links" class="js-header-toggle menu">Menu</a>""")
+      renderedHtml should not include("""<ul id="proposition-links" class="header__menu__proposition-links">""")
     }
 
     "contain correct navigation header when only navTitle is specified SDT-474" in new Setup {
@@ -156,7 +156,7 @@ class HeadSpec extends UnitSpec with Results with WithFakeApplication {
       renderedHtml should include("""<div class="header-proposition">""")
       renderedHtml should include(s"""<span class="header__menu__proposition-name">$navTitle</span>""")
       renderedHtml should not include(s"""<a href="#proposition-links" class="js-header-toggle menu">Menu</a>""")
-      renderedHtml should not include(s"""<a href="{{navTitleLink}}" class="header__menu__proposition-name">""")
+      renderedHtml should not include(s"""<ul id="proposition-links" class="header__menu__proposition-links">""")
     }
 
     "contain correct navigation when navTitle and navTitleLink is specified SDT-474" in new Setup {
@@ -175,16 +175,24 @@ class HeadSpec extends UnitSpec with Results with WithFakeApplication {
     "contain correct navigation header when navTitle and navLinks is specified SDT-474" in new Setup {
       val navTitle = "My service"
       val navLink1 = "www.example.com/my-service"
+      val text1 = "My service"
       val navLink2 = "www.example.com/another-service"
+      val text2 = "Another service"
       val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
         "navTitle" -> navTitle,
-        "navLinks" -> Seq(navLink1, navLink2)
+        "hasNavLinks" -> true,
+        "navLinks" -> Seq(
+          Map("navLink" -> navLink1, "text" -> text1),
+          Map("navLink" -> navLink2, "text" -> text2)
+        )
       )).body
+      println(renderedHtml)
       renderedHtml should include("""<div class="header-proposition">""")
       renderedHtml should include(s"""<span class="header__menu__proposition-name">$navTitle</span>""")
       renderedHtml should include(s"""<a href="#proposition-links" class="js-header-toggle menu">Menu</a>""")
       renderedHtml should include(s"""<ul id="proposition-links" class="header__menu__proposition-links">""")
-      renderedHtml should include(navLink1)
+      renderedHtml should include(s"""<li><a href="$navLink1">$text1</a></li>""")
+      renderedHtml should include(s"""<li><a href="$navLink2">$text2</a></li>""")
       renderedHtml should include(navLink2)
     }
   }
