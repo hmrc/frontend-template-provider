@@ -208,7 +208,7 @@
         {{{ footerTop }}}
 
         {{#ssoUrl}}
-        <script type="text/javascript">var ssoUrl = "#{{ssoUrl}}";</script>
+        <script type="text/javascript">var ssoUrl = "{{ssoUrl}}";</script>
         {{/ssoUrl}}
         <script src="@{assetsPath}/javascripts/application.min.js" type="text/javascript"></script>
         {{#scriptElems}}

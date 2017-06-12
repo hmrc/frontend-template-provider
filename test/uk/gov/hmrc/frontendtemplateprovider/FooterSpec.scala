@@ -85,6 +85,19 @@ class FooterSpec extends UnitSpec with Results with WithFakeApplication {
       renderedHtml should include(s"""<script src="$src1" type="text/javascript"></script>""")
       renderedHtml should include(s"""<script src="$src2" type="text/javascript"></script>""")
     }
+
+    "support SSO Url SDT-473" in new Setup {
+      val ssoUrl = "www.example.com"
+      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
+        "ssoUrl" -> ssoUrl
+      )).body
+      renderedHtml should include(s"""<script type="text/javascript">var ssoUrl = "$ssoUrl";</script>""")
+    }
+
+    "no ssoUrl script when no ssoUrl given SDT-473" in new Setup {
+      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map()).body
+      renderedHtml should not include(s"""<script type="text/javascript">var ssoUrl = """)
+    }
   }
 
   trait Setup {
