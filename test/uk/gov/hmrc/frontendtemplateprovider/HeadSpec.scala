@@ -30,9 +30,6 @@ import uk.gov.hmrc.renderer.MustacheRendererTrait
 
 import scala.concurrent.Future
 
-/**
-  * Created by mo on 31/05/2017.
-  */
 class HeadSpec extends UnitSpec with Results with WithFakeApplication {
 
   implicit val hc = HeaderCarrier()
@@ -44,7 +41,7 @@ class HeadSpec extends UnitSpec with Results with WithFakeApplication {
 
   val fakeRequest = FakeRequest("GET", "/")
 
-  "Mustache Template" should {
+  "Head" should {
     "contain IE links" in new Setup {
       bodyText should include("<!--[if IE 6]><link href=\"/template/assets/stylesheets/govuk-template-ie6.css\" media=\"screen\" rel=\"stylesheet\" type=\"text/css\" /><![endif]-->")
       bodyText should include("<!--[if IE 7]><link href=\"/template/assets/stylesheets/govuk-template-ie7.css\" media=\"screen\" rel=\"stylesheet\" type=\"text/css\" /><![endif]-->")
@@ -183,8 +180,8 @@ class HeadSpec extends UnitSpec with Results with WithFakeApplication {
         "navTitle" -> navTitle,
         "hasNavLinks" -> true,
         "navLinks" -> Seq(
-          Map("href" -> url1, "text" -> text1),
-          Map("href" -> url2, "text" -> text2)
+          Map("url" -> url1, "text" -> text1),
+          Map("url" -> url2, "text" -> text2)
         )
       )).body
       renderedHtml should include("""<div class="header-proposition">""")
@@ -196,50 +193,6 @@ class HeadSpec extends UnitSpec with Results with WithFakeApplication {
       renderedHtml should include(url2)
     }
 
-    "not add a main class for main tag if non specified SDT 571" in new Setup {
-      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map()).body
-      val main = mainTagRegex.findFirstIn(renderedHtml).get
-      main should not include("class")
-    }
-
-    "allow main tag to have it's mainClass SDT 571" in new Setup {
-      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
-        "mainClass" -> "clazz"
-      )).body
-      val main = mainTagRegex.findFirstIn(renderedHtml).get
-      main should include("""class="clazz"""")
-    }
-
-    "allow main attributes to be specified in main tag SDT 572" in new Setup {
-      val attribute = "id=\"main\""
-      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
-        "mainAttributes" -> attribute
-      )).body
-      val main = mainTagRegex.findFirstIn(renderedHtml).get
-      main should include(attribute)
-    }
-
-    "not show beta banner if there is no service name SDT 476" in new Setup {
-      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map()).body
-      renderedHtml should not include("""<div class="beta-banner">""")
-    }
-
-    "show beta banner when you specify a service name SDT 476" in new Setup {
-      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
-        "betaBanner" -> Map("feedbackIdentifier" -> "PTA")
-      )).body
-      renderedHtml should include("""<div class="beta-banner">""")
-      renderedHtml should include("""href="beta-feedback-unauthenticated?service=PTA"""")
-    }
-
-    "show beta banner with no feedback link if you don't specify a feedbackIdentifier SDT 476" in new Setup {
-      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
-        "betaBanner" -> true
-      )).body
-      renderedHtml should include("""<div class="beta-banner">""")
-      renderedHtml should not include("""href="beta-feedback-unauthenticated?service=PTA"""")
-      renderedHtml should include("This is a new service.")
-    }
   }
 
   trait Setup {
@@ -247,8 +200,6 @@ class HeadSpec extends UnitSpec with Results with WithFakeApplication {
     val result: Future[Result] = GovUkTemplateRendererController.serveMustacheTemplate()(fakeRequest)
     val bodyText: String = contentAsString(result)
     status(result) shouldBe OK
-
-    val mainTagRegex = "<main\\b[^>]*>".r
 
     val localTemplateRenderer = new MustacheRendererTrait {
       override lazy val templateServiceAddress: String = ???

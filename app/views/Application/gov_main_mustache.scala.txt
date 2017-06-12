@@ -140,11 +140,11 @@
                     {{#hasNavLinks}}
                     <ul id="proposition-links" class="header__menu__proposition-links">
                     {{#navLinks}}
-                    {{#href}}
+                    {{#url}}
                     {{#text}}
-                    <li><a href="{{href}}">{{text}}</a></li>
+                    <li><a href="{{{url}}}">{{text}}</a></li>
                     {{/text}}
-                    {{/href}}
+                    {{/url}}
                     {{/navLinks}}
                     </ul>
                     {{/hasNavLinks}}
@@ -208,7 +208,19 @@
         {{{ footerTop }}}
         <div class="footer-meta">
             <div class="footer-meta-inner">
-                {{{ footerLinks }}}
+                <ul class="platform-help-links">
+                    <li><a href='/help/cookies' target="_blank" data-sso="false" data-journey-click="footer:Click:Cookies">Cookies</a></li>
+                    <li><a href='/help/privacy' target="_blank" data-sso="false" data-journey-click="footer:Click:Privacy policy">Privacy policy</a></li>
+                    <li><a href='/help/terms-and-conditions' target="_blank" data-sso="false" data-journey-click="footer:Click:Terms and conditions">Terms and conditions</a></li>
+                    <li><a href='https://www.gov.uk/help' target="_blank" data-sso="false" data-journey-click="footer:Click:Help">Help using GOV.UK</a></li>
+                    {{#additionalFooterLinks}}
+                    {{#url}}
+                    {{#text}}
+                    <li><a href="{{{url}}}">{{text}}</a></li>
+                    {{/text}}
+                    {{/url}}
+                    {{/additionalFooterLinks}}
+                </ul>
 
                 <div class="open-government-licence">
                     <h2><a href="http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3" target="_blank"><img src="@{assetsPath}images/open-government-licence_2x.png" alt="Open Government Licence"></a></h2>

@@ -53,6 +53,8 @@
         <appender-ref ref="STDOUT"/>
     </logger>
 
+    <logger name="org.fusesource.scalate" level="ERROR" />
+
     <root level="DEBUG">
         <appender-ref ref="FILE"/>
         <appender-ref ref="STDOUT"/>
