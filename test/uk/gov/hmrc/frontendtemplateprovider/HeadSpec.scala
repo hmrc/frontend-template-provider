@@ -146,6 +146,7 @@ class HeadSpec extends UnitSpec with Results with WithFakeApplication {
       renderedHtml should include("""<div class="header-proposition">""")
       renderedHtml should not include("""<a href="#proposition-links" class="js-header-toggle menu">Menu</a>""")
       renderedHtml should not include("""<ul id="proposition-links" class="header__menu__proposition-links">""")
+      renderedHtml should not include("""<span class="header__menu__proposition-name">""")
     }
 
     "contain correct navigation header when only navTitle is specified SDT-474" in new Setup {
@@ -174,25 +175,25 @@ class HeadSpec extends UnitSpec with Results with WithFakeApplication {
 
     "contain correct navigation header when navTitle and navLinks is specified SDT-474" in new Setup {
       val navTitle = "My service"
-      val navLink1 = "www.example.com/my-service"
+      val url1 = "www.example.com/my-service"
       val text1 = "My service"
-      val navLink2 = "www.example.com/another-service"
+      val url2 = "www.example.com/another-service"
       val text2 = "Another service"
       val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
         "navTitle" -> navTitle,
         "hasNavLinks" -> true,
         "navLinks" -> Seq(
-          Map("navLink" -> navLink1, "text" -> text1),
-          Map("navLink" -> navLink2, "text" -> text2)
+          Map("href" -> url1, "text" -> text1),
+          Map("href" -> url2, "text" -> text2)
         )
       )).body
       renderedHtml should include("""<div class="header-proposition">""")
       renderedHtml should include(s"""<span class="header__menu__proposition-name">$navTitle</span>""")
       renderedHtml should include(s"""<a href="#proposition-links" class="js-header-toggle menu">Menu</a>""")
       renderedHtml should include(s"""<ul id="proposition-links" class="header__menu__proposition-links">""")
-      renderedHtml should include(s"""<li><a href="$navLink1">$text1</a></li>""")
-      renderedHtml should include(s"""<li><a href="$navLink2">$text2</a></li>""")
-      renderedHtml should include(navLink2)
+      renderedHtml should include(s"""<li><a href="$url1">$text1</a></li>""")
+      renderedHtml should include(s"""<li><a href="$url2">$text2</a></li>""")
+      renderedHtml should include(url2)
     }
 
     "not add a main class for main tag if non specified SDT 571" in new Setup {
@@ -225,10 +226,19 @@ class HeadSpec extends UnitSpec with Results with WithFakeApplication {
 
     "show beta banner when you specify a service name SDT 476" in new Setup {
       val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
-        "betaServiceName" -> "PTA"
+        "betaBanner" -> Map("feedbackIdentifier" -> "PTA")
       )).body
       renderedHtml should include("""<div class="beta-banner">""")
       renderedHtml should include("""href="beta-feedback-unauthenticated?service=PTA"""")
+    }
+
+    "show beta banner with no feedback link if you don't specify a feedbackIdentifier SDT 476" in new Setup {
+      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
+        "betaBanner" -> true
+      )).body
+      renderedHtml should include("""<div class="beta-banner">""")
+      renderedHtml should not include("""href="beta-feedback-unauthenticated?service=PTA"""")
+      renderedHtml should include("This is a new service.")
     }
   }
 

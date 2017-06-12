@@ -90,7 +90,9 @@
 
 
     {{#linkElems}}
+    {{#href}}
         <link rel="stylesheet" type="text/css" href="{{href}}" {{#print}}media="print"{{/print}}/>
+    {{/href}}
     {{/linkElems}}
 
     {{#optimizelyProjectId}}
@@ -123,9 +125,9 @@
 
         <div class="header-proposition">
             <div class="content">
-                {{#navLinks}}
+                {{#hasNavLinks}}
                 <a href="#proposition-links" class="js-header-toggle menu">Menu</a>
-                {{/navLinks}}
+                {{/hasNavLinks}}
                 <nav id="proposition-menu" class="header__menu" role="navigation">
                     {{#navTitleLink}}
                     <a href="{{navTitleLink}}" class="header__menu__proposition-name">{{navTitle}}</a>
@@ -138,11 +140,11 @@
                     {{#hasNavLinks}}
                     <ul id="proposition-links" class="header__menu__proposition-links">
                     {{#navLinks}}
-                    {{#navLink}}
+                    {{#href}}
                     {{#text}}
-                    <li><a href="{{navLink}}">{{text}}</a></li>
+                    <li><a href="{{href}}">{{text}}</a></li>
                     {{/text}}
-                    {{/navLink}}
+                    {{/href}}
                     {{/navLinks}}
                     </ul>
                     {{/hasNavLinks}}
@@ -160,23 +162,27 @@
 <div id="global-cookie-message">
     <!-- Changed href of cookies to be relative path -->
     <p>GOV.UK uses cookies to make the site simpler. <a href="/help/cookies">Find out more about cookies</a></p>
-
 </div>
 
 <main id="wrapper" role="main" {{#mainClass}}class="{{mainClass}}"{{/mainClass}} {{{mainAttributes}}}>
 
-    {{#betaServiceName}}
+    {{#betaBanner}}
+
     <div class="beta-banner">
         <p>
             <strong class="phase-tag">BETA</strong>
-            <span>This is a new service<a id="feedback-link"
-                   href="beta-feedback-unauthenticated?service={{betaServiceName}}"
+            <span>This is a new service{{^feedbackIdentifier}}.{{/feedbackIdentifier}}
+                {{#feedbackIdentifier}}
+                   - your <a id="feedback-link"
+                   href="beta-feedback-unauthenticated?service={{feedbackIdentifier}}"
                    data-sso="false"
                    data-journey-click="other-global:Click:Feedback">feedback</a> will help us to improve it.
+                {{/feedbackIdentifier}}
             </span>
         </p>
     </div>
-    {{/betaServiceName}}
+
+    {{/betaBanner}}
 
     <div class="centered-content">
         {{ serviceInfo }}
