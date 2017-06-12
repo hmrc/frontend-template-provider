@@ -111,7 +111,7 @@ class HeadSpec extends UnitSpec with Results with WithFakeApplication {
     "contain link elem if url is passed through in a list of maps SDT-552" in new Setup {
       val link = "www.example.com/some.css"
       val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
-        "linkElems" -> Map("href" -> link)
+        "linkElems" -> Map("url" -> link)
       )).body
       renderedHtml should include(s"""<link rel="stylesheet" type="text/css" href="$link" />""")
     }
@@ -120,7 +120,7 @@ class HeadSpec extends UnitSpec with Results with WithFakeApplication {
       val link = "www.example.com/some.css"
       val media = "print"
       val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
-        "linkElems" -> Map("href" -> link, "print" -> true)
+        "linkElems" -> Map("url" -> link, "print" -> true)
       )).body
       renderedHtml should include(s"""<link rel="stylesheet" type="text/css" href="$link" media="print"/>""")
     }
@@ -130,8 +130,8 @@ class HeadSpec extends UnitSpec with Results with WithFakeApplication {
       val link2 = "www.example.com/other.css"
       val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
         "linkElems" -> List(
-          Map("href" -> link1),
-          Map("href" -> link2, "print" -> true)
+          Map("url" -> link1),
+          Map("url" -> link2, "print" -> true)
         )
       )).body
       renderedHtml should include(s"""<link rel="stylesheet" type="text/css" href="$link1" />""")

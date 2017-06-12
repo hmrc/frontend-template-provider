@@ -50,6 +50,41 @@ class FooterSpec extends UnitSpec with Results with WithFakeApplication {
       )).body
       renderedHtml should include(s"""<li><a href="$href">$text</a></li>""")
     }
+    "allow multiple additional footer links to be specified SDT 477" in new Setup {
+      val href1 = "www.example.com"
+      val href2 = "www.other.com"
+      val text1 = "something"
+      val text2 = "anything"
+      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
+        "additionalFooterLinks" -> Seq(
+          Map("url" -> href1, "text" -> text1),
+          Map("url" -> href2, "text" -> text2)
+        )
+      )).body
+      renderedHtml should include(s"""<li><a href="$href1">$text1</a></li>""")
+      renderedHtml should include(s"""<li><a href="$href2">$text2</a></li>""")
+    }
+
+    "support additional script elements in the footer of the page SDT 578" in new Setup {
+      val src = "www.example.com"
+      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
+        "scriptElems" -> Map("url" -> src)
+      )).body
+      renderedHtml should include(s"""<script src="$src" type="text/javascript"></script>""")
+    }
+
+    "support multiple additional script elements in the footer of the page SDT 578" in new Setup {
+      val src1 = "www.example.com"
+      val src2 = "www.another.com"
+      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
+        "scriptElems" -> Seq(
+          Map("url" -> src1),
+          Map("url" -> src2)
+        )
+      )).body
+      renderedHtml should include(s"""<script src="$src1" type="text/javascript"></script>""")
+      renderedHtml should include(s"""<script src="$src2" type="text/javascript"></script>""")
+    }
   }
 
   trait Setup {
