@@ -86,6 +86,75 @@ class MainSpec extends UnitSpec with Results with WithFakeApplication {
       renderedHtml should not include("""href="beta-feedback-unauthenticated?service=PTA"""")
       renderedHtml should include("This is a new service.")
     }
+
+    "includeGridWrapper should be included in service-info if specified SDT-482" in new Setup {
+      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
+        "includeGridWrapper" -> true
+      )).body
+      renderedHtml should include("""<div class="service-info grid-wrapper">""")
+    }
+
+    "includeGridWrapper should not be included in service-info if not set SDT-482" in new Setup {
+      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map()).body
+      renderedHtml should include("""<div class="service-info ">""") // extra space because of mustache
+    }
+
+    "hmrc branding included if set SDT-482" in new Setup {
+      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
+        "includeHMRCBranding" -> true
+      )).body
+      renderedHtml should include("""div class="logo">""")
+      renderedHtml should include("""<span class="organisation-logo organisation-logo-medium">HM Revenue &amp; Customs</span>""")
+    }
+
+    "hmrc branding not included if not set SDT-482" in new Setup {
+      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map()).body
+      renderedHtml should not include("""div class="logo">""")
+      renderedHtml should not include("""<span class="organisation-logo organisation-logo-medium">HM Revenue &amp; Customs</span>""")
+    }
+
+    "Do not show login information if userDisplayName is not set SDT-481" in new Setup {
+      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map()).body
+      renderedHtml should not include("this is the first time you have logged in")
+      renderedHtml should not include("you last signed in")
+      renderedHtml should not include("Sign out")
+    }
+
+    "Show 'first time logged in' if userDisplayName is set and previouslyLoggedInAt not set SDT-481" in new Setup {
+      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
+        "showLastLogInStatus" -> Map(
+          "userDisplayName" -> "Bob"
+        )
+      )).body
+      renderedHtml should include("Bob, this is the first time you have logged in")
+      renderedHtml should not include("you last signed in")
+      renderedHtml should not include("Sign out")
+    }
+
+    // put all in map for showLastLoginTime
+    "Show 'you last signed in' if userDisplayName and previouslyLoggedInAt are set SDT-481" in new Setup {
+      val userDisplayName = "Bob"
+      val previouslyLoggedInAt = "1st November 2016"
+      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
+        "showLastLogInStatus" -> Map(
+          "userDisplayName" -> userDisplayName,
+          "previouslyLoggedInAt" -> previouslyLoggedInAt
+        )
+      )).body
+      renderedHtml should not include(s"$userDisplayName, this is the first time you have logged in")
+      renderedHtml should include(s"${userDisplayName}, you last signed in $previouslyLoggedInAt")
+      renderedHtml should not include("Sign out")
+    }
+
+    "Show Sign out link for user if logout url is specified SDT-481" in new Setup {
+      val logoutUrl = "www.example.com/logout"
+      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
+        "showLastLogInStatus" -> Map(
+          "logoutUrl" -> logoutUrl
+        )
+      )).body
+      renderedHtml should include(s"""<br><a id="logOutStatusHref" href="$logoutUrl">Sign out</a>""")
+    }
   }
 
 

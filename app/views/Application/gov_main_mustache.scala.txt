@@ -167,7 +167,6 @@
 <main id="wrapper" role="main" {{#mainClass}}class="{{mainClass}}"{{/mainClass}} {{{mainAttributes}}}>
 
     {{#betaBanner}}
-
     <div class="beta-banner">
         <p>
             <strong class="phase-tag">BETA</strong>
@@ -181,11 +180,34 @@
             </span>
         </p>
     </div>
-
     {{/betaBanner}}
 
     <div class="centered-content">
-        {{ serviceInfo }}
+        <div class="service-info {{#includeGridWrapper}}grid-wrapper{{/includeGridWrapper}}">
+            {{#includeHMRCBranding}}
+            <div class="logo">
+                <span class="organisation-logo organisation-logo-medium">HM Revenue &amp; Customs</span>
+            </div>
+            {{/includeHMRCBranding}}
+            {{#showLastLogInStatus}}
+            <div id="lastlogin" class="service-info__help">
+                <p>
+                    {{#userDisplayName}}
+                    {{^previouslyLoggedInAt}}
+                    {{{userDisplayName}}}, this is the first time you have logged in.
+                    {{/previouslyLoggedInAt}}
+                    {{#previouslyLoggedInAt}}
+                    {{{userDisplayName}}}, you last signed in {{{previouslyLoggedInAt}}}.
+                    {{/previouslyLoggedInAt}}
+                    {{/userDisplayName}}
+                    {{#logoutUrl}}
+                    <br><a id="logOutStatusHref" href="{{logoutUrl}}">Sign out</a>
+                    {{/logoutUrl}}
+                </p>
+            </div>
+            {{/showLastLogInStatus}}
+        </div>
+
     </div>
     <div id="content">
 
@@ -207,13 +229,8 @@
     <div class="footer-wrapper">
         {{{ footerTop }}}
 
-        {{#ssoUrl}}
-        <script type="text/javascript">var ssoUrl = "{{ssoUrl}}";</script>
-        {{/ssoUrl}}
         <script src="@{assetsPath}/javascripts/application.min.js" type="text/javascript"></script>
-        {{#scriptElems}}
-        <script src="{{url}}" type="text/javascript"></script>
-        {{/scriptElems}}
+
         <div class="footer-meta">
             <div class="footer-meta-inner">
                 <ul class="platform-help-links">
@@ -247,8 +264,15 @@
 
 <div id="global-app-error" class="app-error hidden"></div>
 
+{{#ssoUrl}}
+    <script type="text/javascript">var ssoUrl = "{{ssoUrl}}";</script>
+{{/ssoUrl}}
 <!--<script src="@prependGovUkTemplateUrl("javascripts/govuk-template.js")" type="text/javascript"></script>-->
+{{#scriptElems}}
+    {{#url}}
+    <script src="{{url}}" type="text/javascript"></script>
+    {{/url}}
+{{/scriptElems}}
 
-{{{ bodyEnd }}}
 </body>
 </html>
