@@ -211,15 +211,15 @@
     </div>
     <div id="content">
 
-        {{ actingAttorneyBanner }}
+        {{{ actingAttorneyBanner }}}
 
-        {{ mainContentHeader }}
+        {{{ mainContentHeader }}}
 
-        {{ article }}
+        {{{ article }}}
 
-        {{ sidebar }}
+        {{{ sidebar }}}
 
-        {{ getHelpForm }}
+        {{{ getHelpForm }}}
 
     </div>
 </main>

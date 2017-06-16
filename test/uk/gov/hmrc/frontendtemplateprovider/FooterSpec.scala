@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.frontendtemplateprovider
 
+import akka.actor.{ActorSystem, Cancellable}
 import play.api.Application
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.mvc.{Result, Results}
@@ -28,7 +29,7 @@ import uk.gov.hmrc.play.http.ws.WSGet
 import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 import uk.gov.hmrc.renderer.MustacheRendererTrait
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class FooterSpec extends UnitSpec with Results with WithFakeApplication {
 
@@ -109,7 +110,10 @@ class FooterSpec extends UnitSpec with Results with WithFakeApplication {
     val localTemplateRenderer = new MustacheRendererTrait {
       override lazy val templateServiceAddress: String = ???
       override lazy val connection: WSGet = ???
-      override lazy val mustacheTemplateString: String = bodyText
+      override def scheduleGrabbingTemplate()(implicit ec: ExecutionContext): Cancellable = ???
+      override lazy val akkaSystem: ActorSystem = ???
+
+      override protected def getTemplate: String = bodyText
     }
   }
 }
