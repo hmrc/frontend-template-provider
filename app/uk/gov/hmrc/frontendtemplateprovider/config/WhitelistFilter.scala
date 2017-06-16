@@ -22,7 +22,7 @@ import play.api.Play
 import play.api.mvc.Call
 import uk.gov.hmrc.whitelist.AkamaiWhitelistFilter
 
-class WhitelistFilter extends AkamaiWhitelistFilter {
+object WhitelistFilter extends AkamaiWhitelistFilter {
   override val whitelist: Seq[String] = Play.current.configuration.getStringSeq("whitelistIps").getOrElse(Seq())
   override val destination: Call = Call("GET", "https://www.gov.uk")
 

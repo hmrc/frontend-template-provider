@@ -17,6 +17,7 @@
 package uk.gov.hmrc.frontendtemplateprovider
 
 import akka.actor.{ActorSystem, Cancellable}
+import org.scalatest.{Matchers, WordSpec}
 import play.api.Application
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.mvc.{Result, Results}
@@ -31,14 +32,9 @@ import uk.gov.hmrc.renderer.MustacheRendererTrait
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class MainSpec extends UnitSpec with Results with WithFakeApplication {
+class MainSpec extends WordSpec with Matchers  with Results with WithFakeApplication {
 
   implicit val hc = HeaderCarrier()
-
-  override lazy val fakeApplication: Application = new GuiceApplicationBuilder()
-    .configure(Map("assets.url" -> "www.example.com/"))
-    .bindings(bindModules:_*)
-    .build()
 
   val fakeRequest = FakeRequest("GET", "/")
 

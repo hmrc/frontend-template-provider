@@ -66,9 +66,7 @@ object MicroserviceGlobal extends DefaultMicroserviceGlobal with RunMode with Mi
 
   override val authFilter = Some(MicroserviceAuthFilter)
 
-  val whitelistFilter = new WhitelistFilter()
-
   override def microserviceFilters: Seq[EssentialFilter] = super.microserviceFilters ++ Play.configuration.getBoolean("shouldWhitelist").map {
-    _ => Seq(whitelistFilter)
+    _ => Seq(WhitelistFilter)
   }.getOrElse(Seq.empty)
 }

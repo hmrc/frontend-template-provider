@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.frontendtemplateprovider
 
+import org.scalatest.{Matchers, WordSpec}
 import play.api.mvc.Results
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -23,7 +24,7 @@ import uk.gov.hmrc.frontendtemplateprovider.controllers.GovUkTemplateRendererCon
 import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 
 
-class GovUkTemplateRendererControllerControllerSpec extends UnitSpec with WithFakeApplication with Results   {
+class GovUkTemplateRendererControllerControllerSpec extends WordSpec with Matchers  with WithFakeApplication with Results   {
 
 
   val fakeRequest = FakeRequest("GET", "/")
