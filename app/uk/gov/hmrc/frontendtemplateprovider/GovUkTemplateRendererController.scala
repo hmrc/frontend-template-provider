@@ -27,7 +27,6 @@ object GovUkTemplateRendererController extends GovUkTemplateRendererController
 
 trait GovUkTemplateRendererController extends BaseController with ServicesConfig {
 
-
 	def serveMustacheTemplate(): Action[AnyContent] = Action.async { implicit request =>
 		val templateLocation = Play.current.configuration.getString("template.url").getOrElse("")
 		val resolveUrl: (String) => String = a => s"${templateLocation}assets/$a"

@@ -28,6 +28,8 @@ import net.ceedubs.ficus.Ficus._
 import uk.gov.hmrc.play.filters.MicroserviceFilterSupport
 import play.api.i18n.Messages.Implicits._
 import play.api.Play.current
+import play.api.mvc.EssentialFilter
+import uk.gov.hmrc.frontendtemplateprovider.config.WhitelistFilter
 
 
 object ControllerConfiguration extends ControllerConfig {
@@ -63,4 +65,10 @@ object MicroserviceGlobal extends DefaultMicroserviceGlobal with RunMode with Mi
   override val microserviceAuditFilter = MicroserviceAuditFilter
 
   override val authFilter = Some(MicroserviceAuthFilter)
+
+  val whitelistFilter = new WhitelistFilter()
+
+  override def microserviceFilters: Seq[EssentialFilter] = super.microserviceFilters ++ Play.configuration.getBoolean("shouldWhitelist").map {
+    _ => Seq(whitelistFilter)
+  }.getOrElse(Seq.empty)
 }

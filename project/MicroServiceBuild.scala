@@ -21,7 +21,8 @@ object MicroServiceBuild extends Build with MicroService {
     "uk.gov.hmrc" %% "logback-json-logger"    % "3.1.0",
     "uk.gov.hmrc" %% "domain"                 % "4.1.0",
     "uk.gov.hmrc" %% "play-ui"                % "7.2.0",
-    "uk.gov.hmrc" %% "govuk-template"         % "5.2.0"
+    "uk.gov.hmrc" %% "govuk-template"         % "5.2.0",
+    "uk.gov.hmrc" %% "play-whitelist-filter"  % "2.0.0"
   )
 
   def test(scope: String = "test,it") = Seq(
