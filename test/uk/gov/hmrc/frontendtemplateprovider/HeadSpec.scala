@@ -27,7 +27,7 @@ import play.twirl.api.Html
 import uk.gov.hmrc.frontendtemplateprovider.controllers.GovUkTemplateRendererController
 import uk.gov.hmrc.play.http.HeaderCarrier
 import uk.gov.hmrc.play.http.ws.WSGet
-import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
+import uk.gov.hmrc.play.test.WithFakeApplication
 import uk.gov.hmrc.renderer.MustacheRendererTrait
 
 import scala.concurrent.{ExecutionContext, Future}

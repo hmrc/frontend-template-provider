@@ -23,7 +23,7 @@ import play.api.mvc.Call
 import uk.gov.hmrc.whitelist.AkamaiWhitelistFilter
 
 object WhitelistFilter extends AkamaiWhitelistFilter {
-  override val whitelist: Seq[String] = Play.current.configuration.getStringSeq("whitelistIps").getOrElse(Seq())
+  override lazy val whitelist: Seq[String] = Play.current.configuration.getStringSeq("whitelistIps").getOrElse(Seq())
   override val destination: Call = Call("GET", "https://www.gov.uk")
 
   override implicit def mat: Materializer = Play.current.materializer

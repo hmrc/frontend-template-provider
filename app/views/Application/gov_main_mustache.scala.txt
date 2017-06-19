@@ -156,9 +156,6 @@
 </header>
 <!--end header-->
 
-
-{{{ afterHeader }}}
-
 <div id="global-cookie-message">
     <!-- Changed href of cookies to be relative path -->
     <p>GOV.UK uses cookies to make the site simpler. <a href="/help/cookies">Find out more about cookies</a></p>
