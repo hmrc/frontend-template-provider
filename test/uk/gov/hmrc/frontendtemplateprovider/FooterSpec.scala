@@ -100,6 +100,31 @@ class FooterSpec extends WordSpec with Matchers  with Results with WithFakeAppli
       val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map()).body
       renderedHtml should not include(s"""<script type="text/javascript">var ssoUrl = """)
     }
+
+    "not show Google Analytics snippet when no googleAnalytics given SDT-475" in new Setup {
+      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map()).body
+      renderedHtml should not include(s"""(window,document,'script','//www.google-analytics.com/analytics.js','ga')""")
+    }
+
+    "show Google Analytics snippet when googleAnalytics trackingId given SDT-475" in new Setup {
+      val id = "UA-XXXX-Y"
+      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
+        "googleAnalytics" -> Map("trackingId" -> id)
+      )).body
+      renderedHtml should include(s"""ga('create', '$id', 'auto');""")
+    }
+
+    "support custom cookie domain for Google Analytics snippet SDT-475" in new Setup {
+      val id = "UA-XXXX-Y"
+      val host = "example.com"
+      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
+        "googleAnalytics" -> Map(
+          "trackingId" -> id,
+          "cookieDomain" -> host
+        )
+      )).body
+      renderedHtml should include(s"""ga('create', '$id', '$host');""")
+    }
   }
 
   trait Setup {
