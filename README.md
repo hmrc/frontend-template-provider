@@ -15,9 +15,9 @@ frontend-template-provider {
 
 This service is currently available when using service-manager only.
 
-## How does use the frontend-template-provider
+## How to use the frontend-template-provider
 
-The intended use it to have the templates served to and rendered using the [local-template-renderer](<url for the template renderer>). Latest details on how to use and set up the library are provided in its own github pages. For the purpose of this README, we are assuming that you have crated an instance called 	`localTemplateRenderer` (much like in the tests of this project) and illustrating how to use the library that way. If you are using a dependency injected way of doing this, you most likely would have a global instance upper camel-case rather than lower camel-case.
+The easiest way to use it in a scala application is to have the templates served to and rendered by the [local-template-renderer](<url for the template renderer>) library. Latest details on how to use and set up the library are provided in it's own README. For the purpose of this README, we are assuming that you have crated an instance called 	`localTemplateRenderer` (much like in the tests of this project) and we are illustrating how to use the library that way. If you are not using a dependency injected instance, you most likely would have a global instance (upper camel-case rather than lower camel-case).
 
 ### Populating the main tag inside the body
 
@@ -48,7 +48,7 @@ The main `content` of the page are populated using the following mustache:
 </div>
 ```
 
-`article` is the most important part of the page and it is what your application is responsible for and therefore is the only part of the page that is mandated. Everything else is optional and must be passed into the `templateArgs` (the map that is the second passed variable into the `parseTemplate` function.
+`article` is the most important part of the page. It is what your application is responsible for and therefore is the only part of the page that is mandated. Everything else is optional and must be passed into the `templateArgs` (the map that is the second passed variable into the `parseTemplate` function.
 
 So, for instance, if you want to add a sidebar with your article, if call the `localTemplateRenderer` in the following way:
 
@@ -71,7 +71,7 @@ the main content of the page would be rendered as follows:
 There are two points to note here:
 
 - The mustache template respects the ordering of the page.
-- If you do not wish to populate a part of the page, you do need to pass anything for it. Sensible defualts will be given, and in this case, the default is to not populate the those part of the template.
+- If you do not wish to populate a part of the page, you do need to pass anything for it. Sensible defualts will be given, and in the case of the sidebar, the default is to not populate this part of the template.
 
 *Adding a class to the main element*
 
@@ -101,7 +101,7 @@ would give
 <main id="wrapper" role="main" id="mainID" >
 ```
 
-*note, if you don't provide neither `mainAttributes` nor `mainClass`, no defaults will be given for both of them.
+*note, neither `mainAttributes` nor `mainClass` have default values should they not be provided.
 
 *Adding a beta banner at the top of your main element*
 
@@ -150,7 +150,7 @@ Would produce the following:
 </div>
 ```
 
-By default, no BETA banner are shown for unless you explictly add it to your `templateArgs` map.
+By default, no BETA banner is shown.
 
 *Adding a service-info to the page*
 
