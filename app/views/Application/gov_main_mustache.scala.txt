@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *@
-
 @(prependGovUkTemplateUrl: (String) => String, assetsPath: String)
 <!DOCTYPE html>
 <!--[if lt IE 9]><html class="no-js lte-ie8" lang="en"><![endif]-->
