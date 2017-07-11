@@ -18,43 +18,43 @@ package uk.gov.hmrc.frontendtemplateprovider
 
 import akka.actor.{ActorSystem, Cancellable}
 import org.scalatest.{Matchers, WordSpec}
-import play.api.Application
+import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import play.api.{Application, Configuration}
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.mvc.{Result, Results}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import play.twirl.api.Html
 import uk.gov.hmrc.frontendtemplateprovider.controllers.GovUkTemplateRendererController
+import uk.gov.hmrc.play.config.AssetsConfig
 import uk.gov.hmrc.play.http.HeaderCarrier
 import uk.gov.hmrc.play.http.ws.WSGet
-import uk.gov.hmrc.play.test.WithFakeApplication
 import uk.gov.hmrc.renderer.MustacheRendererTrait
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class HeadSpec extends WordSpec with Matchers with Results with WithFakeApplication {
+class HeadSpec extends WordSpec with Matchers with Results with GuiceOneAppPerSuite {
 
   implicit val hc = HeaderCarrier()
 
   override lazy val fakeApplication: Application = new GuiceApplicationBuilder()
-    .configure(Map("assets.url" -> "www.example.com/"))
-    .bindings(bindModules:_*)
+    .configure(Map("assets.url" -> "www.example.com/", "assets.version" -> "1"))
     .build()
 
   val fakeRequest = FakeRequest("GET", "/")
 
   "Head" should {
     "contain IE links" in new Setup {
-      bodyText should include("<!--[if IE 6]><link href=\"/template/assets/stylesheets/govuk-template-ie6.css\" media=\"screen\" rel=\"stylesheet\" type=\"text/css\" /><![endif]-->")
-      bodyText should include("<!--[if IE 7]><link href=\"/template/assets/stylesheets/govuk-template-ie7.css\" media=\"screen\" rel=\"stylesheet\" type=\"text/css\" /><![endif]-->")
-      bodyText should include("<!--[if IE 8]><link href=\"/template/assets/stylesheets/govuk-template-ie8.css\" media=\"screen\" rel=\"stylesheet\" type=\"text/css\" /><![endif]-->")
-      bodyText should include("<!--[if gt IE 8]><!--><link href=\"/template/assets/stylesheets/govuk-template.css\" media=\"screen\" rel=\"stylesheet\" type=\"text/css\" /><!--<![endif]-->")
+      bodyText should include("<!--[if IE 6]><link href=\"http://localhost:9310/template/assets/stylesheets/govuk-template-ie6.css\" media=\"screen\" rel=\"stylesheet\" type=\"text/css\" /><![endif]-->")
+      bodyText should include("<!--[if IE 7]><link href=\"http://localhost:9310/template/assets/stylesheets/govuk-template-ie7.css\" media=\"screen\" rel=\"stylesheet\" type=\"text/css\" /><![endif]-->")
+      bodyText should include("<!--[if IE 8]><link href=\"http://localhost:9310/template/assets/stylesheets/govuk-template-ie8.css\" media=\"screen\" rel=\"stylesheet\" type=\"text/css\" /><![endif]-->")
+      bodyText should include("<!--[if gt IE 8]><!--><link href=\"http://localhost:9310/template/assets/stylesheets/govuk-template.css\" media=\"screen\" rel=\"stylesheet\" type=\"text/css\" /><!--<![endif]-->")
     }
 
     "contain link to assets-frontend application links" in new Setup {
-      bodyText should include("<link rel='stylesheet' href='www.example.com/stylesheets/application-ie7.min.css' />")
-      bodyText should include("<link rel='stylesheet' href='www.example.com/stylesheets/application-ie.min.css' />")
-      bodyText should include("<link rel='stylesheet' href='www.example.com/stylesheets/application.min.css' />")
+      bodyText should include("<link rel='stylesheet' href='www.example.com/1/stylesheets/application-ie7.min.css' />")
+      bodyText should include("<link rel='stylesheet' href='www.example.com/1/stylesheets/application-ie.min.css' />")
+      bodyText should include("<link rel='stylesheet' href='www.example.com/1/stylesheets/application.min.css' />")
     }
 
     "contain a body opening tag that does not contain a class SDT-470" in new Setup {
@@ -199,11 +199,15 @@ class HeadSpec extends WordSpec with Matchers with Results with WithFakeApplicat
 
   trait Setup {
 
-    val result: Future[Result] = GovUkTemplateRendererController.serveMustacheTemplate()(fakeRequest)
-    val bodyText: String = contentAsString(result)
+    fakeApplication.configuration ++  Configuration("assets.url" -> "www.example.com/", "assets.version" -> "1")
+
+    lazy val result: Future[Result] = new GovUkTemplateRendererController{
+      override val assetsPrefix: String = new AssetsConfig {}.assetsPrefix // this is to avoid race condition
+    }.serveMustacheTemplate()(fakeRequest)
+    lazy val bodyText: String = contentAsString(result)
     status(result) shouldBe OK
 
-    val localTemplateRenderer = new MustacheRendererTrait {
+    lazy val localTemplateRenderer = new MustacheRendererTrait {
       override lazy val templateServiceAddress: String = ???
       override lazy val connection: WSGet = ???
       override def scheduleGrabbingTemplate()(implicit ec: ExecutionContext): Cancellable = ???

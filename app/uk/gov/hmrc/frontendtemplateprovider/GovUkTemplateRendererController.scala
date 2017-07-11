@@ -27,11 +27,13 @@ object GovUkTemplateRendererController extends GovUkTemplateRendererController
 
 trait GovUkTemplateRendererController extends BaseController with ServicesConfig {
 
+	val assetsPrefix: String = AssetsConfig.assetsPrefix
+
 	def serveMustacheTemplate(): Action[AnyContent] = Action.async { implicit request =>
 		val templateLocation = Play.current.configuration.getString("template.url").getOrElse("")
 		val resolveUrl: (String) => String = a => s"${templateLocation}assets/$a"
 
-		Future.successful(Ok(views.txt.Application.gov_main_mustache(resolveUrl, AssetsConfig.assetsPrefix + "/")))
+		Future.successful(Ok(views.txt.Application.gov_main_mustache(resolveUrl, assetsPrefix + "/")))
 	}
 
 }
