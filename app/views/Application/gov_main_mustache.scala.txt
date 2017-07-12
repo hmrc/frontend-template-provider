@@ -269,6 +269,11 @@
 })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 ga('create', '{{trackingId}}', '{{#cookieDomain}}{{cookieDomain}}{{/cookieDomain}}{{^cookieDomain}}auto{{/cookieDomain}}');
 ga('send', 'pageview', { 'anonymizeIp': true });
+{{#setParams}}
+ga('set', {
+  '{{{key}}}':'{{{value}}}'
+});
+{{/setParams}}
 </script>
 {{/trackingId}}
 {{/googleAnalytics}}
@@ -282,6 +287,11 @@ ga('send', 'pageview', { 'anonymizeIp': true });
     <script src="{{url}}" type="text/javascript"></script>
     {{/url}}
 {{/scriptElems}}
+
+{{#inlineScriptElems}}
+<script>{{{script}}}</script>
+{{/inlineScriptElems}}
+
 
 </body>
 </html>

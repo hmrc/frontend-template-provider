@@ -114,6 +114,32 @@ class FooterSpec extends WordSpec with Matchers  with Results with WithFakeAppli
       renderedHtml should include(s"""ga('create', '$id', 'auto');""")
     }
 
+    "do not add ga set if no gaSetParams given" in new Setup {
+      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
+      )).body
+      renderedHtml should not include(s"""ga('set'""")
+    }
+
+    "allow ga set to be called with passed in params" in new Setup {
+      val key1 = "key1"
+      val val1 = "val1"
+      val key2 = "key2"
+      val val2 = "val2"
+      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
+        "googleAnalytics" -> Map(
+          "trackingId" -> "random",
+          "setParams" -> Seq(
+            Map("key" -> key1, "value" -> val1),
+            Map("key" -> key2, "value" -> val2)
+          )
+        )
+      )).body
+      val gaSetRegex = """ga\(\'set\'""".r
+      gaSetRegex.findAllIn(renderedHtml).length shouldBe 2
+      renderedHtml should include(s"'$key1':'$val1'")
+      renderedHtml should include(s"'$key2':'$val2'")
+    }
+
     "support custom cookie domain for Google Analytics snippet SDT-475" in new Setup {
       val id = "UA-XXXX-Y"
       val host = "example.com"
@@ -124,6 +150,19 @@ class FooterSpec extends WordSpec with Matchers  with Results with WithFakeAppli
         )
       )).body
       renderedHtml should include(s"""ga('create', '$id', '$host');""")
+    }
+
+    "support multiple additional inline script elements in the footer of the page SDT 578" in new Setup {
+      val script1 = "var a=1;"
+      val script2 = """console.print("hello world");"""
+      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
+        "inlineScriptElems" -> Seq(
+          Map("script" -> script1),
+          Map("script" -> script2)
+        )
+      )).body
+      renderedHtml should include(s"""<script>$script1</script>""")
+      renderedHtml should include(s"""<script>$script2</script>""")
     }
   }
 
