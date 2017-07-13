@@ -178,12 +178,15 @@ class HeadSpec extends WordSpec with Matchers with Results with GuiceOneAppPerSu
       val text1 = "My service"
       val url2 = "www.example.com/another-service"
       val text2 = "Another service"
+      val url3 = "www.example.com/another"
+      val text3 = "New text"
       val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
         "navTitle" -> navTitle,
         "hasNavLinks" -> true,
         "navLinks" -> Seq(
           Map("url" -> url1, "text" -> text1),
-          Map("url" -> url2, "text" -> text2)
+            Map("url" -> url2, "text" -> text2),
+            Map("url" -> url3, "text" -> text3, "desktopHidden" -> true)
         )
       )).body
       renderedHtml should include("""<div class="header-proposition">""")
@@ -192,9 +195,23 @@ class HeadSpec extends WordSpec with Matchers with Results with GuiceOneAppPerSu
       renderedHtml should include(s"""<ul id="proposition-links" class="header__menu__proposition-links">""")
       renderedHtml should include(s"""<li><a href="$url1">$text1</a></li>""")
       renderedHtml should include(s"""<li><a href="$url2">$text2</a></li>""")
+      renderedHtml should include(s"""<li class="desktop-hidden"><a href="$url3">$text3</a></li>""")
       renderedHtml should include(url2)
     }
 
+    //<div class="service-info
+    "Remove service info if not needed" in new Setup {
+      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
+        "removeServiceInfo" -> true
+      )).body
+      renderedHtml should not include(s"""service-info""")
+    }
+
+    "service-info included by default" in new Setup {
+      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
+      )).body
+      renderedHtml should include(s"""service-info""")
+    }
   }
 
   trait Setup {

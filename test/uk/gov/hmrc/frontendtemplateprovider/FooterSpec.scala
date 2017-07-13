@@ -120,24 +120,38 @@ class FooterSpec extends WordSpec with Matchers  with Results with WithFakeAppli
       renderedHtml should not include(s"""ga('set'""")
     }
 
-    "allow ga set to be called with passed in params" in new Setup {
-      val key1 = "key1"
-      val val1 = "val1"
-      val key2 = "key2"
-      val val2 = "val2"
+    "set the correct dimensions in ga" in new Setup {
+      val authProvider = "IDA"
+      val confidenceLevel = "200"
+
       val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
         "googleAnalytics" -> Map(
           "trackingId" -> "random",
-          "setParams" -> Seq(
-            Map("key" -> key1, "value" -> val1),
-            Map("key" -> key2, "value" -> val2)
-          )
+          "authProvider" -> authProvider,
+          "confidenceLevel" -> confidenceLevel
         )
       )).body
-      val gaSetRegex = """ga\(\'set\'""".r
+      val gaSetRegex = """ga\(\'set\'\, \'dimension""".r
+
       gaSetRegex.findAllIn(renderedHtml).length shouldBe 2
-      renderedHtml should include(s"'$key1':'$val1'")
-      renderedHtml should include(s"'$key2':'$val2'")
+      renderedHtml should include(s"'dimension38', '$authProvider'")
+      renderedHtml should include(s"'dimension39', '$confidenceLevel'")
+    }
+
+    "not set the dimensions in ga when the data is blank" in new Setup {
+      val authProvider = "IDA"
+      val confidenceLevel = "200"
+
+      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
+        "googleAnalytics" -> Map(
+          "trackingId" -> "random",
+          "authProvider" -> authProvider,
+          "confidenceLevel" -> null
+        )
+      )).body
+      val gaSetRegex = """ga\(\'set\'\, \'dimension""".r
+      gaSetRegex.findAllIn(renderedHtml).length shouldBe 1
+      renderedHtml should include(s"'dimension38', '$authProvider'")
     }
 
     "support custom cookie domain for Google Analytics snippet SDT-475" in new Setup {
