@@ -84,18 +84,6 @@ class MainSpec extends WordSpec with Matchers  with Results with WithFakeApplica
       renderedHtml should include("This is a new service.")
     }
 
-    "includeGridWrapper should be included in service-info if specified SDT-482" in new Setup {
-      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
-        "includeGridWrapper" -> true
-      )).body
-      renderedHtml should include("""<div class="service-info grid-wrapper">""")
-    }
-
-    "includeGridWrapper should not be included in service-info if not set SDT-482" in new Setup {
-      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map()).body
-      renderedHtml should include("""<div class="service-info ">""") // extra space because of mustache
-    }
-
     "hmrc branding included if set SDT-482" in new Setup {
       val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
         "includeHMRCBranding" -> true

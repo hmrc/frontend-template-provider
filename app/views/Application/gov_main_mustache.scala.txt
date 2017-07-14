@@ -164,6 +164,7 @@
 
 <main id="wrapper" role="main" {{#mainClass}}class="{{mainClass}}"{{/mainClass}} {{{mainAttributes}}}>
   <div id="content">
+        {{^removeServiceInfo}}
         <div class="service-info">
             {{#betaBanner}}
             <div class="beta-banner">
@@ -180,7 +181,6 @@
                 </p>
             </div>
             {{/betaBanner}}
-            {{^removeServiceInfo}}
             {{#includeHMRCBranding}}
             <div class="logo">
                 <span class="organisation-logo organisation-logo-medium">HM Revenue &amp; Customs</span>
