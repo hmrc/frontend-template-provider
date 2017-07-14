@@ -185,49 +185,42 @@
             {{/betaBanner}}
 
             {{^removeServiceInfo}}
-            <div class="centered-content">
-                <div class="service-info {{#includeGridWrapper}}grid-wrapper{{/includeGridWrapper}}">
-                    {{#includeHMRCBranding}}
-                    <div class="logo">
-                        <span class="organisation-logo organisation-logo-medium">HM Revenue &amp; Customs</span>
-                    </div>
-                    {{/includeHMRCBranding}}
-                    {{#showLastLogInStatus}}
-                    <div id="lastlogin" class="service-info__help">
-                        <p>
-                            {{#userDisplayName}}
-                            {{^previouslyLoggedInAt}}
-                            {{{userDisplayName}}}, this is the first time you have logged in.
-                            {{/previouslyLoggedInAt}}
-                            {{#previouslyLoggedInAt}}
-                            {{{userDisplayName}}}, you last signed in {{{previouslyLoggedInAt}}}.
-                            {{/previouslyLoggedInAt}}
-                            {{/userDisplayName}}
-                            {{#logoutUrl}}
-                            <br><a id="logOutStatusHref" href="{{logoutUrl}}">Sign out</a>
-                            {{/logoutUrl}}
-                        </p>
-                    </div>
-                    {{/showLastLogInStatus}}
-                </div>
+            {{#includeHMRCBranding}}
+            <div class="logo">
+                <span class="organisation-logo organisation-logo-medium">HM Revenue &amp; Customs</span>
             </div>
-            {{/removeServiceInfo}}
-
-
-            <div id="content">
-
-                {{{ actingAttorneyBanner }}}
-
-                {{{ mainContentHeader }}}
-
-                {{{ article }}}
-
-                {{{ sidebar }}}
-
-                {{{ getHelpForm }}}
-
+           {{/includeHMRCBranding}}
+           {{#showLastLogInStatus}}
+            <div id="lastlogin" class="service-info__help">
+                <p>
+                    {{#userDisplayName}}
+                    {{^previouslyLoggedInAt}}
+                    {{{userDisplayName}}}, this is the first time you have logged in.
+                    {{/previouslyLoggedInAt}}
+                    {{#previouslyLoggedInAt}}
+                    {{{userDisplayName}}}, you last signed in {{{previouslyLoggedInAt}}}.
+                    {{/previouslyLoggedInAt}}
+                    {{/userDisplayName}}
+                    {{#logoutUrl}}
+                    <br><a id="logOutStatusHref" href="{{logoutUrl}}">Sign out</a>
+                    {{/logoutUrl}}
+                </p>
             </div>
+            {{/showLastLogInStatus}}
         </div>
+
+        {{/removeServiceInfo}}
+
+        {{{ actingAttorneyBanner }}}
+
+        {{{ mainContentHeader }}}
+
+        {{{ article }}}
+
+        {{{ sidebar }}}
+
+        {{{ getHelpForm }}}
+
     </div>
 </main>
 
