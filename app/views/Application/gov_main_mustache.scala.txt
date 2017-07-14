@@ -119,9 +119,7 @@
                     <img src="@prependGovUkTemplateUrl("images/gov.uk_logotype_crown.png")" alt=""> GOV.UK
                 </a>
             </div>
-
         </div>
-
         <div class="header-proposition">
             <div class="content">
                 {{#hasNavLinks}}
@@ -155,7 +153,6 @@
                 </nav>
             </div>
         </div>
-
     </div>
 </header>
 <!--end header-->
@@ -183,16 +180,14 @@
                 </p>
             </div>
             {{/betaBanner}}
-
             {{^removeServiceInfo}}
             {{#includeHMRCBranding}}
             <div class="logo">
                 <span class="organisation-logo organisation-logo-medium">HM Revenue &amp; Customs</span>
             </div>
-           {{/includeHMRCBranding}}
-           {{#showLastLogInStatus}}
-            <div id="lastlogin" class="service-info__help">
-                <p>
+            {{/includeHMRCBranding}}
+            {{#showLastLogInStatus}}
+            <div class="last-login">
                     {{#userDisplayName}}
                     {{^previouslyLoggedInAt}}
                     {{{userDisplayName}}}, this is the first time you have logged in.
