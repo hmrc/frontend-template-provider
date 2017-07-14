@@ -111,7 +111,7 @@
 </div>
 
 
-<header role="banner" id="global-header" class="{{#nav}}with-proposition{{/nav}}">
+<header role="banner" id="global-header" class="with-proposition">
     <div class="header-wrapper">
         <div class="header-global">
             <div class="header-logo">
@@ -119,9 +119,7 @@
                     <img src="@prependGovUkTemplateUrl("images/gov.uk_logotype_crown.png")" alt=""> GOV.UK
                 </a>
             </div>
-
         </div>
-
         <div class="header-proposition">
             <div class="content">
                 {{#hasNavLinks}}
@@ -155,7 +153,6 @@
                 </nav>
             </div>
         </div>
-
     </div>
 </header>
 <!--end header-->
@@ -166,34 +163,31 @@
 </div>
 
 <main id="wrapper" role="main" {{#mainClass}}class="{{mainClass}}"{{/mainClass}} {{{mainAttributes}}}>
-
-    {{#betaBanner}}
-    <div class="beta-banner">
-        <p>
-            <strong class="phase-tag">BETA</strong>
-            <span>This is a new service{{^feedbackIdentifier}}.{{/feedbackIdentifier}}
-                {{#feedbackIdentifier}}
-                   - your <a id="feedback-link"
-                   href="beta-feedback-unauthenticated?service={{feedbackIdentifier}}"
-                   data-sso="false"
-                   data-journey-click="other-global:Click:Feedback">feedback</a> will help us to improve it.
-                {{/feedbackIdentifier}}
-            </span>
-        </p>
-    </div>
-    {{/betaBanner}}
-
-    {{^removeServiceInfo}}
-    <div class="centered-content">
-        <div class="service-info {{#includeGridWrapper}}grid-wrapper{{/includeGridWrapper}}">
+  <div id="content">
+        {{^removeServiceInfo}}
+        <div class="service-info">
+            {{#betaBanner}}
+            <div class="beta-banner">
+                <p>
+                    <strong class="phase-tag">BETA</strong>
+                    <span>This is a new service{{^feedbackIdentifier}}.{{/feedbackIdentifier}}
+                        {{#feedbackIdentifier}}
+                           - your <a id="feedback-link"
+                           href="beta-feedback-unauthenticated?service={{feedbackIdentifier}}"
+                           data-sso="false"
+                           data-journey-click="other-global:Click:Feedback">feedback</a> will help us to improve it.
+                        {{/feedbackIdentifier}}
+                    </span>
+                </p>
+            </div>
+            {{/betaBanner}}
             {{#includeHMRCBranding}}
             <div class="logo">
                 <span class="organisation-logo organisation-logo-medium">HM Revenue &amp; Customs</span>
             </div>
             {{/includeHMRCBranding}}
             {{#showLastLogInStatus}}
-            <div id="lastlogin" class="service-info__help">
-                <p>
+            <div class="last-login">
                     {{#userDisplayName}}
                     {{^previouslyLoggedInAt}}
                     {{{userDisplayName}}}, this is the first time you have logged in.
@@ -209,11 +203,8 @@
             </div>
             {{/showLastLogInStatus}}
         </div>
-    </div>
-    {{/removeServiceInfo}}
 
-
-    <div id="content">
+        {{/removeServiceInfo}}
 
         {{{ actingAttorneyBanner }}}
 
