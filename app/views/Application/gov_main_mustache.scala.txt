@@ -141,7 +141,12 @@
                     {{#navLinks}}
                     {{#url}}
                     {{#text}}
+                    {{#desktopHidden}}
+                    <li class="desktop-hidden"><a href="{{{url}}}">{{text}}</a></li>
+                    {{/desktopHidden}}
+                    {{^desktopHidden}}
                     <li><a href="{{{url}}}">{{text}}</a></li>
+                    {{/desktopHidden}}
                     {{/text}}
                     {{/url}}
                     {{/navLinks}}
@@ -178,6 +183,7 @@
     </div>
     {{/betaBanner}}
 
+    {{^removeServiceInfo}}
     <div class="centered-content">
         <div class="service-info {{#includeGridWrapper}}grid-wrapper{{/includeGridWrapper}}">
             {{#includeHMRCBranding}}
@@ -203,8 +209,10 @@
             </div>
             {{/showLastLogInStatus}}
         </div>
-
     </div>
+    {{/removeServiceInfo}}
+
+
     <div id="content">
 
         {{{ actingAttorneyBanner }}}
@@ -261,21 +269,25 @@
 <div id="global-app-error" class="app-error hidden"></div>
 
 {{#googleAnalytics}}
-{{#trackingId}}
-<script type="text/javascript">
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-ga('create', '{{trackingId}}', '{{#cookieDomain}}{{cookieDomain}}{{/cookieDomain}}{{^cookieDomain}}auto{{/cookieDomain}}');
-ga('send', 'pageview', { 'anonymizeIp': true });
-{{#setParams}}
-ga('set', {
-  '{{{key}}}':'{{{value}}}'
-});
-{{/setParams}}
-</script>
-{{/trackingId}}
+    {{#trackingId}}
+        <script type="text/javascript">
+
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', '{{trackingId}}', '{{#cookieDomain}}{{cookieDomain}}{{/cookieDomain}}{{^cookieDomain}}auto{{/cookieDomain}}');
+            ga('set', 'anonymizeIp', true)
+
+            {{#authProvider}}    ga('set', 'dimension38', '{{{authProvider}}}'); {{/authProvider}}
+            {{#confidenceLevel}} ga('set', 'dimension39', '{{{confidenceLevel}}}'); {{/confidenceLevel}}
+
+            ga('send', 'pageview');
+            ga('set', 'nonInteraction', true);
+
+        </script>
+    {{/trackingId}}
 {{/googleAnalytics}}
 
 {{#ssoUrl}}
