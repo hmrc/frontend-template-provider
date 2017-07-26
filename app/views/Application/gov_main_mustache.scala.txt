@@ -78,28 +78,28 @@
 
     <!-- head -->
     <!--[if lt IE 8 ]>
-    {{#assetsVersion}}
+    {{#assetsPath}}
     <link rel='stylesheet' href='{{assetsPath}}stylesheets/application-ie7.min.css' />
-    {{/assetsVersion}}
-    {{^assetsVersion}}
+    {{/assetsPath}}
+    {{^assetsPath}}
     <link rel='stylesheet' href='@{assetsPath}stylesheets/application-ie7.min.css' />
-    {{/assetsVersion}}
+    {{/assetsPath}}
     <![endif]-->
     <!--[if IE 8 ]>
-    {{#assetsVersion}}
-    <link rel='stylesheet' href='/assets/{{#assetsVersion}}/stylesheets/application-ie.min.css' />
-    {{/assetsVersion}}
-    {{^assetsVersion}}
+    {{#assetsPath}}
+    <link rel='stylesheet' href='{{assetsPath}}stylesheets/application-ie.min.css' />
+    {{/assetsPath}}
+    {{^assetsPath}}
     <link rel='stylesheet' href='@{assetsPath}stylesheets/application-ie.min.css' />
-    {{/assetsVersion}}
+    {{/assetsPath}}
     <![endif]-->
     <!--[if gt IE 8]><!-->
-    {{#assetsVersion}}
+    {{#assetsPath}}
     <link rel='stylesheet' href='{{assetsPath}}stylesheets/application.min.css' />
-    {{/assetsVersion}}
-    {{^assetsVersion}}
+    {{/assetsPath}}
+    {{^assetsPath}}
     <link rel='stylesheet' href='@{assetsPath}stylesheets/application.min.css' />
-    {{/assetsVersion}}
+    {{/assetsPath}}
     <!--<![endif]-->
 
 
@@ -298,12 +298,12 @@
     <script type="text/javascript">var ssoUrl = "{{ssoUrl}}";</script>
 {{/ssoUrl}}
 
-{{#assetsVersion}}
+{{#assetsPath}}
 <script src="{{assetsPath}}javascripts/application.min.js" type="text/javascript"></script>
-{{/assetsVersion}}
-{{^assetsVersion}}
+{{/assetsPath}}
+{{^assetsPath}}
 <script src="@{assetsPath}javascripts/application.min.js" type="text/javascript"></script>
-{{/assetsVersion}}
+{{/assetsPath}}
 
 <!--<script src="@prependGovUkTemplateUrl("javascripts/govuk-template.js")" type="text/javascript"></script>-->
 {{#scriptElems}}

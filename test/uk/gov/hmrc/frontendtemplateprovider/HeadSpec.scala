@@ -51,10 +51,20 @@ class HeadSpec extends WordSpec with Matchers with Results with GuiceOneAppPerSu
       bodyText should include("<!--[if gt IE 8]><!--><link href=\"http://localhost:9310/template/assets/stylesheets/govuk-template.css\" media=\"screen\" rel=\"stylesheet\" type=\"text/css\" /><!--<![endif]-->")
     }
 
-    "contain link to assets-frontend application links" in new Setup {
+    "contain links to assets-frontend CSS" in new Setup {
       bodyText should include("<link rel='stylesheet' href='www.example.com/1/stylesheets/application-ie7.min.css' />")
       bodyText should include("<link rel='stylesheet' href='www.example.com/1/stylesheets/application-ie.min.css' />")
       bodyText should include("<link rel='stylesheet' href='www.example.com/1/stylesheets/application.min.css' />")
+    }
+
+    "contain links to a specified version of assets-frontend CSS" in new Setup {
+      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
+        "assetsPath" -> "www.example.com/2/"
+      )).body
+
+      renderedHtml should include("<link rel='stylesheet' href='www.example.com/2/stylesheets/application-ie7.min.css' />")
+      renderedHtml should include("<link rel='stylesheet' href='www.example.com/2/stylesheets/application-ie.min.css' />")
+      renderedHtml should include("<link rel='stylesheet' href='www.example.com/2/stylesheets/application.min.css' />")
     }
 
     "contain a body opening tag that does not contain a class SDT-470" in new Setup {
