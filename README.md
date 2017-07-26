@@ -6,7 +6,7 @@ A mustache template provider that gives you a govuk template. It allows for vari
 
 To add this to your service, place this inside your routes for `Dev` and `Prod` in application.conf:
 
-```json <!--even though this isn't json, just gives it a nicer colour-->
+```json &lt;!--even though this isn&#39;t json, just gives it a nicer colour--&gt;
 frontend-template-provider {
  host = localhost
  port = 9310
@@ -26,6 +26,18 @@ If you only want to populate the main content of the page and wish to use sensib
 ```scala
 val article = Html("<p>hello world!</p>")
 localTemplateRenderer.parseTemplate(article, Map())
+```
+
+*Specifying a version of assets-fronted*
+
+The version of assets-frontend defaults to the version set by the template. This will almost always be kept as the latest. **Warning:** This could break your frontend on page reload if a version of assets-fronted is released with a breaking change that changes or removes styles for some markup you were relying on.
+
+In order to avoid this issue, frontends can specify which version of assets-frontend they rely on by passing through a path to which version of assets-frontend you require:
+
+```scala
+localTemplateRenderer.parseTemplate(article, Map(
+  "assetsPath" -> assetsPath
+))
 ```
 
 *Adding extra html around the article*
@@ -163,9 +175,9 @@ The options of what you can populate are as follows:
 - You can allow `grid-wrapper` to be one of the classes of the `service-info` by having `includeGridWrapper -> true` as an option in the `templateArgs`. By default it's not set.
 - You can include the HMRC branding by setting `includeHMRCBranding` to true in the `templateArgs`.
 - You can show last login status.
-	- You can set the `userDisplayName`, `previouslyLoggedInAt` and `logoutUrl` 
-	- If you do not provide `previouslyLoggedInAt` and the `userDisplayName` is `Dave`, `Dave, this is the first time you have logged in.` would be displayed.
-	- If you provided a `previouslyLoggedInAt` (say `01 Jan 2017`), you would get `Dave, you last signed in 01 Jan 2017.
+ - You can set the `userDisplayName`, `previouslyLoggedInAt` and `logoutUrl` 
+ - If you do not provide `previouslyLoggedInAt` and the `userDisplayName` is `Dave`, `Dave, this is the first time you have logged in.` would be displayed.
+ - If you provided a `previouslyLoggedInAt` (say `01 Jan 2017`), you would get `Dave, you last signed in 01 Jan 2017.
 
 Example of a fully populated service-info:
 
@@ -269,7 +281,7 @@ localTemplateRenderer.parseTemplate(Html(""), Map(
 		Map("url" -> "url2.com", "text" -> "second link title")
 	)
 ))
-```      
+```
 
 would produce:
 
