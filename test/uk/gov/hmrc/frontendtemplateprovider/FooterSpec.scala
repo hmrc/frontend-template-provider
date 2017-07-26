@@ -44,6 +44,18 @@ class FooterSpec extends WordSpec with Matchers  with Results with WithFakeAppli
   val fakeRequest = FakeRequest("GET", "/")
 
   "Footer" should {
+    "contain links to assets-frontend JS" in new Setup {
+      bodyText should include("<script src=\"www.example.com/1/javascripts/application.min.js\" type=\"text/javascript\"></script>")
+    }
+
+    "contain links to a specified version of assets-frontend CSS" in new Setup {
+      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
+        "assetsPath" -> "www.example.com/2/"
+      )).body
+
+      renderedHtml should include("<script src=\"www.example.com/2/javascripts/application.min.js\" type=\"text/javascript\"></script>")
+    }
+
     "allow additional footer links to be specified SDT 477" in new Setup {
       val href = "www.example.com"
       val text = "something"
