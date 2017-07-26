@@ -79,7 +79,7 @@
     <!-- head -->
     <!--[if lt IE 8 ]>
     {{#assetsVersion}}
-    <link rel='stylesheet' href='/assets/{{ assetsVersion }}/stylesheets/application-ie7.min.css' />
+    <link rel='stylesheet' href='{{assetsPath}}stylesheets/application-ie7.min.css' />
     {{/assetsVersion}}
     {{^assetsVersion}}
     <link rel='stylesheet' href='@{assetsPath}stylesheets/application-ie7.min.css' />
@@ -95,7 +95,7 @@
     <![endif]-->
     <!--[if gt IE 8]><!-->
     {{#assetsVersion}}
-    <link rel='stylesheet' href='/assets/{{ assetsVersion }}/stylesheets/application.min.css' />
+    <link rel='stylesheet' href='{{assetsPath}}stylesheets/application.min.css' />
     {{/assetsVersion}}
     {{^assetsVersion}}
     <link rel='stylesheet' href='@{assetsPath}stylesheets/application.min.css' />
@@ -299,7 +299,7 @@
 {{/ssoUrl}}
 
 {{#assetsVersion}}
-<script src="/assets/{{ assetsVersion }}/javascripts/application.min.js" type="text/javascript"></script>
+<script src="{{assetsPath}}javascripts/application.min.js" type="text/javascript"></script>
 {{/assetsVersion}}
 {{^assetsVersion}}
 <script src="@{assetsPath}javascripts/application.min.js" type="text/javascript"></script>
