@@ -18,16 +18,17 @@ package uk.gov.hmrc.frontendtemplateprovider
 
 import akka.actor.{ActorSystem, Cancellable}
 import org.scalatest.{Matchers, WordSpec}
-import play.api.Application
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.mvc.{Result, Results}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import play.api.{Application, Configuration}
 import play.twirl.api.Html
 import uk.gov.hmrc.frontendtemplateprovider.controllers.GovUkTemplateRendererController
+import uk.gov.hmrc.play.config.AssetsConfig
 import uk.gov.hmrc.play.http.HeaderCarrier
 import uk.gov.hmrc.play.http.ws.WSGet
-import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
+import uk.gov.hmrc.play.test.WithFakeApplication
 import uk.gov.hmrc.renderer.MustacheRendererTrait
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -36,17 +37,16 @@ class FooterSpec extends WordSpec with Matchers  with Results with WithFakeAppli
 
   implicit val hc = HeaderCarrier()
 
-  override lazy val fakeApplication: Application = new GuiceApplicationBuilder()
-    .configure(Map("assets.url" -> "www.example.com/"))
-    .bindings(bindModules:_*)
-    .build()
-
   val fakeRequest = FakeRequest("GET", "/")
+
+  override lazy val fakeApplication: Application = new GuiceApplicationBuilder()
+    .configure(Map("assets.url" -> "www.example.com/", "assets.version" -> "1"))
+    .build()
 
   // ToDo: Fix the hardcoded assets version in this test
   "Footer" should {
     "contain links to assets-frontend JS" in new Setup {
-      bodyText should include("<script src=\"www.example.com/2.246.0/javascripts/application.min.js\" type=\"text/javascript\"></script>")
+      bodyText should include("<script src=\"www.example.com/1/javascripts/application.min.js\" type=\"text/javascript\"></script>")
     }
 
     "contain links to a specified version of assets-frontend CSS" in new Setup {
@@ -195,11 +195,14 @@ class FooterSpec extends WordSpec with Matchers  with Results with WithFakeAppli
 
   trait Setup {
 
-    val result: Future[Result] = GovUkTemplateRendererController.serveMustacheTemplate()(fakeRequest)
-    val bodyText: String = contentAsString(result)
-    status(result) shouldBe OK
+    lazy val result: Future[Result] = new GovUkTemplateRendererController{
+      override val assetsPrefix: String = new AssetsConfig {}.assetsPrefix // this is to avoid race condition
+    }.serveMustacheTemplate()(fakeRequest)
+    lazy val bodyText: String = contentAsString(result)
 
-    val localTemplateRenderer = new MustacheRendererTrait {
+    lazy val localTemplateRenderer = new MustacheRendererTrait {
+      status(result) shouldBe OK
+
       override lazy val templateServiceAddress: String = ???
       override lazy val connection: WSGet = ???
       override def scheduleGrabbingTemplate()(implicit ec: ExecutionContext): Cancellable = ???

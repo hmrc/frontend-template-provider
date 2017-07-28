@@ -225,16 +225,14 @@ class HeadSpec extends WordSpec with Matchers with Results with GuiceOneAppPerSu
   }
 
   trait Setup {
-
-    fakeApplication.configuration ++  Configuration("assets.url" -> "www.example.com/", "assets.version" -> "1")
-
     lazy val result: Future[Result] = new GovUkTemplateRendererController{
       override val assetsPrefix: String = new AssetsConfig {}.assetsPrefix // this is to avoid race condition
     }.serveMustacheTemplate()(fakeRequest)
     lazy val bodyText: String = contentAsString(result)
-    status(result) shouldBe OK
 
     lazy val localTemplateRenderer = new MustacheRendererTrait {
+      status(result) shouldBe OK
+
       override lazy val templateServiceAddress: String = ???
       override lazy val connection: WSGet = ???
       override def scheduleGrabbingTemplate()(implicit ec: ExecutionContext): Cancellable = ???
