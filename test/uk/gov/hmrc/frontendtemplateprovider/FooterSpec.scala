@@ -43,7 +43,6 @@ class FooterSpec extends WordSpec with Matchers  with Results with WithFakeAppli
     .configure(Map("assets.url" -> "www.example.com/", "assets.version" -> "1"))
     .build()
 
-  // ToDo: Fix the hardcoded assets version in this test
   "Footer" should {
     "contain links to assets-frontend JS" in new Setup {
       bodyText should include("<script src=\"www.example.com/1/javascripts/application.min.js\" type=\"text/javascript\"></script>")
