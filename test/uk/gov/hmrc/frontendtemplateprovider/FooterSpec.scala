@@ -43,9 +43,10 @@ class FooterSpec extends WordSpec with Matchers  with Results with WithFakeAppli
 
   val fakeRequest = FakeRequest("GET", "/")
 
+  // ToDo: Fix the hardcoded assets version in this test
   "Footer" should {
     "contain links to assets-frontend JS" in new Setup {
-      bodyText should include("<script src=\"www.example.com/1/javascripts/application.min.js\" type=\"text/javascript\"></script>")
+      bodyText should include("<script src=\"www.example.com/2.246.0/javascripts/application.min.js\" type=\"text/javascript\"></script>")
     }
 
     "contain links to a specified version of assets-frontend CSS" in new Setup {

@@ -33,7 +33,7 @@ trait GovUkTemplateRendererController extends BaseController with ServicesConfig
 		val templateLocation = Play.current.configuration.getString("template.url").getOrElse("")
 		val resolveUrl: (String) => String = a => s"${templateLocation}assets/$a"
 
-		Future.successful(Ok(views.txt.Application.gov_main_mustache(resolveUrl, assetsPrefix + "/")))
+		Future.successful(Ok(views.html.Application.gov_main_mustache(resolveUrl, assetsPrefix + "/")))
 	}
 
 }

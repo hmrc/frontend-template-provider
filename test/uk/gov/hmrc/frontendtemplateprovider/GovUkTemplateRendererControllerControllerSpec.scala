@@ -34,9 +34,23 @@ class GovUkTemplateRendererControllerControllerSpec extends WordSpec with Matche
     "return 200 with the template rendered correctly" in {
       val result = GovUkTemplateRendererController.serveMustacheTemplate()(fakeRequest)
       val bodyText = contentAsString(result)
+
       status(result) shouldBe OK
+
       bodyText should not contain "@resolveUrl"
       bodyText should include("html")
+
     }
   }
+
+  "GET /serve-template" should {
+    "Serve the template with a \"text/html\" Content-type header" in {
+      val result = GovUkTemplateRendererController.serveMustacheTemplate()(fakeRequest)
+      val mimetype = contentType(result).mkString
+      mimetype should include("text/html")
+
+    }
+
+  }
+
 }
