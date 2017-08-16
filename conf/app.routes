@@ -1,4 +1,0 @@
-# microservice specific routes
-
-GET        /serve-template          uk.gov.hmrc.frontendtemplateprovider.controllers.GovUkTemplateRendererController.serveMustacheTemplate()
-GET        /assets/*file            @controllers.AssetsController.at(path="/public", file)

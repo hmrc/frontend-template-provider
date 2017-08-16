@@ -1,5 +1,5 @@
-# Add all the application routes to the app.routes file
-->         /frontend-template-provider              app.Routes
+GET        /template/mustache           uk.gov.hmrc.frontendtemplateprovider.controllers.GovUkTemplateRendererController.serveMustacheTemplate()
+
 ->         /                          health.Routes
 ->         /template                  template.Routes
 
