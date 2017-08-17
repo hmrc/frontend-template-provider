@@ -178,17 +178,11 @@ class FooterSpec extends WordSpec with Matchers  with Results with WithFakeAppli
       renderedHtml should include(s"""ga('create', '$id', '$host');""")
     }
 
-    "support multiple additional inline script elements in the footer of the page SDT 578" in new Setup {
-      val script1 = "var a=1;"
-      val script2 = """console.print("hello world");"""
+    "support inline script elements in the footer of the page" in new Setup {
       val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
-        "inlineScriptElems" -> Seq(
-          Map("script" -> script1),
-          Map("script" -> script2)
-        )
+        "inlineScript" -> "<script>console.log('hello world');</script>"
       )).body
-      renderedHtml should include(s"""<script>$script1</script>""")
-      renderedHtml should include(s"""<script>$script2</script>""")
+      renderedHtml should include(s"""<script>console.log('hello world');</script>""")
     }
   }
 
