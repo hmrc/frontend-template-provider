@@ -23,34 +23,33 @@ import play.api.test.Helpers._
 import uk.gov.hmrc.frontendtemplateprovider.controllers.GovUkTemplateRendererController
 import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 
-
-class GovUkTemplateRendererControllerControllerSpec extends WordSpec with Matchers  with WithFakeApplication with Results   {
-
+class GovUkTemplateRendererControllerControllerSpec extends WordSpec with Matchers  with WithFakeApplication with Results {
 
   val fakeRequest = FakeRequest("GET", "/")
 
 
   "GET /serve-template" should {
-    "return 200 with the template rendered correctly" in {
+    "Return with an HTTP 200 status" in {
+      val result = GovUkTemplateRendererController.serveMustacheTemplate()(fakeRequest)
+
+      status(result) shouldBe OK
+    }
+
+    "Render the template correctly" in {
       val result = GovUkTemplateRendererController.serveMustacheTemplate()(fakeRequest)
       val bodyText = contentAsString(result)
 
-      status(result) shouldBe OK
-
       bodyText should not contain "@resolveUrl"
       bodyText should include("html")
-
     }
-  }
 
-  "GET /serve-template" should {
     "Serve the template with a \"text/html\" Content-type header" in {
       val result = GovUkTemplateRendererController.serveMustacheTemplate()(fakeRequest)
       val mimetype = contentType(result).mkString
-      mimetype should include("text/html")
 
+      mimetype should include("text/html")
     }
 
   }
-
 }
+
