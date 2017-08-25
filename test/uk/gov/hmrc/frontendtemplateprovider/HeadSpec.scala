@@ -133,7 +133,7 @@ class HeadSpec extends WordSpec with Matchers with Results with GuiceOneAppPerSu
       val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
         "linkElems" -> Map(
           "url" -> link,
-          "condition" -> "IE 8"
+          "ieVersionCondition" -> "IE 8"
         )
       )).body
       renderedHtml.filterNot((x: Char) => x == '\n') .replaceAll(">[ ]*<","><") should include("<!--[if IE 8]><link rel=\"stylesheet\" type=\"text/css\" href=\"www.example.com/ie8.css\" /><![endif]-->")
