@@ -128,6 +128,17 @@ class HeadSpec extends WordSpec with Matchers with Results with GuiceOneAppPerSu
       renderedHtml should include(s"""<link rel="stylesheet" type="text/css" href="$link" />""")
     }
 
+    "contain link elem for ie if IE is passed as a condition" in new Setup {
+      val link = "www.example.com/ie8.css"
+      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
+        "linkElems" -> Map(
+          "url" -> link,
+          "ieVersionCondition" -> "IE 8"
+        )
+      )).body
+      renderedHtml.filterNot((x: Char) => x == '\n') .replaceAll(">[ ]*<","><") should include("<!--[if IE 8]><link rel=\"stylesheet\" type=\"text/css\" href=\"www.example.com/ie8.css\" /><![endif]-->")
+    }
+
     "support specifying print media type for linkElems SDT-552" in new Setup {
       val link = "www.example.com/some.css"
       val media = "print"
