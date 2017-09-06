@@ -72,7 +72,7 @@ class MainSpec extends WordSpec with Matchers  with Results with WithFakeApplica
         "betaBanner" -> Map("feedbackIdentifier" -> "PTA")
       )).body
       renderedHtml should include("""<div class="beta-banner">""")
-      renderedHtml should include("""href="/contact/beta-feedback-unauthenticated?service=PTA"""")
+      renderedHtml should include("""href="http://localhost:9250/contact/beta-feedback-unauthenticated?service=PTA"""")
     }
 
     "show beta banner with no feedback link if you don't specify a feedbackIdentifier SDT 476" in new Setup {
@@ -80,7 +80,7 @@ class MainSpec extends WordSpec with Matchers  with Results with WithFakeApplica
         "betaBanner" -> true
       )).body
       renderedHtml should include("""<div class="beta-banner">""")
-      renderedHtml should not include("""href="beta-feedback-unauthenticated?service=PTA"""")
+      renderedHtml should not include("""href="http://localhost:9250/contact/beta-feedback-unauthenticated?service=PTA"""")
       renderedHtml should include("This is a new service.")
     }
 
