@@ -79,17 +79,17 @@ class FooterSpec extends WordSpec with Matchers  with Results with WithFakeAppli
       renderedHtml should include(s"""<li><a href="$href2">$text2</a></li>""")
     }
 
-    "show modified terms and condition link if 'termsAndConditionFooterLinks' has value" in new Setup {
+    "show modified terms and condition link if 'termsAndConditionFooterLink' has value" in new Setup {
       val href = "www.example.com"
       val text = "something"
       val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
-        "termsAndConditionFooterLinks" -> Map("url" -> href, "text" -> text)
+        "termsAndConditionFooterLink" -> Map("url" -> href, "text" -> text)
       )).body
       renderedHtml should include("<li><a href=\"www.example.com\" target=\"_blank\" data-sso=\"false\" data-journey-click=\"footer:Click:Terms and conditions\">something</a></li>")
     }
 
-    "show default terms and condition link if 'termsAndConditionFooterLinks' has no value" in new Setup {
-      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map("termsAndConditionFooterLinks" -> None)).body
+    "show default terms and condition link if 'termsAndConditionFooterLink' has no value" in new Setup {
+      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map("termsAndConditionFooterLink" -> None)).body
       renderedHtml should include("<li><a href='/help/terms-and-conditions' target=\"_blank\" data-sso=\"false\" data-journey-click=\"footer:Click:Terms and conditions\">Terms and conditions</a></li>")
     }
 
