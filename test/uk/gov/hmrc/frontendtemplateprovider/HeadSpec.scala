@@ -225,13 +225,13 @@ class HeadSpec extends WordSpec with Matchers with Results with GuiceOneAppPerSu
       val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
         "removeServiceInfo" -> true
       )).body
-      renderedHtml should not include(s"""service-info""")
+      renderedHtml should not include(s"""<div class="service-info">""")
     }
 
     "service-info included by default" in new Setup {
       val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
       )).body
-      renderedHtml should include(s"""service-info""")
+      renderedHtml should include(s"""<div class="service-info">""")
     }
   }
 
