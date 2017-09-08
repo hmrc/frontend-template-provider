@@ -100,34 +100,32 @@ class MainSpec extends WordSpec with Matchers  with Results with WithFakeApplica
 
     "Do not show login information if userDisplayName is not set SDT-481" in new Setup {
       val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map()).body
-      renderedHtml should not include("this is the first time you have logged in")
+      renderedHtml should not include("This is the first time you have logged in")
       renderedHtml should not include("you last signed in")
       renderedHtml should not include("Sign out")
     }
 
-    "Show 'first time logged in' if userDisplayName is set and previouslyLoggedInAt not set SDT-481" in new Setup {
+    "Show 'first time logged in' if previouslyLoggedInAt not set SDT-481" in new Setup {
       val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
         "showLastLogInStatus" -> Map(
-          "userDisplayName" -> "Bob"
+          "previouslyLoggedInAt" -> false
         )
       )).body
-      renderedHtml should include("Bob, this is the first time you have logged in")
+      renderedHtml should include("This is the first time you have logged in")
       renderedHtml should not include("you last signed in")
       renderedHtml should not include("Sign out")
     }
 
     // put all in map for showLastLoginTime
-    "Show 'you last signed in' if userDisplayName and previouslyLoggedInAt are set SDT-481" in new Setup {
-      val userDisplayName = "Bob"
+    "Show 'you last signed in' if previouslyLoggedInAt is set SDT-481" in new Setup {
       val previouslyLoggedInAt = "1st November 2016"
       val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
         "showLastLogInStatus" -> Map(
-          "userDisplayName" -> userDisplayName,
           "previouslyLoggedInAt" -> previouslyLoggedInAt
         )
       )).body
-      renderedHtml should not include(s"$userDisplayName, this is the first time you have logged in")
-      renderedHtml should include(s"${userDisplayName}, you last signed in $previouslyLoggedInAt")
+      renderedHtml should not include(s"This is the first time you have logged in")
+      renderedHtml should include(s"You last signed in $previouslyLoggedInAt")
       renderedHtml should not include("Sign out")
     }
 
