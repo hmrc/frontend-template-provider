@@ -248,32 +248,32 @@
             {{#showLastLogInStatus}}
 
                 <div class="last-login">
-                    <p>
-                        {{#userDisplayName}}
-                            {{^previouslyLoggedInAt}}
+                    <p class="last-login__more-details text--right font-xsmall">
 
-                                {{#isWelsh}}
-                                    {{{userDisplayName}}}, dyma&#39;r tro cyntaf i chi fewngofnodi.
-                                {{/isWelsh}}
+                        {{^previouslyLoggedInAt}}
 
-                                {{^isWelsh}}
-                                    {{{userDisplayName}}}, this is the first time you have logged in.
-                                {{/isWelsh}}
+                            {{#isWelsh}}
+                                Dyma&#39;r tro cyntaf i chi fewngofnodi
+                            {{/isWelsh}}
 
-                            {{/previouslyLoggedInAt}}
+                            {{^isWelsh}}
+                                This is the first time you have logged in
+                            {{/isWelsh}}
 
-                            {{#previouslyLoggedInAt}}
+                        {{/previouslyLoggedInAt}}
 
-                                {{#isWelsh}}
-                                    {{{userDisplayName}}}, y tro diwethaf i chi fewngofnodi oedd {{{previouslyLoggedInAt}}}.
-                                {{/isWelsh}}
+                        {{#previouslyLoggedInAt}}
 
-                                {{^isWelsh}}
-                                    {{{userDisplayName}}}, you last signed in {{{previouslyLoggedInAt}}}.
-                                {{/isWelsh}}
+                            {{#isWelsh}}
+                                Y tro diwethaf i chi fewngofnodi oedd {{{previouslyLoggedInAt}}}
+                            {{/isWelsh}}
 
-                            {{/previouslyLoggedInAt}}
-                        {{/userDisplayName}}
+                            {{^isWelsh}}
+                                You last signed in {{{previouslyLoggedInAt}}}
+                            {{/isWelsh}}
+
+                        {{/previouslyLoggedInAt}}
+
 
                         {{#logoutUrl}}
                             <br>

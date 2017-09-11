@@ -98,10 +98,10 @@ class MainSpec extends WordSpec with Matchers  with Results with WithFakeApplica
       renderedHtml should not include("""<span class="organisation-logo organisation-logo-medium">HM Revenue &amp; Customs</span>""")
     }
 
-    "Do not show login information if userDisplayName is not set SDT-481" in new Setup {
+    "Do not show login information if showLastLogInStatus is not set SDT-481" in new Setup {
       val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map()).body
       renderedHtml should not include("This is the first time you have logged in")
-      renderedHtml should not include("you last signed in")
+      renderedHtml should not include("You last signed in")
       renderedHtml should not include("Sign out")
     }
 
@@ -112,7 +112,7 @@ class MainSpec extends WordSpec with Matchers  with Results with WithFakeApplica
         )
       )).body
       renderedHtml should include("This is the first time you have logged in")
-      renderedHtml should not include("you last signed in")
+      renderedHtml should not include("You last signed in")
       renderedHtml should not include("Sign out")
     }
 
