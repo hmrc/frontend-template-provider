@@ -136,7 +136,8 @@ class MainSpec extends WordSpec with Matchers  with Results with WithFakeApplica
           "logoutUrl" -> logoutUrl
         )
       )).body
-      renderedHtml should include(s"""<br><a id="logOutStatusHref" href="$logoutUrl">Sign out</a>""")
+      renderedHtml should include(s"""<a id="logOutStatusHref" href="www.example.com/logout">""")
+      renderedHtml should include(s"""Sign out""")
     }
 
     "Show article when passed in" in new Setup {
