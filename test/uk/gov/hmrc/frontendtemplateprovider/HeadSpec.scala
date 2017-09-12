@@ -233,6 +233,35 @@ class HeadSpec extends WordSpec with Matchers with Results with GuiceOneAppPerSu
       )).body
       renderedHtml should include(s"""<div class="service-info">""")
     }
+
+    "Beta banner feedback form should be authenticated if user is authenticated" in new Setup {
+      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
+        "betaBanner" -> true,
+        "feedbackIdentifier" -> "test-service",
+        "authenticatedUser" -> true
+      )).body
+
+      renderedHtml should include(s"""<a id="feedback-link" href="http://localhost:9250/contact/beta-feedback?service=""")
+    }
+
+    "Beta banner feedback form should be authenticated if user is not authenticated" in new Setup {
+      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
+        "betaBanner" -> true,
+        "feedbackIdentifier" -> "test-service",
+        "authenticatedUser" -> false
+      )).body
+
+      renderedHtml should include(s"""<a id="feedback-link" href="http://localhost:9250/contact/beta-feedback-unauthenticated?service=""")
+    }
+
+    "Beta banner feedback form should be authenticated if user is not specified" in new Setup {
+      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
+        "betaBanner" -> true,
+        "feedbackIdentifier" -> "test-service"
+      )).body
+
+      renderedHtml should include(s"""<a id="feedback-link" href="http://localhost:9250/contact/beta-feedback-unauthenticated?service=""")
+    }
   }
 
   trait Setup {
