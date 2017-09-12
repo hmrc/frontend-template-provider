@@ -90,7 +90,8 @@ class FooterSpec extends WordSpec with Matchers  with Results with WithFakeAppli
 
     "show default terms and condition link if 'termsAndConditionFooterLink' has no value" in new Setup {
       val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map("termsAndConditionFooterLink" -> None)).body
-      renderedHtml should include("<li><a href='/help/terms-and-conditions' target=\"_blank\" data-sso=\"false\" data-journey-click=\"footer:Click:Terms and conditions\">Terms and conditions</a></li>")
+      renderedHtml should include("""<a href="/help/terms-and-conditions" target="_blank" data-sso="false" data-journey-click="footer:Click:Terms and conditions">""")
+      renderedHtml should include("""Terms and conditions""")
     }
 
     "support additional script elements in the footer of the page SDT 578" in new Setup {
