@@ -3,6 +3,8 @@ import sbt.Tests.{SubProcess, Group}
 import sbt._
 import play.routes.compiler.StaticRoutesGenerator
 import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin._
+import de.heikoseeberger.sbtheader.HeaderKey._
+import de.heikoseeberger.sbtheader.HeaderPlugin
 
 
 trait MicroService {
@@ -34,10 +36,14 @@ trait MicroService {
       libraryDependencies ++= appDependencies,
       retrieveManaged := true,
       evictionWarningOptions in update := EvictionWarningOptions.default.withWarnScalaVersionEviction(false),
-      routesGenerator := StaticRoutesGenerator
+      routesGenerator := StaticRoutesGenerator,
+      excludes := Seq(
+        "resources/**"
+      )
     )
     .configs(IntegrationTest)
     .settings(inConfig(IntegrationTest)(Defaults.itSettings): _*)
+    .settings(unmanagedResourceDirectories in sbt.Compile += baseDirectory.value / "resources")
     .settings(
       Keys.fork in IntegrationTest := false,
       unmanagedSourceDirectories in IntegrationTest <<= (baseDirectory in IntegrationTest)(base => Seq(base / "it")),

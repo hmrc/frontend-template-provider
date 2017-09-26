@@ -173,23 +173,13 @@ The `service-info` follows the same pattern as the `play-ui`'s way.
 The options of what you can populate are as follows:
 
 - You can allow `grid-wrapper` to be one of the classes of the `service-info` by having `includeGridWrapper -> true` as an option in the `templateArgs`. By default it's not set.
-- You can include the HMRC branding by setting `includeHMRCBranding` to true in the `templateArgs`.
-- You can show last login status.
- - You can set the `userDisplayName`, `previouslyLoggedInAt` and `logoutUrl` 
- - If you do not provide `previouslyLoggedInAt` and the `userDisplayName` is `Dave`, `Dave, this is the first time you have logged in.` would be displayed.
- - If you provided a `previouslyLoggedInAt` (say `01 Jan 2017`), you would get `Dave, you last signed in 01 Jan 2017.
+
 
 Example of a fully populated service-info:
 
 ```scala
 localTemplateRenderer.parseTemplate(Html(""), Map(
-   "includeGridWrapper" -> true,
-   "includeHMRCBranding" -> true,
-	"showLastLogInStatus" -> Map(
-		"userDisplayName" -> "Dave",
-		"previouslyLoggedInAt" -> "01 Jan 2017",
-		"logoutUrl" -> "www.example.com/logout"
-	)
+   "includeGridWrapper" -> true
 ))
 ```
 
