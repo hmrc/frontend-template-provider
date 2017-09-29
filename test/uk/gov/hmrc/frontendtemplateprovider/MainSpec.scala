@@ -71,7 +71,7 @@ class MainSpec extends WordSpec with Matchers  with Results with WithFakeApplica
       val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
         "betaBanner" -> Map("feedbackIdentifier" -> "PTA")
       )).body
-      renderedHtml should include("""<div class="beta-banner">""")
+      renderedHtml should include("""<div class="beta-banner beta-banner--borderless">""")
       renderedHtml should include("""href="http://localhost:9250/contact/beta-feedback-unauthenticated?service=PTA"""")
     }
 
@@ -79,71 +79,29 @@ class MainSpec extends WordSpec with Matchers  with Results with WithFakeApplica
       val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
         "betaBanner" -> true
       )).body
-      renderedHtml should include("""<div class="beta-banner">""")
+      renderedHtml should include("""<div class="beta-banner beta-banner--borderless">""")
       renderedHtml should not include("""href="http://localhost:9250/contact/beta-feedback-unauthenticated?service=PTA"""")
       renderedHtml should include("This is a new service.")
     }
 
-    "hmrc branding included if set SDT-482" in new Setup {
-      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
-        "includeHMRCBranding" -> true
-      )).body
-      renderedHtml should include("""div class="logo">""")
-      renderedHtml should include("""<span class="organisation-logo organisation-logo-medium">HM Revenue &amp; Customs</span>""")
-    }
 
-    "hmrc branding not included if not set SDT-482" in new Setup {
-      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map()).body
-      renderedHtml should not include("""div class="logo">""")
-      renderedHtml should not include("""<span class="organisation-logo organisation-logo-medium">HM Revenue &amp; Customs</span>""")
-    }
-
-    "Do not show login information if showLastLogInStatus is not set SDT-481" in new Setup {
-      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map()).body
-      renderedHtml should not include("This is the first time you have logged in")
-      renderedHtml should not include("You last signed in")
-      renderedHtml should not include("Sign out")
-    }
-
-    "Show 'first time logged in' if previouslyLoggedInAt not set SDT-481" in new Setup {
-      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
-        "showLastLogInStatus" -> Map(
-          "previouslyLoggedInAt" -> false
-        )
-      )).body
-      renderedHtml should include("This is the first time you have logged in")
-      renderedHtml should not include("You last signed in")
-      renderedHtml should not include("Sign out")
-    }
-
-    // put all in map for showLastLoginTime
-    "Show 'you last signed in' if previouslyLoggedInAt is set SDT-481" in new Setup {
-      val previouslyLoggedInAt = "1st November 2016"
-      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
-        "showLastLogInStatus" -> Map(
-          "previouslyLoggedInAt" -> previouslyLoggedInAt
-        )
-      )).body
-      renderedHtml should not include(s"This is the first time you have logged in")
-      renderedHtml should include(s"You last signed in $previouslyLoggedInAt")
-      renderedHtml should not include("Sign out")
-    }
-
-    "Show Sign out link for user if logout url is specified SDT-481" in new Setup {
-      val logoutUrl = "www.example.com/logout"
-      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
-        "showLastLogInStatus" -> Map(
-          "logoutUrl" -> logoutUrl
-        )
-      )).body
-      renderedHtml should include(s"""<a id="logOutStatusHref" href="www.example.com/logout">""")
-      renderedHtml should include(s"""Sign out""")
-    }
 
     "Show article when passed in" in new Setup {
       val article = "<p>hello world</p>"
       val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(article), Map()).body
       renderedHtml should include(article)
+    }
+
+    "Show account-menu when hideAccountMenu is not true" in new Setup {
+      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map()).body
+      renderedHtml should include("""<nav id="secondary-nav" class="account-menu" role="navigation">""")
+    }
+
+    "Not show account-menu when hideAccountMenu is true" in new Setup {
+      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
+        "hideAccountMenu" -> true
+      )).body
+      renderedHtml should not include("""<nav id="secondary-nav" class="account-menu" role="navigation">""")
     }
   }
 

@@ -16,12 +16,12 @@
 
 package uk.gov.hmrc.frontendtemplateprovider.controllers
 
-import play.api.Play
 import play.api.mvc._
 import uk.gov.hmrc.play.config.{AssetsConfig, ServicesConfig}
 import uk.gov.hmrc.play.microservice.controller.BaseController
 
 import scala.concurrent.Future
+import scala.io.Source
 
 object GovUkTemplateRendererController extends GovUkTemplateRendererController
 
@@ -30,10 +30,14 @@ trait GovUkTemplateRendererController extends BaseController with ServicesConfig
 	val assetsPrefix: String = AssetsConfig.assetsPrefix
 
 	def serveMustacheTemplate(): Action[AnyContent] = Action.async { implicit request =>
-		val templateLocation = Play.current.configuration.getString("template.url").getOrElse("")
-		val resolveUrl: (String) => String = a => s"${templateLocation}assets/$a"
 
-		Future.successful(Ok(views.html.Application.gov_main_mustache(resolveUrl, assetsPrefix + "/")))
+		val tpl = Source.fromInputStream(getClass.getResourceAsStream("/govuk-template.mustache.html")).mkString
+			.replaceAll("""href="/contact""", """href="http://localhost:9250/contact""")
+			.replaceAll("""href="/template""", """href="http://localhost:9310/template""")
+			.replaceAll("""src="/template""", """src="http://localhost:9310/template""")
+			.replaceAll("""href="/assets""", """href="http://localhost:9032/assets""")
+			.replaceAll("""src="/assets""", """src="http://localhost:9032/assets""")
+		Future.successful(Ok(tpl).as("text/html"))
 	}
 
 }

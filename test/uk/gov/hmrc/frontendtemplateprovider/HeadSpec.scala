@@ -38,7 +38,6 @@ class HeadSpec extends WordSpec with Matchers with Results with GuiceOneAppPerSu
   implicit val hc = HeaderCarrier()
 
   override lazy val fakeApplication: Application = new GuiceApplicationBuilder()
-    .configure(Map("assets.url" -> "www.example.com/", "assets.version" -> "1"))
     .build()
 
   val fakeRequest = FakeRequest("GET", "/")
@@ -52,9 +51,9 @@ class HeadSpec extends WordSpec with Matchers with Results with GuiceOneAppPerSu
     }
 
     "contain links to assets-frontend CSS" in new Setup {
-      bodyText should include("<link rel='stylesheet' href='www.example.com/1/stylesheets/application-ie7.min.css' />")
-      bodyText should include("<link rel='stylesheet' href='www.example.com/1/stylesheets/application-ie.min.css' />")
-      bodyText should include("<link rel='stylesheet' href='www.example.com/1/stylesheets/application.min.css' />")
+      bodyText should include("""<link rel="stylesheet" href="http://localhost:9032/assets/2.250.0/stylesheets/application-ie7.min.css" />""")
+      bodyText should include("""<link rel="stylesheet" href="http://localhost:9032/assets/2.250.0/stylesheets/application-ie.min.css" />""")
+      bodyText should include("""<link rel="stylesheet" href="http://localhost:9032/assets/2.250.0/stylesheets/application.min.css" />""")
     }
 
     "contain links to a specified version of assets-frontend CSS" in new Setup {
@@ -62,9 +61,9 @@ class HeadSpec extends WordSpec with Matchers with Results with GuiceOneAppPerSu
         "assetsPath" -> "www.example.com/2/"
       )).body
 
-      renderedHtml should include("<link rel='stylesheet' href='www.example.com/2/stylesheets/application-ie7.min.css' />")
-      renderedHtml should include("<link rel='stylesheet' href='www.example.com/2/stylesheets/application-ie.min.css' />")
-      renderedHtml should include("<link rel='stylesheet' href='www.example.com/2/stylesheets/application.min.css' />")
+      renderedHtml should include("""<link rel="stylesheet" href="www.example.com/2/stylesheets/application-ie7.min.css" />""")
+      renderedHtml should include("""<link rel="stylesheet" href="www.example.com/2/stylesheets/application-ie.min.css" />""")
+      renderedHtml should include("""<link rel="stylesheet" href="www.example.com/2/stylesheets/application.min.css" />""")
     }
 
     "contain a body opening tag that does not contain a class SDT-470" in new Setup {
@@ -88,7 +87,7 @@ class HeadSpec extends WordSpec with Matchers with Results with GuiceOneAppPerSu
       val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
         "optimizelyProjectId" -> "id123"
       )).body
-      renderedHtml should include("<script src='//cdn.optimizely.com/js/id123.js' type='text/javascript'></script>")
+      renderedHtml should include("""<script src="//cdn.optimizely.com/js/id123.js" type="text/javascript"></script>""")
     }
 
     "contain optimizely script if both url and projectId is provided SDT-470" in new Setup {
@@ -96,7 +95,7 @@ class HeadSpec extends WordSpec with Matchers with Results with GuiceOneAppPerSu
         "optimizelyBaseUrl" -> "cdn.optimizely.com/",
         "optimizelyProjectId" -> "id123"
       )).body
-      renderedHtml should include("<script src='cdn.optimizely.com/id123.js' type='text/javascript'></script>")
+      renderedHtml should include("""<script src="cdn.optimizely.com/id123.js" type="text/javascript"></script>""")
     }
 
     "contain default title if not specified SDT 480" in new Setup {
@@ -220,13 +219,6 @@ class HeadSpec extends WordSpec with Matchers with Results with GuiceOneAppPerSu
       renderedHtml should include(url2)
     }
 
-    //<div class="service-info
-    "Remove service info if not needed" in new Setup {
-      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
-        "removeServiceInfo" -> true
-      )).body
-      renderedHtml should not include(s"""<div class="service-info">""")
-    }
 
     "service-info included by default" in new Setup {
       val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
