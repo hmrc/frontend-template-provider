@@ -31,12 +31,24 @@ trait GovUkTemplateRendererController extends BaseController with ServicesConfig
 
 	def serveMustacheTemplate(): Action[AnyContent] = Action.async { implicit request =>
 
-		val tpl = Source.fromInputStream(getClass.getResourceAsStream("/govuk-template.mustache.html")).mkString
-			.replaceAll("""href="/contact""", """href="http://localhost:9250/contact""")
-			.replaceAll("""href="/template""", """href="http://localhost:9310/template""")
-			.replaceAll("""src="/template""", """src="http://localhost:9310/template""")
-			.replaceAll("""href="/assets""", """href="http://localhost:9032/assets""")
-			.replaceAll("""src="/assets""", """src="http://localhost:9032/assets""")
+		val tpl = if(env == "Test" || env == "Dev") {
+			Source.fromInputStream(getClass.getResourceAsStream("/govuk-template.mustache.html")).mkString
+				.replaceAll("""href="/contact""",          """href="http://localhost:9250/contact""")
+				.replaceAll("""href="/template""",         """href="http://localhost:9310/template""")
+				.replaceAll("""src="/template""",          """src="http://localhost:9310/template""")
+				.replaceAll("""href="/assets""",           """href="http://localhost:9032/assets""")
+				.replaceAll("""src="/assets""",            """src="http://localhost:9032/assets""")
+				.replaceAll("""href="/personal-account""", """href="http://localhost:9232/personal-account""")
+				.replaceAll("""href="/track""",            """href="http://localhost:9100/track""")
+				.replaceAll("""href="/business-account""", """href="http://localhost:9020/business-account""")
+				.replaceAll("""href="/trusted-helpers""",  """href="http://localhost:9231/trusted-helpers""")
+				.replaceAll("""href="/contact""",          """href="http://localhost:9250/contact""")
+		}
+		else {
+			Source.fromInputStream(getClass.getResourceAsStream("/govuk-template.mustache.html")).mkString
+		}
+
+
 		Future.successful(Ok(tpl).as("text/html"))
 	}
 

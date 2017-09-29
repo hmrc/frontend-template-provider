@@ -175,55 +175,15 @@ class HeadSpec extends WordSpec with Matchers with Results with GuiceOneAppPerSu
       )).body
       renderedHtml should include("""<div class="header-proposition">""")
       renderedHtml should include(s"""<span class="header__menu__proposition-name">$navTitle</span>""")
-      renderedHtml should not include(s"""<a href="#proposition-links" class="js-header-toggle menu">Menu</a>""")
-      renderedHtml should not include(s"""<ul id="proposition-links" class="header__menu__proposition-links">""")
-    }
-
-    "contain correct navigation when navTitle and navTitleLink is specified SDT-474" in new Setup {
-      val navTitle = "My service"
-      val navTitleLink = "www.example.com/my-service"
-      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
-        "navTitle" -> navTitle,
-        "navTitleLink" -> navTitleLink
-      )).body
-      renderedHtml should include("""<div class="header-proposition">""")
-      renderedHtml should not include(s"""<span class="header__menu__proposition-name">$navTitle</span>""")
-      renderedHtml should not include(s"""<a href="#proposition-links" class="js-header-toggle menu">Menu</a>""")
-      renderedHtml should include(s"""<a href="$navTitleLink" class="header__menu__proposition-name">$navTitle</a>""")
-    }
-
-    "contain correct navigation header when navTitle and navLinks is specified SDT-474" in new Setup {
-      val navTitle = "My service"
-      val url1 = "www.example.com/my-service"
-      val text1 = "My service"
-      val url2 = "www.example.com/another-service"
-      val text2 = "Another service"
-      val url3 = "www.example.com/another"
-      val text3 = "New text"
-      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
-        "navTitle" -> navTitle,
-        "hasNavLinks" -> true,
-        "navLinks" -> Seq(
-          Map("url" -> url1, "text" -> text1),
-            Map("url" -> url2, "text" -> text2),
-            Map("url" -> url3, "text" -> text3, "desktopHidden" -> true)
-        )
-      )).body
-      renderedHtml should include("""<div class="header-proposition">""")
-      renderedHtml should include(s"""<span class="header__menu__proposition-name">$navTitle</span>""")
-      renderedHtml should include(s"""<a href="#proposition-links" class="js-header-toggle menu">Menu</a>""")
-      renderedHtml should include(s"""<ul id="proposition-links" class="header__menu__proposition-links">""")
-      renderedHtml should include(s"""<li><a href="$url1">$text1</a></li>""")
-      renderedHtml should include(s"""<li><a href="$url2">$text2</a></li>""")
-      renderedHtml should include(s"""<li class="desktop-hidden"><a href="$url3">$text3</a></li>""")
-      renderedHtml should include(url2)
+      renderedHtml should not include("""<a href="#proposition-links" class="js-header-toggle menu">Menu</a>""")
+      renderedHtml should not include("""<ul id="proposition-links" class="header__menu__proposition-links">""")
     }
 
 
     "service-info included by default" in new Setup {
       val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
       )).body
-      renderedHtml should include(s"""<div class="service-info">""")
+      renderedHtml should include("""<div class="service-info">""")
     }
 
     "Beta banner feedback form should be authenticated if user is authenticated" in new Setup {
@@ -233,7 +193,7 @@ class HeadSpec extends WordSpec with Matchers with Results with GuiceOneAppPerSu
         "authenticatedUser" -> true
       )).body
 
-      renderedHtml should include(s"""<a id="feedback-link" href="http://localhost:9250/contact/beta-feedback?service=""")
+      renderedHtml should include("""<a id="feedback-link" href="http://localhost:9250/contact/beta-feedback?service=""")
     }
 
     "Beta banner feedback form should be authenticated if user is not authenticated" in new Setup {
@@ -243,7 +203,7 @@ class HeadSpec extends WordSpec with Matchers with Results with GuiceOneAppPerSu
         "authenticatedUser" -> false
       )).body
 
-      renderedHtml should include(s"""<a id="feedback-link" href="http://localhost:9250/contact/beta-feedback-unauthenticated?service=""")
+      renderedHtml should include("""<a id="feedback-link" href="http://localhost:9250/contact/beta-feedback-unauthenticated?service=""")
     }
 
     "Beta banner feedback form should be authenticated if user is not specified" in new Setup {
@@ -252,7 +212,7 @@ class HeadSpec extends WordSpec with Matchers with Results with GuiceOneAppPerSu
         "feedbackIdentifier" -> "test-service"
       )).body
 
-      renderedHtml should include(s"""<a id="feedback-link" href="http://localhost:9250/contact/beta-feedback-unauthenticated?service=""")
+      renderedHtml should include("""<a id="feedback-link" href="http://localhost:9250/contact/beta-feedback-unauthenticated?service=""")
     }
   }
 
