@@ -51,9 +51,9 @@ class HeadSpec extends WordSpec with Matchers with Results with GuiceOneAppPerSu
     }
 
     "contain links to assets-frontend CSS" in new Setup {
-      bodyText should include("""<link rel="stylesheet" href="http://localhost:9032/assets/2.250.0/stylesheets/application-ie7.min.css" />""")
-      bodyText should include("""<link rel="stylesheet" href="http://localhost:9032/assets/2.250.0/stylesheets/application-ie.min.css" />""")
-      bodyText should include("""<link rel="stylesheet" href="http://localhost:9032/assets/2.250.0/stylesheets/application.min.css" />""")
+      bodyText should include("""<link rel="stylesheet" href="http://localhost:9032/assets/2.252.0/stylesheets/application-ie7.min.css" />""")
+      bodyText should include("""<link rel="stylesheet" href="http://localhost:9032/assets/2.252.0/stylesheets/application-ie.min.css" />""")
+      bodyText should include("""<link rel="stylesheet" href="http://localhost:9032/assets/2.252.0/stylesheets/application.min.css" />""")
     }
 
     "contain links to a specified version of assets-frontend CSS" in new Setup {
