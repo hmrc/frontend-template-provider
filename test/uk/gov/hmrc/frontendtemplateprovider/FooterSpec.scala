@@ -45,7 +45,7 @@ class FooterSpec extends WordSpec with Matchers  with Results with WithFakeAppli
 
   "Footer" should {
     "contain links to assets-frontend JS" in new Setup {
-      bodyText should include("""<script src="http://localhost:9032/assets/2.250.0/javascripts/application.min.js" type="text/javascript"></script>""")
+      bodyText should include("""<script src="http://localhost:9032/assets/2.252.0/javascripts/application.min.js" type="text/javascript"></script>""")
     }
 
     "contain links to a specified version of assets-frontend CSS" in new Setup {
