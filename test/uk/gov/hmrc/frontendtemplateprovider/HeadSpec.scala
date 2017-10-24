@@ -66,8 +66,18 @@ class HeadSpec extends WordSpec with Matchers with Results with GuiceOneAppPerSu
       renderedHtml should include("""<link rel="stylesheet" href="www.example.com/2/stylesheets/application.min.css" />""")
     }
 
-    "contain a body opening tag that does not contain a class SDT-470" in new Setup {
-      bodyText should include("<body>")
+    "contain a body opening tag that does not contain a class if `bodyClass` is not specified" in new Setup {
+      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map()).body
+      val body = bodyTagRegex.findFirstIn(renderedHtml).get
+      body should not include("class")
+    }
+
+    "contain a body opening tag that contains a `bodyClass` if one is specified " in new Setup {
+      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
+        "bodyClass" -> "clazz"
+      )).body
+      val body = bodyTagRegex.findFirstIn(renderedHtml).get
+      body should include("""class="clazz"""")
     }
 
     "contains no optimizely script SDT-471" in new Setup {
@@ -221,6 +231,8 @@ class HeadSpec extends WordSpec with Matchers with Results with GuiceOneAppPerSu
       override val assetsPrefix: String = new AssetsConfig {}.assetsPrefix // this is to avoid race condition
     }.serveMustacheTemplate()(fakeRequest)
     lazy val bodyText: String = contentAsString(result)
+
+    val bodyTagRegex = "<body\\b[^>]*>".r
 
     lazy val localTemplateRenderer = new MustacheRendererTrait {
       status(result) shouldBe OK
