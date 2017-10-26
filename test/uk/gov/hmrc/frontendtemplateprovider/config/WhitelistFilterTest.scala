@@ -20,7 +20,6 @@ import org.scalatest.{FunSuite, Matchers, WordSpec}
 import play.api.Application
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.mvc.Results
-import uk.gov.hmrc.play.http.HeaderCarrier
 import uk.gov.hmrc.play.test.WithFakeApplication
 
 class WhitelistFilterTest extends WordSpec with Matchers with WithFakeApplication {
