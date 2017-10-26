@@ -16,14 +16,22 @@
 
 package uk.gov.hmrc.frontendtemplateprovider.controllers
 
+import play.api.Play
 import play.api.mvc._
-import uk.gov.hmrc.play.config.{AssetsConfig, ServicesConfig}
+import uk.gov.hmrc.play.config.ServicesConfig
 import uk.gov.hmrc.play.microservice.controller.BaseController
 
 import scala.concurrent.Future
 import scala.io.Source
 
 object GovUkTemplateRendererController extends GovUkTemplateRendererController
+
+trait AssetsConfig {
+	lazy val assetsUrl = Play.current.configuration.getString("assets.url").getOrElse("")
+	lazy val assetsVersion = Play.current.configuration.getString("assets.version").getOrElse("")
+	lazy val assetsPrefix = assetsUrl + assetsVersion
+}
+object AssetsConfig extends AssetsConfig
 
 trait GovUkTemplateRendererController extends BaseController with ServicesConfig {
 
@@ -47,7 +55,6 @@ trait GovUkTemplateRendererController extends BaseController with ServicesConfig
 		else {
 			Source.fromInputStream(getClass.getResourceAsStream("/govuk-template.mustache.html")).mkString
 		}
-
 
 		Future.successful(Ok(tpl).as("text/html"))
 	}
