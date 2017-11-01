@@ -28,7 +28,7 @@ trait CommonSetup {
 
   implicit val hc = HeaderCarrier()
 
-  lazy val inputMap = Map[String, Any]()
+  def inputMap: Map[String, Any]
 
   val mainTagRegex = "<main\\b[^>]*>".r
   val bodyTagRegex = "<body\\b[^>]*>".r

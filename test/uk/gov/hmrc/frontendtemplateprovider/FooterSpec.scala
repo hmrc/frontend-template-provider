@@ -19,10 +19,11 @@ package uk.gov.hmrc.frontendtemplateprovider
 import org.scalatestplus.play.OneAppPerSuite
 import uk.gov.hmrc.play.test.UnitSpec
 
-class FooterSpec extends UnitSpec with OneAppPerSuite with CommonSetup {
+class FooterSpec extends UnitSpec with OneAppPerSuite {
 
   "Footer" should {
     "contain links to assets-frontend JS" in new CommonSetup {
+      override lazy val inputMap = Map[String, Any]()
       outputText should include ("""<script src="http://localhost:9032/assets/2.252.0/javascripts/application.min.js" type="text/javascript"></script>""")
     }
 
@@ -99,10 +100,12 @@ class FooterSpec extends UnitSpec with OneAppPerSuite with CommonSetup {
     }
 
     "no ssoUrl script when no ssoUrl given SDT-473" in new CommonSetup {
+      override lazy val inputMap = Map[String, Any]()
       outputText should not include("""<script type="text/javascript">var ssoUrl = """)
     }
 
     "not show Google Analytics snippet when no googleAnalytics given SDT-475" in new CommonSetup {
+      override lazy val inputMap = Map[String, Any]()
       outputText should not include("""(window,document,'script','//www.google-analytics.com/analytics.js','ga')""")
     }
 
@@ -115,6 +118,7 @@ class FooterSpec extends UnitSpec with OneAppPerSuite with CommonSetup {
     }
 
     "do not add ga set if no gaSetParams given" in new CommonSetup {
+      override lazy val inputMap = Map[String, Any]()
       outputText should not include("""ga('set'""")
     }
 

@@ -19,10 +19,11 @@ package uk.gov.hmrc.frontendtemplateprovider
 import org.scalatestplus.play.OneAppPerSuite
 import uk.gov.hmrc.play.test.UnitSpec
 
-class MainSpec extends UnitSpec with OneAppPerSuite with CommonSetup {
+class MainSpec extends UnitSpec with OneAppPerSuite {
 
   "Main" should {
     "not add a main class for main tag if non specified SDT 571" in new CommonSetup {
+      override lazy val inputMap = Map[String, Any]()
       mainTagRegex.findFirstIn(outputText).get should not include("class")
     }
 
@@ -41,6 +42,7 @@ class MainSpec extends UnitSpec with OneAppPerSuite with CommonSetup {
     }
 
     "not show beta banner if there is no service name SDT 476" in new CommonSetup {
+      override lazy val inputMap = Map[String, Any]()
       outputText should not include("""<div class="beta-banner">""")
     }
 
@@ -69,6 +71,7 @@ class MainSpec extends UnitSpec with OneAppPerSuite with CommonSetup {
     }
 
     "Show account-menu when hideAccountMenu is not true" in new CommonSetup {
+      override lazy val inputMap = Map[String, Any]()
       outputText should include("""<nav id="secondary-nav" class="account-menu" role="navigation">""")
     }
 
