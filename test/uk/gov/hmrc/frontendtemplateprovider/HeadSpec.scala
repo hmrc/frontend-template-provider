@@ -19,10 +19,11 @@ package uk.gov.hmrc.frontendtemplateprovider
 import org.scalatestplus.play.OneAppPerSuite
 import uk.gov.hmrc.play.test.UnitSpec
 
-class HeadSpec extends UnitSpec with OneAppPerSuite with CommonSetup {
+class HeadSpec extends UnitSpec with OneAppPerSuite {
 
   "Head" should {
     "contain IE links" in new CommonSetup {
+      override lazy val inputMap = Map[String, Any]()
       outputText should include("""<!--[if IE 6]><link href="http://localhost:9310/template/assets/stylesheets/govuk-template-ie6.css" media="screen" rel="stylesheet" type="text/css" /><![endif]-->""")
       outputText should include("""<!--[if IE 7]><link href="http://localhost:9310/template/assets/stylesheets/govuk-template-ie7.css" media="screen" rel="stylesheet" type="text/css" /><![endif]-->""")
       outputText should include("""<!--[if IE 8]><link href="http://localhost:9310/template/assets/stylesheets/govuk-template-ie8.css" media="screen" rel="stylesheet" type="text/css" /><![endif]-->""")
@@ -30,6 +31,7 @@ class HeadSpec extends UnitSpec with OneAppPerSuite with CommonSetup {
     }
 
     "contain links to assets-frontend CSS" in new CommonSetup {
+      override lazy val inputMap = Map[String, Any]()
       outputText should include("""<link rel="stylesheet" href="http://localhost:9032/assets/2.252.0/stylesheets/application-ie7.min.css" />""")
       outputText should include("""<link rel="stylesheet" href="http://localhost:9032/assets/2.252.0/stylesheets/application-ie.min.css" />""")
       outputText should include("""<link rel="stylesheet" href="http://localhost:9032/assets/2.252.0/stylesheets/application.min.css" />""")
@@ -46,6 +48,7 @@ class HeadSpec extends UnitSpec with OneAppPerSuite with CommonSetup {
     }
 
     "contain a body opening tag that does not contain a class if `bodyClass` is not specified" in new CommonSetup {
+      override lazy val inputMap = Map[String, Any]()
       bodyTagRegex.findFirstIn(outputText).get should not include("class")
     }
 
@@ -58,6 +61,7 @@ class HeadSpec extends UnitSpec with OneAppPerSuite with CommonSetup {
     }
 
     "contains no optimizely script SDT-471" in new CommonSetup {
+      override lazy val inputMap = Map[String, Any]()
       outputText should not include("optimizely")
       outputText should not include("<script src=''") // should not include a script with no src
     }
@@ -87,11 +91,12 @@ class HeadSpec extends UnitSpec with OneAppPerSuite with CommonSetup {
       outputText should include("""<script src="cdn.optimizely.com/id123.js" type="text/javascript"></script>""")
     }
 
-    "contain default title if not specified SDT 480" in new CommonSetup {
+    "contain hte default title no custom one is supplied" in new CommonSetup {
+      override lazy val inputMap = Map[String, Any]()
       outputText should include("GOV.UK - The best place to find government services and information")
     }
 
-    "contain default title if not specified in SDT 480" in new CommonSetup {
+    "contain custom title if one is supplied" in new CommonSetup {
       override lazy val inputMap = Map(
         "pageTitle" -> "My very own title."
       )
@@ -99,23 +104,20 @@ class HeadSpec extends UnitSpec with OneAppPerSuite with CommonSetup {
       outputText should include("My very own title.")
     }
 
-    "contain no headScripts even if you specify them SDT 472" in new CommonSetup {
-      override lazy val inputMap = Map(
-        "headScript" -> "<script src='www.example.com/script.js' type='text/javascript'></script>"
-      )
 
-      outputText should not include("<script src='www.example.com/script.js' type='text/javascript'></script>")
-    }
-
-    "contain link elem if url is passed through in a list of maps SDT-552" in new CommonSetup {
+    "contain link elements pointing to urls supplied in linkElems" in new CommonSetup {
       override lazy val inputMap = Map(
-        "linkElems" -> Map("url" -> "www.example.com/some.css")
+        "linkElems" -> List(
+          Map("url" -> "www.example.com/some.css"),
+          Map("url" -> "www.example.com/other.css")
+        )
       )
 
       outputText should include("""<link rel="stylesheet" type="text/css" href="www.example.com/some.css" />""")
+      outputText should include("""<link rel="stylesheet" type="text/css" href="www.example.com/other.css" />""")
     }
 
-    "contain link elem for ie if IE is passed as a condition" in new CommonSetup {
+    "contain link element for IE 8 if 'IE 8' is passed as a condition in linkElems" in new CommonSetup {
       override lazy val inputMap = Map(
         "linkElems" -> Map(
           "url" -> "www.example.com/ie8.css",
@@ -123,7 +125,7 @@ class HeadSpec extends UnitSpec with OneAppPerSuite with CommonSetup {
         )
       )
 
-      outputText.filterNot((x: Char) => x == '\n') .replaceAll(">[ ]*<","><") should include("""<!--[if IE 8]><link rel="stylesheet" type="text/css" href="www.example.com/ie8.css" /><![endif]-->""")
+      outputText.filterNot(_=='\n').replaceAll(">[ ]*<","><") should include("""<!--[if IE 8]><link rel="stylesheet" type="text/css" href="www.example.com/ie8.css" /><![endif]-->""")
     }
 
     "support specifying print media type for linkElems SDT-552" in new CommonSetup {
@@ -134,19 +136,9 @@ class HeadSpec extends UnitSpec with OneAppPerSuite with CommonSetup {
       outputText should include("""<link rel="stylesheet" type="text/css" href="www.example.com/some.css" media="print"/>""")
     }
 
-    "contain multiple link elems multiple elements in the list SDT-552" in new CommonSetup {
-      override lazy val inputMap = Map(
-        "linkElems" -> List(
-          Map("url" -> "www.example.com/some.css"),
-          Map("url" -> "www.example.com/other.css", "print" -> true)
-        )
-      )
-
-      outputText should include("""<link rel="stylesheet" type="text/css" href="www.example.com/some.css" />""")
-      outputText should include("""<link rel="stylesheet" type="text/css" href="www.example.com/other.css" media="print"/>""")
-    }
 
     "not contain navigation element if there is no navTitle specified SDT-474" in new CommonSetup {
+      override lazy val inputMap = Map[String, Any]()
       outputText should include("""<div class="header-proposition">""")
       outputText should not include("""<a href="#proposition-links" class="js-header-toggle menu">Menu</a>""")
       outputText should not include("""<ul id="proposition-links" class="header__menu__proposition-links">""")
@@ -165,9 +157,46 @@ class HeadSpec extends UnitSpec with OneAppPerSuite with CommonSetup {
     }
 
 
-    "service-info included by default" in new CommonSetup {
+
+
+    "not contain service-info element when account menu is hidden" in new CommonSetup {
+      override lazy val inputMap = Map("hideAccountMenu" -> true)
+      outputText should not include("""<div class="service-info">""")
+    }
+
+    "contain service-info element when account menu is not hidden" in new CommonSetup {
+      override lazy val inputMap = Map[String, Any]()
       outputText should include("""<div class="service-info">""")
     }
+
+    "contain service-info element when account menu is hidden but organisation logo is displayed" in new CommonSetup {
+      override lazy val inputMap = Map("hideAccountMenu" -> true, "showOrganisationLogo" -> true)
+      outputText should include("""<div class="service-info">""")
+    }
+
+    "not show signout link in proposition menu if the account menu isn't hidden even if signout url is supplied" in new CommonSetup {
+      override def inputMap =  Map[String, Any]("signOutUrl" -> "/signout/url", "hideAccountMenu" -> false)
+      outputText should not include("""<a id="logOutNavHref"""")
+    }
+
+    "show signout link in proposition menu if the account menu is hidden and signout url is supplied" in new CommonSetup {
+      override def inputMap =  Map[String, Any]("signOutUrl" -> "/signout/url", "hideAccountMenu" -> true)
+      outputText should include("""<a id="logOutNavHref" href="/signout/url"""")
+    }
+
+    "not show the organisation logo if the account menu isn't hidden even if showOrganisationLogo is true" in new CommonSetup {
+      override def inputMap =  Map[String, Any]("showOrganisationLogo" -> true, "hideAccountMenu" -> false)
+      outputText should not include("""organisation-logo""")
+    }
+
+    "show the organisation logo if the account menu is hidden and showOrganisationLogo is true" in new CommonSetup {
+      override def inputMap =  Map[String, Any]("showOrganisationLogo" -> true, "hideAccountMenu" -> true)
+      outputText should include("""organisation-logo""")
+    }
+
+
+
+
 
     "Beta banner feedback form should be authenticated if user is authenticated" in new CommonSetup {
       override lazy val inputMap = Map(
@@ -197,5 +226,7 @@ class HeadSpec extends UnitSpec with OneAppPerSuite with CommonSetup {
 
       outputText should include("""<a id="feedback-link" href="http://localhost:9250/contact/beta-feedback-unauthenticated?service=""")
     }
+
+
   }
 }
