@@ -63,23 +63,66 @@ class MainSpec extends UnitSpec with OneAppPerSuite {
       outputText should include("This is a new service.")
     }
 
-    "Show article when passed in" in new CommonSetup {
+    "show article when passed in" in new CommonSetup {
       override lazy val inputMap = Map(
         "article" -> "<p>hello world</p>"
       )
       outputText should include("<p>hello world</p>")
     }
 
-    "Show account-menu when hideAccountMenu is not true" in new CommonSetup {
+    "show account-menu when hideAccountMenu is not true" in new CommonSetup {
       override lazy val inputMap = Map[String, Any]()
       outputText should include("""<nav id="secondary-nav" class="account-menu" role="navigation">""")
     }
 
-    "Not show account-menu when hideAccountMenu is true" in new CommonSetup {
+    "not show account-menu when hideAccountMenu is true" in new CommonSetup {
       override lazy val inputMap = Map(
         "hideAccountMenu" -> true
       )
       outputText should not include("""<nav id="secondary-nav" class="account-menu" role="navigation">""")
+    }
+
+    "not show the full width banner when fullWidthBannerTitle is empty" in new CommonSetup {
+      override lazy val inputMap = Map[String, Any]()
+      outputText should not include("""<div id="full-width-banner" class="full-width-banner">""")
+    }
+
+    "show the full width banner with no dismiss button when fullWidthBannerTitle contains text but fullWidthBannerDismissText is empty" in new CommonSetup {
+      override lazy val inputMap = Map(
+        "fullWidthBannerTitle" -> "Banner Title"
+      )
+      outputText should include("""<div id="full-width-banner" class="full-width-banner">""")
+      outputText should not include("""<a class="full-width-banner__close" href="#" role="button">""")
+    }
+
+    "show the full width banner with dismiss button when when fullWidthBannerDismissText contains text" in new CommonSetup {
+      override lazy val inputMap = Map(
+        "fullWidthBannerTitle" -> "Banner Title",
+        "fullWidthBannerDismissText" -> "Dismiss Text"
+      )
+      outputText should include("""<a class="full-width-banner__close" href="#" role="button">""")
+    }
+
+    "show the full width banner with a link when fullWidthBannerText and fullWidthBannerLink are not empty" in new CommonSetup {
+      override lazy val inputMap = Map(
+        "fullWidthBannerTitle" -> "Banner Title",
+        "fullWidthBannerText" -> "Banner Text",
+        "fullWidthBannerLink" -> "Banner Url"
+      )
+      outputText should include("""<a href="Banner Url" target="_blank" data-journey-click="link - click::Banner Text">""")
+    }
+
+    "show the full width banner text without a link when fullWidthBannerText is not empty and fullWidthBannerLink is empty" in new CommonSetup {
+      override lazy val inputMap = Map(
+        "fullWidthBannerTitle" -> "Banner Title",
+        "fullWidthBannerText" -> "Banner Text"
+      )
+      outputText should include(
+        """                <p>
+          |                    Banner Text
+          |                </p>""".stripMargin
+      )
+      outputText should not include("""<a href="" target="_blank" data-journey-click="link - click::Banner Text">""")
     }
   }
 }
