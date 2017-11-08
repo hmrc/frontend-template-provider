@@ -16,111 +16,113 @@
 
 package uk.gov.hmrc.frontendtemplateprovider
 
-import akka.actor.{ActorSystem, Cancellable}
-import org.scalatest.{Matchers, WordSpec}
-import play.api.Application
-import play.api.inject.guice.GuiceApplicationBuilder
-import play.api.mvc.{Result, Results}
-import play.api.test.FakeRequest
-import play.api.test.Helpers._
-import play.twirl.api.Html
-import uk.gov.hmrc.frontendtemplateprovider.controllers.GovUkTemplateRendererController
-import uk.gov.hmrc.play.http.HeaderCarrier
-import uk.gov.hmrc.play.http.ws.WSGet
-import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
-import uk.gov.hmrc.renderer.MustacheRendererTrait
+import org.scalatestplus.play.OneAppPerSuite
+import uk.gov.hmrc.play.test.UnitSpec
 
-import scala.concurrent.{ExecutionContext, Future}
-
-class MainSpec extends WordSpec with Matchers  with Results with WithFakeApplication {
-
-  implicit val hc = HeaderCarrier()
-
-  val fakeRequest = FakeRequest("GET", "/")
+class MainSpec extends UnitSpec with OneAppPerSuite {
 
   "Main" should {
-    "not add a main class for main tag if non specified SDT 571" in new Setup {
-      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map()).body
-      val main = mainTagRegex.findFirstIn(renderedHtml).get
-      main should not include("class")
+    "not add a main class for main tag if non specified SDT 571" in new CommonSetup {
+      override lazy val inputMap = Map[String, Any]()
+      mainTagRegex.findFirstIn(outputText).get should not include("class")
     }
 
-    "allow main tag to have it's mainClass SDT 571" in new Setup {
-      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
+    "allow main tag to have it's mainClass SDT 571" in new CommonSetup {
+      override lazy val inputMap = Map(
         "mainClass" -> "clazz"
-      )).body
-      val main = mainTagRegex.findFirstIn(renderedHtml).get
-      main should include("""class="clazz"""")
+      )
+      mainTagRegex.findFirstIn(outputText).get should include("""class="clazz"""")
     }
 
-    "allow main attributes to be specified in main tag SDT 572" in new Setup {
-      val attribute = "id=\"main\""
-      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
-        "mainAttributes" -> attribute
-      )).body
-      val main = mainTagRegex.findFirstIn(renderedHtml).get
-      main should include(attribute)
+    "allow main attributes to be specified in main tag SDT 572" in new CommonSetup {
+      override lazy val inputMap = Map(
+        "mainAttributes" -> """id="main""""
+      )
+      mainTagRegex.findFirstIn(outputText).get should include("""id="main"""")
     }
 
-    "not show beta banner if there is no service name SDT 476" in new Setup {
-      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map()).body
-      renderedHtml should not include("""<div class="beta-banner">""")
+    "not show beta banner if there is no service name SDT 476" in new CommonSetup {
+      override lazy val inputMap = Map[String, Any]()
+      outputText should not include("""<div class="beta-banner">""")
     }
 
-    "show beta banner when you specify a service name SDT 476" in new Setup {
-      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
+    "show beta banner when you specify a service name SDT 476" in new CommonSetup {
+      override lazy val inputMap = Map(
         "betaBanner" -> Map("feedbackIdentifier" -> "PTA")
-      )).body
-      renderedHtml should include("""<div class="beta-banner beta-banner--borderless">""")
-      renderedHtml should include("""href="http://localhost:9250/contact/beta-feedback-unauthenticated?service=PTA"""")
+      )
+      outputText should include("""<div class="beta-banner beta-banner--borderless">""")
+      outputText should include("""href="http://localhost:9250/contact/beta-feedback-unauthenticated?service=PTA"""")
     }
 
-    "show beta banner with no feedback link if you don't specify a feedbackIdentifier SDT 476" in new Setup {
-      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
+    "show beta banner with no feedback link if you don't specify a feedbackIdentifier SDT 476" in new CommonSetup {
+      override lazy val inputMap = Map(
         "betaBanner" -> true
-      )).body
-      renderedHtml should include("""<div class="beta-banner beta-banner--borderless">""")
-      renderedHtml should not include("""href="http://localhost:9250/contact/beta-feedback-unauthenticated?service=PTA"""")
-      renderedHtml should include("This is a new service.")
+      )
+      outputText should include("""<div class="beta-banner beta-banner--borderless">""")
+      outputText should not include("""href="http://localhost:9250/contact/beta-feedback-unauthenticated?service=PTA"""")
+      outputText should include("This is a new service.")
     }
 
-
-
-    "Show article when passed in" in new Setup {
-      val article = "<p>hello world</p>"
-      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(article), Map()).body
-      renderedHtml should include(article)
+    "show article when passed in" in new CommonSetup {
+      override lazy val inputMap = Map(
+        "article" -> "<p>hello world</p>"
+      )
+      outputText should include("<p>hello world</p>")
     }
 
-    "Show account-menu when hideAccountMenu is not true" in new Setup {
-      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map()).body
-      renderedHtml should include("""<nav id="secondary-nav" class="account-menu" role="navigation">""")
+    "show account-menu when hideAccountMenu is not true" in new CommonSetup {
+      override lazy val inputMap = Map[String, Any]()
+      outputText should include("""<nav id="secondary-nav" class="account-menu" role="navigation">""")
     }
 
-    "Not show account-menu when hideAccountMenu is true" in new Setup {
-      val renderedHtml: String = localTemplateRenderer.parseTemplate(Html(""), Map(
+    "not show account-menu when hideAccountMenu is true" in new CommonSetup {
+      override lazy val inputMap = Map(
         "hideAccountMenu" -> true
-      )).body
-      renderedHtml should not include("""<nav id="secondary-nav" class="account-menu" role="navigation">""")
+      )
+      outputText should not include("""<nav id="secondary-nav" class="account-menu" role="navigation">""")
     }
-  }
 
+    "not show the full width banner when fullWidthBannerTitle is empty" in new CommonSetup {
+      override lazy val inputMap = Map[String, Any]()
+      outputText should not include("""<div id="full-width-banner" class="full-width-banner">""")
+    }
 
-  trait Setup {
+    "show the full width banner with no dismiss button when fullWidthBannerTitle contains text but fullWidthBannerDismissText is empty" in new CommonSetup {
+      override lazy val inputMap = Map(
+        "fullWidthBannerTitle" -> "Banner Title"
+      )
+      outputText should include("""<div id="full-width-banner" class="full-width-banner">""")
+      outputText should not include("""<a class="full-width-banner__close" href="#" role="button">""")
+    }
 
-    val result: Future[Result] = GovUkTemplateRendererController.serveMustacheTemplate()(fakeRequest)
-    val bodyText: String = contentAsString(result)
-    status(result) shouldBe OK
+    "show the full width banner with dismiss button when when fullWidthBannerDismissText contains text" in new CommonSetup {
+      override lazy val inputMap = Map(
+        "fullWidthBannerTitle" -> "Banner Title",
+        "fullWidthBannerDismissText" -> "Dismiss Text"
+      )
+      outputText should include("""<a class="full-width-banner__close" href="#" role="button">""")
+    }
 
-    val mainTagRegex = "<main\\b[^>]*>".r
+    "show the full width banner with a link when fullWidthBannerText and fullWidthBannerLink are not empty" in new CommonSetup {
+      override lazy val inputMap = Map(
+        "fullWidthBannerTitle" -> "Banner Title",
+        "fullWidthBannerText" -> "Banner Text",
+        "fullWidthBannerLink" -> "Banner Url"
+      )
+      outputText should include("""<a href="Banner Url" target="_blank" data-journey-click="link - click::Banner Text">""")
+    }
 
-    val localTemplateRenderer = new MustacheRendererTrait {
-      override lazy val templateServiceAddress: String = ???
-      override lazy val connection: WSGet = ???
-      override def scheduleGrabbingTemplate()(implicit ec: ExecutionContext): Cancellable = ???
-      override lazy val akkaSystem: ActorSystem = ???
-
-      override protected def getTemplate: String = bodyText
+    "show the full width banner text without a link when fullWidthBannerText is not empty and fullWidthBannerLink is empty" in new CommonSetup {
+      override lazy val inputMap = Map(
+        "fullWidthBannerTitle" -> "Banner Title",
+        "fullWidthBannerText" -> "Banner Text"
+      )
+      outputText should include(
+        """                <p>
+          |                    Banner Text
+          |                </p>""".stripMargin
+      )
+      outputText should not include("""<a href="" target="_blank" data-journey-click="link - click::Banner Text">""")
     }
   }
 }

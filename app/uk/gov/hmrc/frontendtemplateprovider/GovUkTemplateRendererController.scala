@@ -16,8 +16,9 @@
 
 package uk.gov.hmrc.frontendtemplateprovider.controllers
 
+import play.api.Play
 import play.api.mvc._
-import uk.gov.hmrc.play.config.{AssetsConfig, ServicesConfig}
+import uk.gov.hmrc.play.config.ServicesConfig
 import uk.gov.hmrc.play.microservice.controller.BaseController
 
 import scala.concurrent.Future
@@ -26,8 +27,6 @@ import scala.io.Source
 object GovUkTemplateRendererController extends GovUkTemplateRendererController
 
 trait GovUkTemplateRendererController extends BaseController with ServicesConfig {
-
-	val assetsPrefix: String = AssetsConfig.assetsPrefix
 
 	def serveMustacheTemplate(): Action[AnyContent] = Action.async { implicit request =>
 
@@ -47,7 +46,6 @@ trait GovUkTemplateRendererController extends BaseController with ServicesConfig
 		else {
 			Source.fromInputStream(getClass.getResourceAsStream("/govuk-template.mustache.html")).mkString
 		}
-
 
 		Future.successful(Ok(tpl).as("text/html"))
 	}
