@@ -122,7 +122,6 @@
     </div>
 </div>
 
-
 <header role="banner" id="global-header" class="with-proposition">
     <div class="header-wrapper">
 
@@ -136,30 +135,59 @@
 
         <div class="header-proposition">
             <div class="content">
-
                 <nav id="proposition-menu" class="header__menu" role="navigation">
-
                     {{#navTitle}}
                         <span class="header__menu__proposition-name">{{navTitle}}</span>
                     {{/navTitle}}
 
-                    {{#hideAccountMenu}}
-                        {{#signOutUrl}}
-                            <ul id="proposition-links" class="header__menu__proposition-links">
-                                <li>
-                                    <a id="logOutNavHref" href="{{{signOutUrl}}}" data-journey-click="primary-navigation:Click:Sign out">
-                                        {{#isWelsh}}
-                                            Allgofnodi
-                                        {{/isWelsh}}
+                    {{#showPropositionLinks}}
+                        <a href="#proposition-links" class="js-header-toggle menu">Menu</a>
+                        <ul id="proposition-links" class="header__menu__proposition-links">
 
-                                        {{^isWelsh}}
-                                            Sign out
+                            {{#langSelector}}
+                                {{#enUrl}}
+                                    {{#cyUrl}}
+                                        {{#isWelsh}}
+                                            <li>
+                                                <a id="switchToEnglish" lang="en" href="{{enUrl}}" data-journey-click="link - click:lang-select:English"><small><strong>English</strong></small></a>
+                                                <span class="faded-text--small"><strong>| Cymraeg</strong></span>
+                                            </li>
                                         {{/isWelsh}}
-                                    </a>
-                                </li>
-                            </ul>
-                        {{/signOutUrl}}
-                    {{/hideAccountMenu}}
+                                        {{^isWelsh}}
+                                            <li>
+                                                <span class="faded-text--small"><strong>English |</strong></span>
+                                                <a id="switchToWelsh" lang="cy" href="{{cyUrl}}" data-journey-click="link - click:lang-select:Cymraeg"><small><strong>Cymraeg</strong></small></a>
+                                            </li>
+                                        {{/isWelsh}}
+                                    {{/cyUrl}}
+                                {{/enUrl}}
+                            {{/langSelector}}
+
+                            {{#hideAccountMenu}}
+                                {{#signOutUrl}}
+                                    <li>
+                                        <a id="logOutNavHref" href="{{{signOutUrl}}}" data-journey-click="primary-navigation:Click:Sign out">
+                                            <small>
+                                                <strong>
+
+                                                    {{#isWelsh}}
+                                                        Allgofnodi
+                                                    {{/isWelsh}}
+
+                                                    {{^isWelsh}}
+                                                        Sign out
+                                                    {{/isWelsh}}
+
+                                                </strong>
+                                            </small>
+                                        </a>
+                                    </li>
+                                {{/signOutUrl}}
+                            {{/hideAccountMenu}}
+
+                        </ul>
+                    {{/showPropositionLinks}}
+
                 </nav>
             </div>
         </div>
@@ -201,21 +229,17 @@
 <main id="wrapper" role="main" {{#mainClass}}class="{{mainClass}}"{{/mainClass}} {{{mainAttributes}}}>
     <div id="content">
 
-        {{#hideAccountMenu}}
+        <div class="service-info">
+
             {{#showOrganisationLogo}}
 
-                <div class="service-info">
-                    <div class="logo">
-                        <span class="organisation-logo organisation-logo-medium">HM Revenue &amp; Customs</span>
-                    </div>
+                <div class="logo">
+                    <span class="organisation-logo organisation-logo-medium">HM Revenue &amp; Customs</span>
                 </div>
 
             {{/showOrganisationLogo}}
-        {{/hideAccountMenu}}
 
-        {{^hideAccountMenu}}
-
-            <div class="service-info">
+            {{^hideAccountMenu}}
 
                 <nav id="secondary-nav" class="account-menu" role="navigation">
                     <a href="/personal-account" class="account-menu__link account-menu__link--home{{#activeTabHome}} account-menu__link--active{{/activeTabHome}}" data-journey-click="link - click:utility-nav:Account home">
@@ -447,9 +471,21 @@
                     </ul>
                 </nav>
 
-            </div>
+                <!-- begin backlinkUrl -->
+                {{#backlinkUrl}}
+                    <div class="grid-row">
+                        <div class="column-half">
+                            <div aria-hidden="true">
+                                <a href="{{backlinkUrl}}" class="link-back">Back</a>
+                            </div>
+                        </div>
+                    </div>
+                {{/backlinkUrl}}
+                <!-- end backlinkUrl -->
 
-        {{/hideAccountMenu}}
+            {{/hideAccountMenu}}
+
+        </div>
 
         <!-- begin actingAttorneyBanner -->
         {{{ actingAttorneyBanner }}}
@@ -465,6 +501,14 @@
             {{{ article }}}
             <!-- end article -->
 
+            <!-- begin backlinkUrl (Screen Reader) -->
+            {{#backlinkUrl}}
+                <div class="visuallyhidden">
+                    <a href="{{backlinkUrl}}">Back</a>
+                </div>
+            {{/backlinkUrl}}
+            <!-- end backlinkUrl (Screen Reader) -->
+
             <!-- begin sidebar -->
             {{{ sidebar }}}
             <!-- end sidebar -->
@@ -474,7 +518,6 @@
             <!-- end getHelpForm -->
 
         </div>
-
 
         {{#betaBanner}}
             <div class="grid-row">

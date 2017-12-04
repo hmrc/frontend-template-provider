@@ -124,5 +124,37 @@ class MainSpec extends UnitSpec with OneAppPerSuite {
       )
       outputText should not include("""<a href="" target="_blank" data-journey-click="link - click::Banner Text">""")
     }
+
+    "not contain back link elements if there is no backlinkUrl specified MTA-2897" in new CommonSetup {
+      override lazy val inputMap = Map[String, Any]()
+
+      outputText should not include("back-link-url")
+    }
+
+    "contain back link elements if there is a backlinkUrl specified MTA-2897" in new CommonSetup {
+      override lazy val inputMap = Map(
+        "backlinkUrl" -> "back-link-url"
+      )
+
+      outputText should include(
+        """<!-- begin backlinkUrl -->
+          |                    <div class="grid-row">
+          |                        <div class="column-half">
+          |                            <div aria-hidden="true">
+          |                                <a href="back-link-url" class="link-back">Back</a>
+          |                            </div>
+          |                        </div>
+          |                    </div>
+          |                <!-- end backlinkUrl -->
+          |""".stripMargin)
+
+      outputText should include(
+        """<!-- begin backlinkUrl (Screen Reader) -->
+          |                <div class="visuallyhidden">
+          |                    <a href="back-link-url">Back</a>
+          |                </div>
+          |            <!-- end backlinkUrl (Screen Reader) -->
+          |""".stripMargin)
+    }
   }
 }

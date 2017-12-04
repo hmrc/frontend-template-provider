@@ -157,8 +157,6 @@ class HeadSpec extends UnitSpec with OneAppPerSuite {
     }
 
 
-
-
     "not contain service-info element when account menu is hidden" in new CommonSetup {
       override lazy val inputMap = Map("hideAccountMenu" -> true)
       outputText should not include("""<div class="service-info">""")
@@ -194,10 +192,6 @@ class HeadSpec extends UnitSpec with OneAppPerSuite {
       outputText should include("""organisation-logo""")
     }
 
-
-
-
-
     "Beta banner feedback form should be authenticated if user is authenticated" in new CommonSetup {
       override lazy val inputMap = Map(
         "betaBanner" -> true,
@@ -228,5 +222,61 @@ class HeadSpec extends UnitSpec with OneAppPerSuite {
     }
 
 
+
+
+    "not contain language selection element if there is no languageMenu specified MTA-2897" in new CommonSetup {
+      override lazy val inputMap = Map[String, Any]()
+      outputText should not include("""class="language-select"""")
+    }
+
+    "not contain language selection element if there is languageMenu specified but no Welsh url MTA-2897" in new CommonSetup {
+      override lazy val inputMap = Map(
+        "languageMenu" -> Map(
+          "enUrl" -> "english-language-url",
+          "cyUrl" -> None
+        )
+      )
+      outputText should not include("""class="language-select"""")
+    }
+
+    "not contain language selection element if there is languageMenu specified but no English url MTA-2897" in new CommonSetup {
+      override lazy val inputMap = Map(
+        "languageMenu" -> Map(
+          "enUrl" -> None,
+          "cyUrl" -> "welsh-language-url"
+        )
+      )
+      outputText should not include("""class="language-select"""")
+    }
+
+    "contain correct language selection element if there are both English and Welsh Urls specified and the language is English MTA-2897" in new CommonSetup {
+      override lazy val inputMap = Map(
+        "isWelsh" -> false,
+        "languageMenu" -> Map(
+          "enUrl" -> "english-language-url",
+          "cyUrl" -> "welsh-language-url"
+        )
+      )
+
+      outputText should include(
+        """<span class="faded-text--small"><strong>English |</strong></span>
+          |                                            <a id="switchToWelsh" lang="cy" href="welsh-language-url" data-journey-click="link - click:lang-select:Cymraeg"><small><strong>Cymraeg</strong></small></a>
+          |""".stripMargin)
+    }
+
+    "contain correct language selection element if there are both English and Welsh Urls specified and the language is Welsh MTA-2897" in new CommonSetup {
+      override lazy val inputMap = Map(
+        "isWelsh" -> true,
+        "languageMenu" -> Map(
+          "enUrl" -> "english-language-url",
+          "cyUrl" -> "welsh-language-url"
+        )
+      )
+
+      outputText should include(
+        """<a id="switchToEnglish" lang="en" href="english-language-url" data-journey-click="link - click:lang-select:English"><small><strong>English</strong></small></a>
+          |                                            <span class="faded-text--small"><strong>| Cymraeg</strong></span>
+          |""".stripMargin)
+    }
   }
 }
