@@ -49,6 +49,7 @@ class HeadSpec extends UnitSpec with OneAppPerSuite {
 
     "contain a body opening tag that does not contain a class if `bodyClass` is not specified" in new CommonSetup {
       override lazy val inputMap = Map[String, Any]()
+
       bodyTagRegex.findFirstIn(outputText).get should not include("class")
     }
 
@@ -62,6 +63,7 @@ class HeadSpec extends UnitSpec with OneAppPerSuite {
 
     "contains no optimizely script SDT-471" in new CommonSetup {
       override lazy val inputMap = Map[String, Any]()
+
       outputText should not include("optimizely")
       outputText should not include("<script src=''") // should not include a script with no src
     }
@@ -93,6 +95,7 @@ class HeadSpec extends UnitSpec with OneAppPerSuite {
 
     "contain hte default title no custom one is supplied" in new CommonSetup {
       override lazy val inputMap = Map[String, Any]()
+
       outputText should include("GOV.UK - The best place to find government services and information")
     }
 
@@ -103,7 +106,6 @@ class HeadSpec extends UnitSpec with OneAppPerSuite {
 
       outputText should include("My very own title.")
     }
-
 
     "contain link elements pointing to urls supplied in linkElems" in new CommonSetup {
       override lazy val inputMap = Map(
@@ -136,9 +138,9 @@ class HeadSpec extends UnitSpec with OneAppPerSuite {
       outputText should include("""<link rel="stylesheet" type="text/css" href="www.example.com/some.css" media="print"/>""")
     }
 
-
     "not contain navigation element if there is no navTitle specified SDT-474" in new CommonSetup {
       override lazy val inputMap = Map[String, Any]()
+
       outputText should include("""<div class="header-proposition">""")
       outputText should not include("""<a href="#proposition-links" class="js-header-toggle menu">Menu</a>""")
       outputText should not include("""<ul id="proposition-links" class="header__menu__proposition-links">""")
@@ -156,40 +158,67 @@ class HeadSpec extends UnitSpec with OneAppPerSuite {
       outputText should not include("""<ul id="proposition-links" class="header__menu__proposition-links">""")
     }
 
-
-    "not contain service-info element when account menu is hidden" in new CommonSetup {
-      override lazy val inputMap = Map("hideAccountMenu" -> true)
-      outputText should not include("""<div class="service-info">""")
-    }
-
-    "contain service-info element when account menu is not hidden" in new CommonSetup {
+    "not show proposition links element if showPropositionLinks not specified MTA-2897" in new CommonSetup {
       override lazy val inputMap = Map[String, Any]()
-      outputText should include("""<div class="service-info">""")
+
+      outputText should not include("""header__menu__proposition-links"""")
     }
 
-    "contain service-info element when account menu is hidden but organisation logo is displayed" in new CommonSetup {
-      override lazy val inputMap = Map("hideAccountMenu" -> true, "showOrganisationLogo" -> true)
-      outputText should include("""<div class="service-info">""")
+    "not show proposition links element if showPropositionLinks set to false MTA-2897" in new CommonSetup {
+      override lazy val inputMap = Map(
+        "showPropositionLinks" -> false
+      )
+
+      outputText should not include("""header__menu__proposition-links"""")
+    }
+
+    "show proposition links element if showPropositionLinks set to true MTA-2897" in new CommonSetup {
+      override lazy val inputMap = Map(
+        "showPropositionLinks" -> true
+      )
+
+      outputText should include("""<ul id="proposition-links" class="header__menu__proposition-links">""")
     }
 
     "not show signout link in proposition menu if the account menu isn't hidden even if signout url is supplied" in new CommonSetup {
-      override def inputMap =  Map[String, Any]("signOutUrl" -> "/signout/url", "hideAccountMenu" -> false)
+      override def inputMap =  Map(
+        "showPropositionLinks" -> true,
+        "signOutUrl" -> "/signout/url",
+        "hideAccountMenu" -> false
+      )
+
       outputText should not include("""<a id="logOutNavHref"""")
     }
 
     "show signout link in proposition menu if the account menu is hidden and signout url is supplied" in new CommonSetup {
-      override def inputMap =  Map[String, Any]("signOutUrl" -> "/signout/url", "hideAccountMenu" -> true)
+      override def inputMap =  Map(
+        "showPropositionLinks" -> true,
+        "signOutUrl" -> "/signout/url",
+        "hideAccountMenu" -> true
+      )
       outputText should include("""<a id="logOutNavHref" href="/signout/url"""")
     }
 
-    "not show the organisation logo if the account menu isn't hidden even if showOrganisationLogo is true" in new CommonSetup {
-      override def inputMap =  Map[String, Any]("showOrganisationLogo" -> true, "hideAccountMenu" -> false)
+    "not show the organisation logo if showOrganisationLogo is not supplied" in new CommonSetup {
+      override lazy val inputMap = Map[String, Any]()
+
       outputText should not include("""organisation-logo""")
     }
 
-    "show the organisation logo if the account menu is hidden and showOrganisationLogo is true" in new CommonSetup {
-      override def inputMap =  Map[String, Any]("showOrganisationLogo" -> true, "hideAccountMenu" -> true)
-      outputText should include("""organisation-logo""")
+    "not show the organisation logo showOrganisationLogo is false" in new CommonSetup {
+      override def inputMap = Map(
+        "showOrganisationLogo" -> false
+      )
+
+      outputText should not include("""organisation-logo""")
+    }
+
+    "show the organisation logo showOrganisationLogo is true" in new CommonSetup {
+      override def inputMap = Map(
+        "showOrganisationLogo" -> true
+      )
+
+      outputText should include("""<span class="organisation-logo organisation-logo-medium">HM Revenue &amp; Customs</span>""")
     }
 
     "Beta banner feedback form should be authenticated if user is authenticated" in new CommonSetup {
@@ -221,62 +250,65 @@ class HeadSpec extends UnitSpec with OneAppPerSuite {
       outputText should include("""<a id="feedback-link" href="http://localhost:9250/contact/beta-feedback-unauthenticated?service=""")
     }
 
+    "not contain language selection element if there is no langSelector specified MTA-2897" in new CommonSetup {
+      override lazy val inputMap = Map(
+        "showPropositionLinks" -> true
+      )
 
-
-
-    "not contain language selection element if there is no languageMenu specified MTA-2897" in new CommonSetup {
-      override lazy val inputMap = Map[String, Any]()
       outputText should not include("""class="language-select"""")
     }
 
-    "not contain language selection element if there is languageMenu specified but no Welsh url MTA-2897" in new CommonSetup {
+    "not contain language selection element if there is langSelector specified but no Welsh url MTA-2897" in new CommonSetup {
       override lazy val inputMap = Map(
-        "languageMenu" -> Map(
+        "showPropositionLinks" -> true,
+        "langSelector" -> Map(
           "enUrl" -> "english-language-url",
           "cyUrl" -> None
         )
       )
+
       outputText should not include("""class="language-select"""")
     }
 
-    "not contain language selection element if there is languageMenu specified but no English url MTA-2897" in new CommonSetup {
+    "not contain language selection element if there is langSelector specified but no English url MTA-2897" in new CommonSetup {
       override lazy val inputMap = Map(
-        "languageMenu" -> Map(
+        "showPropositionLinks" -> true,
+        "langSelector" -> Map(
           "enUrl" -> None,
           "cyUrl" -> "welsh-language-url"
         )
       )
+
       outputText should not include("""class="language-select"""")
     }
 
     "contain correct language selection element if there are both English and Welsh Urls specified and the language is English MTA-2897" in new CommonSetup {
       override lazy val inputMap = Map(
-        "isWelsh" -> false,
-        "languageMenu" -> Map(
+        "showPropositionLinks" -> true,
+        "langSelector" -> Map(
           "enUrl" -> "english-language-url",
           "cyUrl" -> "welsh-language-url"
-        )
+        ),
+        "isWelsh" -> false
       )
 
-      outputText should include(
-        """<span class="faded-text--small"><strong>English |</strong></span>
-          |                                            <a id="switchToWelsh" lang="cy" href="welsh-language-url" data-journey-click="link - click:lang-select:Cymraeg"><small><strong>Cymraeg</strong></small></a>
-          |""".stripMargin)
+      outputText should include("""<span class="faded-text--small"><strong>English |</strong></span>""")
+      outputText should include("""<a id="switchToWelsh" lang="cy" href="welsh-language-url" data-journey-click="link - click:lang-select:Cymraeg"><small><strong>Cymraeg</strong></small></a>""")
     }
 
     "contain correct language selection element if there are both English and Welsh Urls specified and the language is Welsh MTA-2897" in new CommonSetup {
+
       override lazy val inputMap = Map(
-        "isWelsh" -> true,
-        "languageMenu" -> Map(
+        "showPropositionLinks" -> true,
+        "langSelector" -> Map(
           "enUrl" -> "english-language-url",
           "cyUrl" -> "welsh-language-url"
-        )
+          ),
+        "isWelsh" -> true
       )
 
-      outputText should include(
-        """<a id="switchToEnglish" lang="en" href="english-language-url" data-journey-click="link - click:lang-select:English"><small><strong>English</strong></small></a>
-          |                                            <span class="faded-text--small"><strong>| Cymraeg</strong></span>
-          |""".stripMargin)
+      outputText should include("""<a id="switchToEnglish" lang="en" href="english-language-url" data-journey-click="link - click:lang-select:English"><small><strong>English</strong></small></a>""")
+      outputText should include("""<span class="faded-text--small"><strong>| Cymraeg</strong></span>""")
     }
   }
 }
