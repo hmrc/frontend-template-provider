@@ -471,19 +471,19 @@
                     </ul>
                 </nav>
 
-                <!-- begin backlinkUrl -->
-                {{#backlinkUrl}}
-                    <div class="grid-row">
-                        <div class="column-half">
-                            <div aria-hidden="true">
-                                <a href="{{backlinkUrl}}" class="link-back">Back</a>
-                            </div>
+            {{/hideAccountMenu}}
+
+            <!-- begin backlinkUrl -->
+            {{#backlinkUrl}}
+                <div class="grid-row">
+                    <div class="column-half">
+                        <div aria-hidden="true">
+                            <a href="{{backlinkUrl}}" class="link-back">Back</a>
                         </div>
                     </div>
-                {{/backlinkUrl}}
-                <!-- end backlinkUrl -->
-
-            {{/hideAccountMenu}}
+                </div>
+            {{/backlinkUrl}}
+            <!-- end backlinkUrl -->
 
         </div>
 
