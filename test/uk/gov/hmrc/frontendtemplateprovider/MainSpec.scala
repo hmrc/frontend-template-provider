@@ -138,14 +138,14 @@ class MainSpec extends UnitSpec with OneAppPerSuite {
 
       outputText should include(
         """<!-- begin backlinkUrl -->
-          |                    <div class="grid-row">
-          |                        <div class="column-half">
-          |                            <div aria-hidden="true">
-          |                                <a href="back-link-url" class="link-back">Back</a>
-          |                            </div>
+          |                <div class="grid-row">
+          |                    <div class="column-half">
+          |                        <div aria-hidden="true">
+          |                            <a href="back-link-url" class="link-back">Back</a>
           |                        </div>
           |                    </div>
-          |                <!-- end backlinkUrl -->
+          |                </div>
+          |            <!-- end backlinkUrl -->
           |""".stripMargin)
 
       outputText should include(
