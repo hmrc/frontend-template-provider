@@ -93,7 +93,28 @@ class HeadSpec extends UnitSpec with OneAppPerSuite {
       outputText should include("""<script src="cdn.optimizely.com/id123.js" type="text/javascript"></script>""")
     }
 
-    "contain hte default title no custom one is supplied" in new CommonSetup {
+    "contain optimizely audience variable if provided" in new CommonSetup {
+      override lazy val inputMap = Map(
+        "optimizely" -> Map(
+          "audience" -> "userGroup",
+          "projectId" -> "id123"
+        )
+      )
+
+      outputText should include("var audience = \"userGroup\"")
+      outputText should include("""<script src="//cdn.optimizely.com/js/id123.js" type="text/javascript"></script>""")
+    }
+
+    "not contain optimizely audience variable if not provided" in new CommonSetup {
+      override lazy val inputMap = Map(
+        "optimizelyProjectId" -> "id123"
+      )
+
+      outputText should not include("var audience")
+      outputText should include("""<script src="//cdn.optimizely.com/js/id123.js" type="text/javascript"></script>""")
+    }
+
+    "contain the default title no custom one is supplied" in new CommonSetup {
       override lazy val inputMap = Map[String, Any]()
 
       outputText should include("GOV.UK - The best place to find government services and information")
