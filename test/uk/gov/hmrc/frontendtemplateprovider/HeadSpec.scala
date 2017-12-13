@@ -96,12 +96,12 @@ class HeadSpec extends UnitSpec with OneAppPerSuite {
     "contain optimizely audience variable if provided" in new CommonSetup {
       override lazy val inputMap = Map(
         "optimizely" -> Map(
-          "optimizelyAudience" -> "userGroup",
-          "optimizelyProjectId" -> "id123"
+          "audience" -> "userGroup",
+          "projectId" -> "id123"
         )
       )
 
-      outputText should include("var optimizelyAudience = \"userGroup\"")
+      outputText should include("var audience = \"userGroup\"")
       outputText should include("""<script src="//cdn.optimizely.com/js/id123.js" type="text/javascript"></script>""")
     }
 
@@ -110,7 +110,7 @@ class HeadSpec extends UnitSpec with OneAppPerSuite {
         "optimizelyProjectId" -> "id123"
       )
 
-      outputText should not include("var optimizelyAudience")
+      outputText should not include("var audience")
       outputText should include("""<script src="//cdn.optimizely.com/js/id123.js" type="text/javascript"></script>""")
     }
 
