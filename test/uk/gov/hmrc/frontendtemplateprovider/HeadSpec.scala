@@ -95,7 +95,7 @@ class HeadSpec extends UnitSpec with OneAppPerSuite {
 
     "contain optimizely audience variable if provided" in new CommonSetup {
       override lazy val inputMap = Map(
-        "optimizelyProjectId" -> Map(
+        "optimizely" -> Map(
           "optimizelyAudience" -> "userGroup",
           "optimizelyProjectId" -> "id123"
         )
