@@ -136,25 +136,8 @@ class MainSpec extends UnitSpec with OneAppPerSuite {
         "backlinkUrl" -> "back-link-url"
       )
 
-      outputText should include(
-        """<!-- begin backlinkUrl -->
-          |                <div class="grid-row">
-          |                    <div class="column-half">
-          |                        <div aria-hidden="true">
-          |                            <a href="back-link-url" class="link-back">Back</a>
-          |                        </div>
-          |                    </div>
-          |                </div>
-          |            <!-- end backlinkUrl -->
-          |""".stripMargin)
-
-      outputText should include(
-        """<!-- begin backlinkUrl (Screen Reader) -->
-          |                <div class="visuallyhidden">
-          |                    <a href="back-link-url">Back</a>
-          |                </div>
-          |            <!-- end backlinkUrl (Screen Reader) -->
-          |""".stripMargin)
+      outputText should include("""<a href="back-link-url" class="link-back">""")
+      outputText should include("""<a href="back-link-url">""")
     }
   }
 }
