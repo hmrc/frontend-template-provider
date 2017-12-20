@@ -32,9 +32,9 @@ class HeadSpec extends UnitSpec with OneAppPerSuite {
 
     "contain links to assets-frontend CSS" in new CommonSetup {
       override lazy val inputMap = Map[String, Any]()
-      outputText should include("""<link rel="stylesheet" href="http://localhost:9032/assets/2.252.0/stylesheets/application-ie7.min.css" />""")
-      outputText should include("""<link rel="stylesheet" href="http://localhost:9032/assets/2.252.0/stylesheets/application-ie.min.css" />""")
-      outputText should include("""<link rel="stylesheet" href="http://localhost:9032/assets/2.252.0/stylesheets/application.min.css" />""")
+      outputText should include("""<link rel="stylesheet" href="http://localhost:9032/assets/3.0.2/stylesheets/application-ie7.min.css" />""")
+      outputText should include("""<link rel="stylesheet" href="http://localhost:9032/assets/3.0.2/stylesheets/application-ie.min.css" />""")
+      outputText should include("""<link rel="stylesheet" href="http://localhost:9032/assets/3.0.2/stylesheets/application.min.css" />""")
     }
 
     "contain links to a specified version of assets-frontend CSS" in new CommonSetup {
