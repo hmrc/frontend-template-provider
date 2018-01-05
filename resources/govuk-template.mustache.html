@@ -502,13 +502,21 @@
                         <div aria-hidden="true">
                             <a href="{{backlinkUrl}}" class="link-back">
 
-                                {{#isWelsh}}
-                                    Yn &#244;l
-                                {{/isWelsh}}
+                                {{#backlinkUrlText}}
+                                    {{backlinkUrlText}}
+                                {{/backlinkUrlText}}
 
-                                {{^isWelsh}}
-                                    Back
-                                {{/isWelsh}}
+                                {{^backlinkUrlText}}
+
+                                    {{#isWelsh}}
+                                        Yn &#244;l
+                                    {{/isWelsh}}
+
+                                    {{^isWelsh}}
+                                        Back
+                                    {{/isWelsh}}
+
+                                {{/backlinkUrlText}}
 
                             </a>
                         </div>
