@@ -313,8 +313,8 @@ class HeadSpec extends UnitSpec with OneAppPerSuite {
         "isWelsh" -> false
       )
 
-      outputText should include("""<span class="faded-text--small"><strong>English |</strong></span>""")
-      outputText should include("""<a id="switchToWelsh" lang="cy" href="welsh-language-url" data-journey-click="link - click:lang-select:Cymraeg"><small><strong>Cymraeg</strong></small></a>""")
+      outputText should include("""<span class="faded-text--small"><strong class="bold">English |</strong></span>""")
+      outputText should include("""<a id="switchToWelsh" lang="cy" href="welsh-language-url" data-journey-click="link - click:lang-select:Cymraeg"><small><strong class="bold">Cymraeg</strong></small></a>""")
     }
 
     "contain correct language selection element if there are both English and Welsh Urls specified and the language is Welsh MTA-2897" in new CommonSetup {
@@ -328,8 +328,8 @@ class HeadSpec extends UnitSpec with OneAppPerSuite {
         "isWelsh" -> true
       )
 
-      outputText should include("""<a id="switchToEnglish" lang="en" href="english-language-url" data-journey-click="link - click:lang-select:English"><small><strong>English</strong></small></a>""")
-      outputText should include("""<span class="faded-text--small"><strong>| Cymraeg</strong></span>""")
+      outputText should include("""<a id="switchToEnglish" lang="en" href="english-language-url" data-journey-click="link - click:lang-select:English"><small><strong class="bold">English</strong></small></a>""")
+      outputText should include("""<span class="faded-text--small"><strong class="bold">| Cymraeg</strong></span>""")
     }
   }
 }
