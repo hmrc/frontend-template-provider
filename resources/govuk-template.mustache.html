@@ -222,7 +222,7 @@
 
 {{#fullWidthBannerTitle}}
     <div id="full-width-banner" class="full-width-banner">
-        <section class="centered-content visible full-width-banner__container" aria-hidden="false">
+        <div class="centered-content visible full-width-banner__container" aria-hidden="false">
             <div class="full-width-banner__title">
                 {{fullWidthBannerTitle}}
             </div>
@@ -243,7 +243,7 @@
                     </span>
                 </a>
             {{/fullWidthBannerDismissText}}
-        </section>
+        </div>
     </div>
 {{/fullWidthBannerTitle}}
 
@@ -845,6 +845,16 @@
         <script src="{{url}}" type="text/javascript"></script>
     {{/url}}
 {{/scriptElems}}
+
+{{#sessionTimeout}}
+    {{#keepAliveUrl}}
+        {{#logoutUrl}}
+            <script type="text/javascript">
+                $.timeoutDialog({timeout: 900, countdown: 60, keep_alive_url: '{{{keepAliveUrl}}}', logout_url: '{{{logoutUrl}}}'});
+            </script>
+        {{/logoutUrl}}
+    {{/keepAliveUrl}}
+{{/sessionTimeout}}
 
 {{#inlineScript}}
     {{{inlineScript}}}

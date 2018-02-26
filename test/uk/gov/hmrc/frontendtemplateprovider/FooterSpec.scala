@@ -172,5 +172,21 @@ class FooterSpec extends UnitSpec with OneAppPerSuite {
 
       outputText should include("""<script>console.log('hello world');</script>""")
     }
+
+    "should include session timeout if set to true" in new CommonSetup {
+      override lazy val inputMap = Map(
+        "sessionTimeout" -> Map(
+          "keepAliveUrl" -> "/keepAliveUrl/",
+          "logoutUrl" -> "/logoutUrl/"
+        )
+      )
+      outputText should include("""$.timeoutDialog({timeout: 900, countdown: 60, keep_alive_url: '/keepAliveUrl/', logout_url: '/logoutUrl/'});""")
+    }
+
+    "should not include session timeout if set to true" in new CommonSetup {
+      override lazy val inputMap = Map[String, Any]()
+      
+      outputText should not include("""$.timeoutDialog({timeout: 900, countdown: 60, keep_alive_url: '/keepAliveUrl/', logout_url: '/logoutUrl/'});""")
+    }
   }
 }
