@@ -105,6 +105,17 @@
         <script src="{{#optimizelyBaseUrl}}{{{optimizelyBaseUrl}}}{{/optimizelyBaseUrl}}{{^optimizelyBaseUrl}}//cdn.optimizely.com/js/{{/optimizelyBaseUrl}}{{{optimizelyProjectId}}}.js" type="text/javascript"></script>
     {{/optimizelyProjectId}}
 
+    {{#optimizely}}
+        {{#audience}}
+            <script type="text/javascript">
+                var audience = "{{audience}}"
+            </script>
+        {{/audience}}
+        {{#projectId}}
+            <script src="{{#optimizelyBaseUrl}}{{{optimizelyBaseUrl}}}{{/optimizelyBaseUrl}}{{^optimizelyBaseUrl}}//cdn.optimizely.com/js/{{/optimizelyBaseUrl}}{{{projectId}}}.js" type="text/javascript"></script>
+        {{/projectId}}
+    {{/optimizely}}
+
     {{#assetsPath}}
         <script src="{{assetsPath}}javascripts/vendor/modernizr.js" type="text/javascript"></script>
     {{/assetsPath}}
@@ -141,7 +152,17 @@
                     {{/navTitle}}
 
                     {{#showPropositionLinks}}
-                        <a href="#proposition-links" class="js-header-toggle menu">Menu</a>
+                        <a href="#proposition-links" class="js-header-toggle menu">
+
+                            {{#isWelsh}}
+                                Dewislen
+                            {{/isWelsh}}
+
+                            {{^isWelsh}}
+                                Menu
+                            {{/isWelsh}}
+
+                        </a>
                         <ul id="proposition-links" class="header__menu__proposition-links">
 
                             {{#langSelector}}
@@ -149,14 +170,14 @@
                                     {{#cyUrl}}
                                         {{#isWelsh}}
                                             <li>
-                                                <a id="switchToEnglish" lang="en" href="{{enUrl}}" data-journey-click="link - click:lang-select:English"><small><strong>English</strong></small></a>
-                                                <span class="faded-text--small"><strong>| Cymraeg</strong></span>
+                                                <a id="switchToEnglish" lang="en" href="{{enUrl}}" data-journey-click="link - click:lang-select:English"><small><strong class="bold">English</strong></small></a>
+                                                <span class="faded-text--small"><strong class="bold">| Cymraeg</strong></span>
                                             </li>
                                         {{/isWelsh}}
                                         {{^isWelsh}}
                                             <li>
-                                                <span class="faded-text--small"><strong>English |</strong></span>
-                                                <a id="switchToWelsh" lang="cy" href="{{cyUrl}}" data-journey-click="link - click:lang-select:Cymraeg"><small><strong>Cymraeg</strong></small></a>
+                                                <span class="faded-text--small"><strong class="bold">English |</strong></span>
+                                                <a id="switchToWelsh" lang="cy" href="{{cyUrl}}" data-journey-click="link - click:lang-select:Cymraeg"><small><strong class="bold">Cymraeg</strong></small></a>
                                             </li>
                                         {{/isWelsh}}
                                     {{/cyUrl}}
@@ -168,7 +189,7 @@
                                     <li>
                                         <a id="logOutNavHref" href="{{{signOutUrl}}}" data-journey-click="primary-navigation:Click:Sign out">
                                             <small>
-                                                <strong>
+                                                <strong class="bold">
 
                                                     {{#isWelsh}}
                                                         Allgofnodi
@@ -273,7 +294,7 @@
                             <a href="#" class="account-menu__link" data-journey-click="link - click:utility-nav:Back">
 
                                 {{#isWelsh}}
-                                    Yn ôl
+                                    Yn &#244;l
                                 {{/isWelsh}}
 
                                 {{^isWelsh}}
@@ -294,6 +315,10 @@
                                     {{^isWelsh}}
                                         Messages
                                     {{/isWelsh}}
+
+                                    {{#unreadMessageCount}}
+                                        <span class="badge" aria-label="Number of unread messages">{{unreadMessageCount}}</span>
+                                    {{/unreadMessageCount}}
 
                                 </a>
                             </li>
@@ -479,7 +504,25 @@
                 <div class="grid-row">
                     <div class="column-half">
                         <div aria-hidden="true">
-                            <a href="{{backlinkUrl}}" class="link-back">Back</a>
+                            <a href="{{backlinkUrl}}" class="link-back">
+
+                                {{#backlinkUrlText}}
+                                    {{backlinkUrlText}}
+                                {{/backlinkUrlText}}
+
+                                {{^backlinkUrlText}}
+
+                                    {{#isWelsh}}
+                                        Yn &#244;l
+                                    {{/isWelsh}}
+
+                                    {{^isWelsh}}
+                                        Back
+                                    {{/isWelsh}}
+
+                                {{/backlinkUrlText}}
+
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -505,7 +548,17 @@
             <!-- begin backlinkUrl (Screen Reader) -->
             {{#backlinkUrl}}
                 <div class="visuallyhidden">
-                    <a href="{{backlinkUrl}}">Back</a>
+                    <a href="{{backlinkUrl}}">
+
+                        {{#isWelsh}}
+                            Yn &#244;l
+                        {{/isWelsh}}
+
+                        {{^isWelsh}}
+                            Back
+                        {{/isWelsh}}
+
+                    </a>
                 </div>
             {{/backlinkUrl}}
             <!-- end backlinkUrl (Screen Reader) -->
