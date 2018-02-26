@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 HM Revenue & Customs
+ * Copyright 2018 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ class FooterSpec extends UnitSpec with OneAppPerSuite {
   "Footer" should {
     "contain links to assets-frontend JS" in new CommonSetup {
       override lazy val inputMap = Map[String, Any]()
-      outputText should include ("""<script src="http://localhost:9032/assets/2.252.0/javascripts/application.min.js" type="text/javascript"></script>""")
+      outputText should include ("""<script src="http://localhost:9032/assets/3.2.2/javascripts/application.min.js" type="text/javascript"></script>""")
     }
 
     "contain links to a specified version of assets-frontend JS" in new CommonSetup {
