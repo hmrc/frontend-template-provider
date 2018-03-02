@@ -846,6 +846,16 @@
     {{/url}}
 {{/scriptElems}}
 
+{{#sessionTimeout}}
+    {{#keepAliveUrl}}
+        {{#logoutUrl}}
+            <script type="text/javascript">
+                $.timeoutDialog({timeout: 900, countdown: 60, keep_alive_url: '{{{keepAliveUrl}}}', logout_url: '{{{logoutUrl}}}'});
+            </script>
+        {{/logoutUrl}}
+    {{/keepAliveUrl}}
+{{/sessionTimeout}}
+
 {{#inlineScript}}
     {{{inlineScript}}}
 {{/inlineScript}}
