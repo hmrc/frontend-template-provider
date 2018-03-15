@@ -72,14 +72,14 @@ class MainSpec extends UnitSpec with OneAppPerSuite {
 
     "show account-menu when hideAccountMenu is not true" in new CommonSetup {
       override lazy val inputMap = Map[String, Any]()
-      outputText should include("""<nav id="secondary-nav" class="account-menu" role="navigation">""")
+      outputText should include("""<nav id="secondary-nav" class="account-menu" role="navigation" aria-label="Account">""")
     }
 
     "not show account-menu when hideAccountMenu is true" in new CommonSetup {
       override lazy val inputMap = Map(
         "hideAccountMenu" -> true
       )
-      outputText should not include("""<nav id="secondary-nav" class="account-menu" role="navigation">""")
+      outputText should not include("""<nav id="secondary-nav" class="account-menu" role="navigation" aria-label="Account">""")
     }
 
     "not show the full width banner when fullWidthBannerTitle is empty" in new CommonSetup {
