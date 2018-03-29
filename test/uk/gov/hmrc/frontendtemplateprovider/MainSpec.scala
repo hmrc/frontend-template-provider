@@ -139,5 +139,18 @@ class MainSpec extends UnitSpec with OneAppPerSuite {
       outputText should include("""<a href="back-link-url" class="link-back">""")
       outputText should include("""<a href="back-link-url">""")
     }
+
+    "contain back link elements with specified text if there is a backlinkUrl with backlinkUrlText MTA-3033" in new CommonSetup {
+      override lazy val inputMap = Map(
+        "backlinkUrl" -> "back-link-url",
+        "backlinkUrlText" -> "back-link-url-text"
+      )
+
+      outputText should include("""<a href="back-link-url" class="link-back">""")
+      outputText should include("""<a href="back-link-url">""")
+      outputText should include("""back-link-url-text""")
+
+    }
+
   }
 }
