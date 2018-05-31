@@ -109,7 +109,7 @@ class MainSpec extends UnitSpec with OneAppPerSuite {
         "fullWidthBannerText" -> "Banner Text",
         "fullWidthBannerLink" -> "Banner Url"
       )
-      outputText should include("""<a href="Banner Url" target="_blank" data-journey-click="link - click::Banner Text">""")
+      outputText should include("""<a id="sign-up" href="Banner Url" target="_blank" data-journey-click="link - click::Banner Text">""")
     }
 
     "show the full width banner text without a link when fullWidthBannerText is not empty and fullWidthBannerLink is empty" in new CommonSetup {
