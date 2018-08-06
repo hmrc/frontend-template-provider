@@ -217,7 +217,13 @@
 <!--end header-->
 
 <div id="global-cookie-message">
-    <p>GOV.UK uses cookies to make the site simpler. <a href="/help/cookies">Find out more about cookies</a></p>
+    {{#isWelsh}}
+        <p>Mae GOV.UK yn defnyddio cwcis i wneud y safle’n haws i’w ddefnyddio. <a href="/help/cookies">Rhagor o wybodaeth am gwcis</a></p>
+    {{/isWelsh}}
+
+    {{^isWelsh}}
+        <p>GOV.UK uses cookies to make the site simpler. <a href="/help/cookies">Find out more about cookies</a></p>
+    {{/isWelsh}}
 </div>
 
 {{#fullWidthBannerTitle}}
