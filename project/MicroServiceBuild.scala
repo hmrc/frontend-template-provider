@@ -10,15 +10,15 @@ object MicroServiceBuild extends Build with MicroService {
 
   val compile = Seq(
     ws,
-    "uk.gov.hmrc" %% "microservice-bootstrap" % "6.18.0",
-    "uk.gov.hmrc" %% "frontend-bootstrap"     % "8.24.0",
+    "uk.gov.hmrc" %% "microservice-bootstrap" % "8.5.0",
+    "uk.gov.hmrc" %% "frontend-bootstrap"     % "10.7.0",
     "uk.gov.hmrc" %% "play-url-binders"       % "2.1.0",
-    "uk.gov.hmrc" %% "domain"                 % "5.1.0",
+    "uk.gov.hmrc" %% "domain"                 % "5.2.0",
     "uk.gov.hmrc" %% "play-whitelist-filter"  % "2.0.0"
   )
 
   def test(scope: String = "test,it") = Seq(
-    "uk.gov.hmrc"                       %% "hmrctest"              % "3.0.0"             % scope,
+    "uk.gov.hmrc"                       %% "hmrctest"              % "3.2.0"             % scope,
     "org.scalatest"                     %% "scalatest"             % "3.0.0"             % scope,
     "org.pegdown"                       %  "pegdown"               % "1.6.0"             % scope,
     "com.typesafe.play"                 %% "play-test"             % PlayVersion.current % scope,
