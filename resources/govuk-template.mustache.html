@@ -424,9 +424,8 @@
 
                                 {{/isVerify}}
 
-
-                                <div class="{{^isGovernmentGateway}}{{^isVerify}} column-half {{/isVerify}}{{/isGovernmentGateway}}
-                                {{#isGovernmentGateway}}{{^isSa}} column-half {{/isSa}}{{/isGovernmentGateway}}
+                                {{#isGovernmentGateway}}
+                                <div class="{{#isGovernmentGateway}}{{^isSa}} column-half {{/isSa}}{{/isGovernmentGateway}}
                                 {{#isGovernmentGateway}}{{#isSa}} column-one-third {{/isSa}}{{/isGovernmentGateway}}
                                 {{#isVerify}} column-one-third {{/isVerify}} subnav__section">
                                     <p class="subnav__section__heading">
@@ -454,6 +453,9 @@
                                         </a>
                                     </div>
                                 </div>
+
+                                {{/isGovernmentGateway}}
+
                                 <div class="{{^isGovernmentGateway}}{{^isVerify}} column-half {{/isVerify}}{{/isGovernmentGateway}}
                                 {{#isGovernmentGateway}}{{^isSa}} column-half {{/isSa}}{{/isGovernmentGateway}}
                                 {{#isGovernmentGateway}}{{#isSa}} column-one-third {{/isSa}}{{/isGovernmentGateway}}
