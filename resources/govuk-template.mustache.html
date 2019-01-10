@@ -425,8 +425,8 @@
                                 {{/isVerify}}
 
                                 {{^isVerify}}
-                                <div class="{{^isSa}} column-half {{/isSa}}
-                                {{#isSa}} column-one-third {{/isSa}}
+                                <div class="{{#isGovernmentGateway}}{{^isSa}} column-half {{/isSa}}{{/isGovernmentGateway}}
+                                {{#isGovernmentGateway}}{{#isSa}} column-one-third {{/isSa}}{{/isGovernmentGateway}}
                                 subnav__section">
                                     <p class="subnav__section__heading">
 
