@@ -3,7 +3,6 @@
 <!--[if gt IE 8]><!--><html lang="{{^isWelsh}}en{{/isWelsh}}{{#isWelsh}}cy{{/isWelsh}}" class="no-js"><!--<![endif]-->
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-    {{{ metaTags }}}
 
     <title>
         {{#pageTitle}}
@@ -908,6 +907,7 @@
             {{#taxCodeChangeDate}}                          ga('set', 'dimension76', '{{{taxCodeChangeDate}}}');                          {{/taxCodeChangeDate}}
             {{#taxCodeChangeEdgeCase}}                      ga('set', 'dimension77', '{{{taxCodeChangeEdgeCase}}}');                      {{/taxCodeChangeEdgeCase}}
             {{#taiLandingPageInformation}}                  ga('set', 'dimension78', '{{{taiLandingPageInformation}}}');                  {{/taiLandingPageInformation}}
+            {{#taiCYPlusOneEstimatedIncome}}                ga('set', 'dimension80', '{{{taiCYPlusOneEstimatedIncome}}}');                {{/taiCYPlusOneEstimatedIncome}}
 
             {{#gaCustomEvent}}
                 {{{gaCustomEvent}}}

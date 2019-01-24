@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 HM Revenue & Customs
+ * Copyright 2019 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -330,16 +330,6 @@ class HeadSpec extends UnitSpec with OneAppPerSuite {
 
       outputText should include("""<a id="switchToEnglish" lang="en" href="english-language-url" data-journey-click="link - click:lang-select:English"><small><strong class="bold">English</strong></small></a>""")
       outputText should include("""<span class="faded-text--small"><strong class="bold">| Cymraeg</strong></span>""")
-    }
-
-    "contain meta tags when supplied" in new CommonSetup {
-      val metaTag = "<meta />"
-
-      override lazy val inputMap = Map(
-        "metaTags" -> metaTag
-      )
-
-      outputText should include(metaTag)
     }
   }
 }
