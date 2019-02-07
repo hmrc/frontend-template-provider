@@ -423,11 +423,11 @@
 
                                 {{/isVerify}}
 
-
-                                <div class="{{^isGovernmentGateway}}{{^isVerify}} column-half {{/isVerify}}{{/isGovernmentGateway}}
-                                        {{#isGovernmentGateway}}{{^isSa}} column-half {{/isSa}}{{/isGovernmentGateway}}
-                                        {{#isGovernmentGateway}}{{#isSa}} column-one-third {{/isSa}}{{/isGovernmentGateway}}
-                                        {{#isVerify}} column-one-third {{/isVerify}} subnav__section">
+                                {{^isVerify}}
+                                <div class="{{^isGovernmentGateway}}column-half {{/isGovernmentGateway}}
+                                {{#isGovernmentGateway}}{{^isSa}} column-half {{/isSa}}{{/isGovernmentGateway}}
+                                {{#isGovernmentGateway}}{{#isSa}} column-one-third {{/isSa}}{{/isGovernmentGateway}}
+                                subnav__section">
                                     <p class="subnav__section__heading">
 
                                         {{#isWelsh}}
@@ -453,6 +453,9 @@
                                         </a>
                                     </div>
                                 </div>
+
+                                {{/isVerify}}
+
                                 <div class="{{^isGovernmentGateway}}{{^isVerify}} column-half {{/isVerify}}{{/isGovernmentGateway}}
                                         {{#isGovernmentGateway}}{{^isSa}} column-half {{/isSa}}{{/isGovernmentGateway}}
                                         {{#isGovernmentGateway}}{{#isSa}} column-one-third {{/isSa}}{{/isGovernmentGateway}}
