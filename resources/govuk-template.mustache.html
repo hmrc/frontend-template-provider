@@ -424,8 +424,7 @@
                                 {{/isVerify}}
 
                                 {{^isVerify}}
-                                <div class="{{^isGovernmentGateway}}column-half {{/isGovernmentGateway}}
-                                {{#isGovernmentGateway}}{{^isSa}} column-half {{/isSa}}{{/isGovernmentGateway}}
+                                <div class="{{#isGovernmentGateway}}{{^isSa}} column-half {{/isSa}}{{/isGovernmentGateway}}
                                 {{#isGovernmentGateway}}{{#isSa}} column-one-third {{/isSa}}{{/isGovernmentGateway}}
                                 subnav__section">
                                     <p class="subnav__section__heading">
@@ -457,9 +456,9 @@
                                 {{/isVerify}}
 
                                 <div class="{{^isGovernmentGateway}}{{^isVerify}} column-half {{/isVerify}}{{/isGovernmentGateway}}
-                                        {{#isGovernmentGateway}}{{^isSa}} column-half {{/isSa}}{{/isGovernmentGateway}}
-                                        {{#isGovernmentGateway}}{{#isSa}} column-one-third {{/isSa}}{{/isGovernmentGateway}}
-                                        {{#isVerify}} column-one-third {{/isVerify}} subnav__section">
+                                {{#isGovernmentGateway}}{{^isSa}} column-half {{/isSa}}{{/isGovernmentGateway}}
+                                {{#isGovernmentGateway}}{{#isSa}} column-one-third {{/isSa}}{{/isGovernmentGateway}}
+                                {{#isVerify}} column-one-third {{/isVerify}} subnav__section">
                                     <p class="subnav__section__heading">
 
                                         {{#isWelsh}}
@@ -593,13 +592,13 @@
                                     Mae hwn yn wasanaeth newydd{{^feedbackIdentifier}}.{{/feedbackIdentifier}}
                                     {{#feedbackIdentifier}}
                                         {{^authenticatedUser}}
-                                            &nbsp;- bydd eich
+                                            – bydd eich
                                             <a id="feedback-link" href="/contact/beta-feedback-unauthenticated?service={{feedbackIdentifier}}" data-sso="false" data-journey-click="other-global:Click:Feedback">
                                                 adborth</a>
                                             yn ein helpu i&#39;w wella.
                                         {{/authenticatedUser}}
                                         {{#authenticatedUser}}
-                                            &nbsp;- bydd eich
+                                            – bydd eich
                                             <a id="feedback-link" href="/contact/beta-feedback?service={{feedbackIdentifier}}" data-sso="false" data-journey-click="other-global:Click:Feedback">
                                                 adborth</a>
                                             yn ein helpu i&#39;w wella.
@@ -611,13 +610,13 @@
                                     This is a new service{{^feedbackIdentifier}}.{{/feedbackIdentifier}}
                                     {{#feedbackIdentifier}}
                                         {{^authenticatedUser}}
-                                            &nbsp;- your
+                                            – your
                                             <a id="feedback-link" href="/contact/beta-feedback-unauthenticated?service={{feedbackIdentifier}}" data-sso="false" data-journey-click="other-global:Click:Feedback">
                                                 feedback</a>
                                             will help us to improve it.
                                         {{/authenticatedUser}}
                                         {{#authenticatedUser}}
-                                            &nbsp;- your
+                                            – your
                                             <a id="feedback-link" href="/contact/beta-feedback?service={{feedbackIdentifier}}" data-sso="false" data-journey-click="other-global:Click:Feedback">
                                                 feedback</a>
                                             will help us to improve it.
