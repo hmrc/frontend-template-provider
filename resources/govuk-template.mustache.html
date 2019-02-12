@@ -424,8 +424,8 @@
                                 {{/isVerify}}
 
                                 {{^isVerify}}
-                                <div class="{{^isGovernmentGateway}}column-half {{/isGovernmentGateway}}
-                                {{#isGovernmentGateway}}{{^isSa}} column-half {{/isSa}}{{/isGovernmentGateway}}
+                                <div class="{{^isGovernmentGateway}}column-one-third {{/isGovernmentGateway}}
+                                {{#isGovernmentGateway}}{{^isSa}} column-one-third{{/isSa}}{{/isGovernmentGateway}}
                                 {{#isGovernmentGateway}}{{#isSa}} column-one-third {{/isSa}}{{/isGovernmentGateway}}
                                 subnav__section">
                                     <p class="subnav__section__heading">
@@ -456,8 +456,8 @@
 
                                 {{/isVerify}}
 
-                                <div class="{{^isGovernmentGateway}}{{^isVerify}} column-half {{/isVerify}}{{/isGovernmentGateway}}
-                                        {{#isGovernmentGateway}}{{^isSa}} column-half {{/isSa}}{{/isGovernmentGateway}}
+                                <div class="{{^isGovernmentGateway}}{{^isVerify}} column-one-third {{/isVerify}}{{/isGovernmentGateway}}
+                                        {{#isGovernmentGateway}}{{^isSa}} column-one-third {{/isSa}}{{/isGovernmentGateway}}
                                         {{#isGovernmentGateway}}{{#isSa}} column-one-third {{/isSa}}{{/isGovernmentGateway}}
                                         {{#isVerify}} column-one-third {{/isVerify}} subnav__section">
                                     <p class="subnav__section__heading">
@@ -485,6 +485,37 @@
                                         </a>
                                     </div>
                                 </div>
+                                {{^isVerify}}
+                                <div class="{{^isGovernmentGateway}}{{^isVerify}} column-one-third {{/isVerify}}{{/isGovernmentGateway}}
+                                        {{#isGovernmentGateway}}{{^isSa}} column-one-third {{/isSa}}{{/isGovernmentGateway}}
+                                        {{#isGovernmentGateway}}{{#isSa}} column-one-third {{/isSa}}{{/isGovernmentGateway}}
+                                        {{#isVerify}} column-one-third {{/isVerify}} subnav__section">
+                                    <p class="subnav__section__heading">
+
+                                        {{#isWelsh}}
+                                            Manylion personol
+                                        {{/isWelsh}}
+
+                                        {{^isWelsh}}
+                                            Sign in details
+                                        {{/isWelsh}}
+
+                                    </p>
+                                    <div>
+                                        <a href="/user-profile-redirect-frontend/profile-management" data-journey-click="link - click:utility-nav:Manage your Government Gateway details">
+
+                                            {{#isWelsh}}
+                                                Rheoli&#39;ch manylion personol
+                                            {{/isWelsh}}
+
+                                            {{^isWelsh}}
+                                                Manage your Government Gateway details
+                                            {{/isWelsh}}
+
+                                        </a>
+                                    </div>
+                                </div>
+                                {{/isVerify}}
                             </div>
                         </li>
 
