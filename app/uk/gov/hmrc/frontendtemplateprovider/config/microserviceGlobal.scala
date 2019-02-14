@@ -23,11 +23,12 @@ import uk.gov.hmrc.play.config.{AppName, ControllerConfig, RunMode}
 import uk.gov.hmrc.play.microservice.bootstrap.DefaultMicroserviceGlobal
 import uk.gov.hmrc.play.auth.microservice.filters.AuthorisationFilter
 import net.ceedubs.ficus.Ficus._
+import play.api.Mode.Mode
 import play.api.i18n.Messages.Implicits._
 import play.api.Play.current
 import play.api.mvc.EssentialFilter
 import uk.gov.hmrc.frontendtemplateprovider.config.WhitelistFilter
-import uk.gov.hmrc.play.microservice.filters.{ AuditFilter, LoggingFilter, MicroserviceFilterSupport }
+import uk.gov.hmrc.play.microservice.filters.{AuditFilter, LoggingFilter, MicroserviceFilterSupport}
 
 
 object ControllerConfiguration extends ControllerConfig {
@@ -41,6 +42,8 @@ object AuthParamsControllerConfiguration extends AuthParamsControllerConfig {
 object MicroserviceAuditFilter extends AuditFilter with AppName with MicroserviceFilterSupport {
   override val auditConnector = MicroserviceAuditConnector
   override def controllerNeedsAuditing(controllerName: String) = ControllerConfiguration.paramsForController(controllerName).needsAuditing
+
+  override protected def appNameConfiguration: Configuration = Play.current.configuration
 }
 
 object MicroserviceLoggingFilter extends LoggingFilter with MicroserviceFilterSupport {
@@ -67,4 +70,8 @@ object MicroserviceGlobal extends DefaultMicroserviceGlobal with RunMode with Mi
   override def microserviceFilters: Seq[EssentialFilter] = super.microserviceFilters ++ Play.configuration.getBoolean("shouldWhitelist").map {
     _ => Seq(WhitelistFilter)
   }.getOrElse(Seq.empty)
+
+  override protected def mode: Mode = Play.current.mode
+
+  override protected def runModeConfiguration: Configuration = Play.current.configuration
 }
