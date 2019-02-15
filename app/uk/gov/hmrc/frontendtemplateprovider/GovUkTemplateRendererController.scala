@@ -16,7 +16,8 @@
 
 package uk.gov.hmrc.frontendtemplateprovider.controllers
 
-import play.api.Play
+import play.api.Mode.Mode
+import play.api.{Configuration, Play}
 import play.api.mvc._
 import uk.gov.hmrc.play.config.ServicesConfig
 import uk.gov.hmrc.play.microservice.controller.BaseController
@@ -24,7 +25,11 @@ import uk.gov.hmrc.play.microservice.controller.BaseController
 import scala.concurrent.Future
 import scala.io.Source
 
-object GovUkTemplateRendererController extends GovUkTemplateRendererController
+object GovUkTemplateRendererController extends GovUkTemplateRendererController {
+	override protected def mode: Mode = Play.current.mode
+
+	override protected def runModeConfiguration: Configuration = Play.current.configuration
+}
 
 trait GovUkTemplateRendererController extends BaseController with ServicesConfig {
 
