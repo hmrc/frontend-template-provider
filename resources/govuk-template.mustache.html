@@ -284,7 +284,17 @@
             {{#showOrganisationLogo}}
 
                 <div class="logo">
-                    <span class="organisation-logo organisation-logo-medium">HM Revenue &amp; Customs</span>
+                    <span class="organisation-logo organisation-logo-medium">
+
+                        {{#isWelsh}}
+                            Cyllid &amp; Thollau EM
+                        {{/isWelsh}}
+
+                        {{^isWelsh}}
+                            HM Revenue &amp; Customs
+                        {{/isWelsh}}
+
+                    </span>
                 </div>
 
             {{/showOrganisationLogo}}
