@@ -116,20 +116,6 @@
         {{/projectId}}
     {{/optimizely}}
 
-    {{#googleTagManager}}
-        {{#gtmId}}
-            <script>
-                (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0], j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src= 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f); })(window,document,'script','dataLayer','GTM-{{gtmId}}');
-            </script>
-        {{/gtmId}}
-
-        {{^gtmId}}
-            <script>
-                (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0], j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src= 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f); })(window,document,'script','dataLayer','GTM-NDJKHWK');
-            </script>
-        {{/gtmId}}
-    {{/googleTagManager}}
-
     {{#assetsPath}}
         <script src="{{assetsPath}}javascripts/vendor/modernizr.js" type="text/javascript"></script>
     {{/assetsPath}}
@@ -139,15 +125,6 @@
 </head>
 
 <body {{#bodyClass}}class="{{bodyClass}}"{{/bodyClass}}>
-    {{#googleTagManager}}
-        {{#gtmId}}
-            <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-{{gtmId}}" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-        {{/gtmId}}
-        {{^gtmId}}
-            <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NDJKHWK" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-        {{/gtmId}}
-    {{/googleTagManager}}
-
 <script type="text/javascript">document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
 
 <div id="skiplink-container">
@@ -382,39 +359,6 @@
 
                             <div class="subnav js-hidden" id="subnav-your-account" role="navigation" aria-labelledby="account-menu__main-2" aria-label="Your account">
 
-                                {{#isGovernmentGateway}}
-                                    {{#isSa}}
-
-                                        <div class="column-one-third subnav__section">
-                                            <p class="subnav__section__heading">
-
-                                                {{#isWelsh}}
-                                                    Trethi busnes
-                                                {{/isWelsh}}
-
-                                                {{^isWelsh}}
-                                                    Business taxes
-                                                {{/isWelsh}}
-
-                                            </p>
-                                            <div>
-                                                <a href="/business-account" data-journey-click="link - click:utility-nav:View your business tax account">
-
-                                                    {{#isWelsh}}
-                                                        Bwrw golwg ar eich cyfrif treth busnes
-                                                    {{/isWelsh}}
-
-                                                    {{^isWelsh}}
-                                                        View your business tax account
-                                                    {{/isWelsh}}
-
-                                                </a>
-                                            </div>
-                                        </div>
-
-                                    {{/isSa}}
-                                {{/isGovernmentGateway}}
-
                                 {{#isVerify}}
 
                                     <div class="column-one-third subnav__section">
@@ -447,8 +391,8 @@
                                 {{/isVerify}}
 
                                 {{^isVerify}}
-                                <div class="{{^isGovernmentGateway}}column-half {{/isGovernmentGateway}}
-                                {{#isGovernmentGateway}}{{^isSa}} column-half {{/isSa}}{{/isGovernmentGateway}}
+                                <div class="{{^isGovernmentGateway}}column-one-third {{/isGovernmentGateway}}
+                                {{#isGovernmentGateway}}{{^isSa}} column-one-third{{/isSa}}{{/isGovernmentGateway}}
                                 {{#isGovernmentGateway}}{{#isSa}} column-one-third {{/isSa}}{{/isGovernmentGateway}}
                                 subnav__section">
                                     <p class="subnav__section__heading">
@@ -479,8 +423,8 @@
 
                                 {{/isVerify}}
 
-                                <div class="{{^isGovernmentGateway}}{{^isVerify}} column-half {{/isVerify}}{{/isGovernmentGateway}}
-                                        {{#isGovernmentGateway}}{{^isSa}} column-half {{/isSa}}{{/isGovernmentGateway}}
+                                <div class="{{^isGovernmentGateway}}{{^isVerify}} column-one-third {{/isVerify}}{{/isGovernmentGateway}}
+                                        {{#isGovernmentGateway}}{{^isSa}} column-one-third {{/isSa}}{{/isGovernmentGateway}}
                                         {{#isGovernmentGateway}}{{#isSa}} column-one-third {{/isSa}}{{/isGovernmentGateway}}
                                         {{#isVerify}} column-one-third {{/isVerify}} subnav__section">
                                     <p class="subnav__section__heading">
@@ -508,8 +452,58 @@
                                         </a>
                                     </div>
                                 </div>
+                                {{^isVerify}}
+                                <div class="{{^isGovernmentGateway}}{{^isVerify}} column-one-third {{/isVerify}}{{/isGovernmentGateway}}
+                                        {{#isGovernmentGateway}}{{^isSa}} column-one-third {{/isSa}}{{/isGovernmentGateway}}
+                                        {{#isGovernmentGateway}}{{#isSa}} column-one-third {{/isSa}}{{/isGovernmentGateway}}
+                                        {{#isVerify}} column-one-third {{/isVerify}} subnav__section">
+                                    <p class="subnav__section__heading">
+
+                                        {{#isWelsh}}
+                                            Manylion mewngofnodi
+                                        {{/isWelsh}}
+
+                                        {{^isWelsh}}
+                                            Sign-in details
+                                        {{/isWelsh}}
+
+                                    </p>
+                                    <div>
+                                        <a href="/user-profile-redirect-frontend/profile-management" data-journey-click="link - click:utility-nav:Manage your Government Gateway details">
+
+                                            {{#isWelsh}}
+                                                Rheoli&#39;ch manylion Porth y Llywodraeth
+                                            {{/isWelsh}}
+
+                                            {{^isWelsh}}
+                                                Manage your Government Gateway details
+                                            {{/isWelsh}}
+
+                                        </a>
+                                    </div>
+                                </div>
+                                {{/isVerify}}
                             </div>
                         </li>
+                        {{#isGovernmentGateway}}
+                        {{#isSa}}
+
+                        <li>
+                            <a href="/business-account" class="account-menu__link" data-journey-click="link - click:utility-nav:View your business tax account">
+
+                                {{#isWelsh}}
+                                Cyfrif treth busnes
+                                {{/isWelsh}}
+
+                                {{^isWelsh}}
+                                Business tax account
+                                {{/isWelsh}}
+
+                            </a>
+                        </li>
+
+                        {{/isSa}}
+                        {{/isGovernmentGateway}}
 
                         {{#signOutUrl}}
                             <li>
