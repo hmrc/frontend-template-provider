@@ -118,9 +118,9 @@ class MainSpec extends UnitSpec with OneAppPerSuite {
         "fullWidthBannerText" -> "Banner Text"
       )
       outputText should include(
-        """                <p>
-          |                    Banner Text
-          |                </p>""".stripMargin
+        """                        <p>
+          |                            Banner Text
+          |                        </p>""".stripMargin
       )
       outputText should not include("""<a href="" target="_blank" data-journey-click="link - click::Banner Text">""")
     }
