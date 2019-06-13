@@ -137,6 +137,10 @@
         {{^assetsPath}}
             <script src="/assets/3.11.0/javascripts/vendor/modernizr.js" type="text/javascript"></script>
         {{/assetsPath}}
+
+        {{#headerScripts}}
+            {{headerScripts}}
+        {{/headerScripts}}
     </head>
 
     <body {{#bodyClass}}class="{{bodyClass}}"{{/bodyClass}}>
