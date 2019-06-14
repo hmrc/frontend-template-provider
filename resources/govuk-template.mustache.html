@@ -102,6 +102,10 @@
             {{/url}}
         {{/linkElems}}
 
+        {{#headInlineScript}}
+            {{{headInlineScript}}}
+        {{/headInlineScript}}
+
         {{#optimizelyProjectId}}
             <script src="{{#optimizelyBaseUrl}}{{{optimizelyBaseUrl}}}{{/optimizelyBaseUrl}}{{^optimizelyBaseUrl}}//cdn.optimizely.com/js/{{/optimizelyBaseUrl}}{{{optimizelyProjectId}}}.js" type="text/javascript"></script>
         {{/optimizelyProjectId}}
@@ -613,90 +617,6 @@
         <footer class="group js-footer" id="footer" role="contentinfo">
 
             <div class="footer-wrapper">
-
-                {{#showEuExitFooterLink}}
-                    <h2 class="heading-medium">
-                        {{#isWelsh}}
-                            Paratoi ar gyfer Ymadael &acirc;&rsquo;r UE (Saesneg yn unig)
-                        {{/isWelsh}}
-                        {{^isWelsh}}
-                            Prepare for EU Exit
-                        {{/isWelsh}}
-                    </h2>
-
-                    <hr>
-
-                    <div class="grid-row">
-                        <ul class="push--bottom">
-                            <div class="column-one-half">
-                                <li>
-                                    <p><a href="https://www.gov.uk/business-uk-leaving-eu"
-                                          target="_blank"
-                                          data-sso="false"
-                                          data-journey-click="footer:Click:Prepare your business for the UK leaving the EU">
-                                            {{#isWelsh}}
-                                                Paratoi eich busnes ar gyfer y DU yn gadael yr UE (Saesneg yn unig)
-                                            {{/isWelsh}}
-                                            {{^isWelsh}}
-                                                Prepare your business for the UK leaving the EU
-                                            {{/isWelsh}}
-
-                                    </a></p>
-                                </li>
-
-                                <li>
-                                    <p><a href="https://www.gov.uk/prepare-eu-exit"
-                                          target="_blank"
-                                          data-sso="false"
-                                          data-journey-click="footer:Click:Prepare for EU Exit if you live in the UK">
-                                            {{#isWelsh}}
-                                                Paratoi ar gyfer Ymadael &acirc;&rsquo;r UE os ydych yn byw yn y DU (Saesneg yn unig)
-                                            {{/isWelsh}}
-                                            {{^isWelsh}}
-                                                Prepare for EU Exit if you live in the UK
-                                            {{/isWelsh}}
-
-                                    </a></p>
-                                </li>
-                            </div>
-
-                            <div class="column-one-half">
-                                <li>
-                                    <p><a href="https://www.gov.uk/uk-nationals-living-eu"
-                                          target="_blank"
-                                          data-sso="false"
-                                          data-journey-click="footer:Click:Living in Europe after the UK leaves the EU">
-                                            {{#isWelsh}}
-                                                Byw yn Ewrop ar &ocirc;l i&rsquo;r DU adael yr UE (Saesneg yn unig)
-                                            {{/isWelsh}}
-                                            {{^isWelsh}}
-                                                Living in Europe after the UK leaves the EU
-                                            {{/isWelsh}}
-                                    </a></p>
-                                </li>
-
-                                <li>
-                                    <p><a href="https://www.gov.uk/staying-uk-eu-citizen"
-                                          target="_blank"
-                                          data-sso="false"
-                                          data-journey-click="footer:Click:Continue to live in the UK after it leaves the EU">
-                                            {{#isWelsh}}
-                                                Parhau i fyw yn y DU ar &ocirc;l iddi adael yr UE (Saesneg yn unig)
-                                            {{/isWelsh}}
-                                            {{^isWelsh}}
-                                                Continue to live in the UK after it leaves the EU
-                                            {{/isWelsh}}
-                                    </a></p>
-                                </li>
-
-                            </div>
-                        </ul>
-                    </div>
-
-                    <hr>
-
-                {{/showEuExitFooterLink}}
-
                 {{{ footerTop }}}
 
                 <div class="footer-meta">
