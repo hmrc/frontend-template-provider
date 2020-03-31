@@ -287,6 +287,28 @@
             </div>
         {{/fullWidthBannerTitle}}
 
+        {{#covidBannerTitle}}
+        <div id="covid-banner" class="covid-banner">
+            <div class="centered-content visible covid-banner__container" aria-hidden="false">
+                <div class="covid-banner__title">
+                    {{#covidBannerLink}}
+                    <a id="covid-banner-link" href="{{covidBannerLink}}" target="_blank" data-journey-click="link - click:{{covidBannerGaAction}}:{{covidBannerText}}">
+                        {{covidBannerTitle}}
+                    </a>
+                    {{/covidBannerLink}}
+                </div>
+        
+                {{#covidBannerDismissText}}
+                <a class="covid-banner__close" href="#" role="button">
+                                    <span aria-hidden="true">
+                                        {{covidBannerDismissText}}
+                                    </span>
+                </a>
+                {{/covidBannerDismissText}}
+            </div>
+        </div>
+        {{/covidBannerTitle}}
+
         <main id="wrapper" role="main" {{#mainClass}}class="{{mainClass}}"{{/mainClass}} {{{mainAttributes}}}>
             <div id="content">
 
