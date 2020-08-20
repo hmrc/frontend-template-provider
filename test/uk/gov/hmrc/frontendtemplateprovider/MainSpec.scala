@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -137,7 +137,6 @@ class MainSpec extends UnitSpec with OneAppPerSuite {
       )
 
       outputText should include("""<a href="back-link-url" class="link-back">""")
-      outputText should include("""<a href="back-link-url">""")
     }
   }
 }
