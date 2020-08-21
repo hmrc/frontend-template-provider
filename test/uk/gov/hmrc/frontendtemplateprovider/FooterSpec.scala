@@ -60,14 +60,14 @@ class FooterSpec extends UnitSpec with OneAppPerSuite {
         "termsAndConditionFooterLink" -> Map("url" -> "www.example.com", "text" -> "something")
       )
 
-      outputText should include("""<li><a href="www.example.com" target="_blank" data-sso="false" data-journey-click="footer:Click:Terms and conditions">something</a></li>""")
+      outputText should include("""<li><a href="www.example.com" data-sso="false" data-journey-click="footer:Click:Terms and conditions">something</a></li>""")
     }
 
     "show default terms and condition link if 'termsAndConditionFooterLink' has no value" in new CommonSetup {
       override lazy val inputMap = Map(
         "termsAndConditionFooterLink" -> None)
 
-      outputText should include("""<a href="/help/terms-and-conditions" target="_blank" data-sso="false" data-journey-click="footer:Click:Terms and conditions">""")
+      outputText should include("""<a href="/help/terms-and-conditions" data-sso="false" data-journey-click="footer:Click:Terms and conditions">""")
       outputText should include("""Terms and conditions""")
     }
 
