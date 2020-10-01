@@ -3,7 +3,7 @@ import play.sbt.PlayImport._
 import play.core.PlayVersion
 
 object AppDependencies {
-  
+
   private val playVersion = "play-26"
 
   val compile: Seq[ModuleID] = Seq(
@@ -19,7 +19,7 @@ object AppDependencies {
     "org.scalatest"                     %% "scalatest"             % "3.0.8",
     "org.pegdown"                       %  "pegdown"               % "1.6.0",
     "com.typesafe.play"                 %% "play-test"             % PlayVersion.current,
-    "org.scalatestplus.play"            %% "scalatestplus-play"    % "2.0.1",
+    "org.scalatestplus.play"            %% "scalatestplus-play"    % "3.1.0",
     "com.github.spullara.mustache.java" %  "compiler"              % "0.9.6",
     "com.github.spullara.mustache.java" %  "scala-extensions-2.11" % "0.9.6"
   ).map(_ % "test")
