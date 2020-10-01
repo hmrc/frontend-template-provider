@@ -25,10 +25,10 @@ lazy val microservice = Project(appName, file("."))
     libraryDependencies ++= AppDependencies.all,
     retrieveManaged := true,
     evictionWarningOptions in update := EvictionWarningOptions.default.withWarnScalaVersionEviction(false),
-    routesGenerator := StaticRoutesGenerator,
-    excludes := Seq(
-      "resources/**"
-    ),
+    routesGenerator := InjectedRoutesGenerator,
+//    excludes := Seq(
+//      "resources/**"
+//    ),
     majorVersion := 0,
     unmanagedResourceDirectories in sbt.Compile += baseDirectory.value / "resources",
     resolvers ++= Seq(

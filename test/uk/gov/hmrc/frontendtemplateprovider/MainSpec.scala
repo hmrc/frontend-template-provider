@@ -16,10 +16,10 @@
 
 package uk.gov.hmrc.frontendtemplateprovider
 
-import org.scalatestplus.play.OneAppPerSuite
+import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import uk.gov.hmrc.play.test.UnitSpec
 
-class MainSpec extends UnitSpec with OneAppPerSuite {
+class MainSpec extends UnitSpec with GuiceOneAppPerSuite {
 
   "Main" should {
     "not add a main class for main tag if non specified SDT 571" in new CommonSetup {

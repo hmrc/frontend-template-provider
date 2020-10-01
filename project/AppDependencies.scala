@@ -3,18 +3,19 @@ import play.sbt.PlayImport._
 import play.core.PlayVersion
 
 object AppDependencies {
+  
+  private val playVersion = "play-26"
 
   val compile: Seq[ModuleID] = Seq(
     ws,
-    "uk.gov.hmrc" %% "microservice-bootstrap" % "10.6.0",
-    "uk.gov.hmrc" %% "frontend-bootstrap"     % "12.9.0",
-    "uk.gov.hmrc" %% "play-ui"                % "8.2.0-play-25",
-    "uk.gov.hmrc" %% "domain"                 % "5.6.0-play-25",
-    "uk.gov.hmrc" %% "play-whitelist-filter"  % "3.1.0-play-25"
+    "uk.gov.hmrc" %% s"bootstrap-$playVersion" % "1.16.0",
+    "uk.gov.hmrc" %% "play-ui"                 % s"8.2.0-$playVersion",
+    "uk.gov.hmrc" %% "domain"                  % s"5.10.0-$playVersion",
+    "uk.gov.hmrc" %% "play-whitelist-filter"   % s"3.4.0-$playVersion"
   )
 
   val test: Seq[ModuleID] = Seq(
-    "uk.gov.hmrc"                       %% "hmrctest"              % "3.9.0-play-25" ,
+    "uk.gov.hmrc"                       %% "hmrctest"              % s"3.9.0-$playVersion" ,
     "org.scalatest"                     %% "scalatest"             % "3.0.8",
     "org.pegdown"                       %  "pegdown"               % "1.6.0",
     "com.typesafe.play"                 %% "play-test"             % PlayVersion.current,

@@ -31,9 +31,11 @@ class WhitelistFilterTest extends WordSpec with Matchers with WithFakeApplicatio
     .bindings(bindModules:_*)
     .build()
 
+  def sut: WhitelistFilter = fakeApplication.injector.instanceOf[WhitelistFilter]
+
   "WhitelistFilter" should {
     "retrieve the whitelist IP addresses correctly" in {
-      WhitelistFilter.whitelist should be(Seq(ip))
+      sut.whitelist should be(Seq(ip))
     }
   }
 
