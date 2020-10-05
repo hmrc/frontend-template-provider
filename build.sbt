@@ -20,15 +20,12 @@ lazy val microservice = Project(appName, file("."))
     scalaSettings,
     publishingSettings,
     defaultSettings(),
-    scalaVersion := "2.11.11",
+    scalaVersion := "2.12.12",
     PlayKeys.playDefaultPort := 9310,
     libraryDependencies ++= AppDependencies.all,
     retrieveManaged := true,
     evictionWarningOptions in update := EvictionWarningOptions.default.withWarnScalaVersionEviction(false),
-    routesGenerator := StaticRoutesGenerator,
-    excludes := Seq(
-      "resources/**"
-    ),
+    routesGenerator := InjectedRoutesGenerator,
     majorVersion := 0,
     unmanagedResourceDirectories in sbt.Compile += baseDirectory.value / "resources",
     resolvers ++= Seq(
@@ -36,8 +33,3 @@ lazy val microservice = Project(appName, file("."))
       Resolver.jcenterRepo
      )
   )
-
-def oneForkedJvmPerTest(tests: Seq[TestDefinition]) =
-  tests map {
-    test => new Group(test.name, Seq(test), SubProcess(ForkOptions(runJVMOptions = Seq("-Dtest.name=" + test.name))))
-  }

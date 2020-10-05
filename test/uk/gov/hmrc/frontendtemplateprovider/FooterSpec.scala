@@ -16,10 +16,10 @@
 
 package uk.gov.hmrc.frontendtemplateprovider
 
-import org.scalatestplus.play.OneAppPerSuite
+import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import uk.gov.hmrc.play.test.UnitSpec
 
-class FooterSpec extends UnitSpec with OneAppPerSuite {
+class FooterSpec extends UnitSpec with GuiceOneAppPerSuite {
 
   "Footer" should {
     "contain links to assets-frontend JS" in new CommonSetup {

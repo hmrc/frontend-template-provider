@@ -16,10 +16,10 @@
 
 package uk.gov.hmrc.frontendtemplateprovider
 
-import org.scalatestplus.play.OneAppPerSuite
+import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import uk.gov.hmrc.play.test.UnitSpec
 
-class HeadSpec extends UnitSpec with OneAppPerSuite {
+class HeadSpec extends UnitSpec with GuiceOneAppPerSuite {
 
   "Head" should {
     "contain IE links" in new CommonSetup {
