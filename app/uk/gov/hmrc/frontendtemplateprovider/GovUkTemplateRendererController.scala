@@ -16,22 +16,26 @@
 
 package uk.gov.hmrc.frontendtemplateprovider.controllers
 
-import javax.inject.Inject
+import play.api.Mode.Mode
+import play.api.{Configuration, Play}
 import play.api.mvc._
-import uk.gov.hmrc.play.bootstrap.config.RunMode
-import uk.gov.hmrc.play.bootstrap.controller.BackendController
+import uk.gov.hmrc.play.config.ServicesConfig
+import uk.gov.hmrc.play.microservice.controller.BaseController
 
 import scala.concurrent.Future
 import scala.io.Source
 
-class GovUkTemplateRendererController @Inject()(
-																								 runMode: RunMode,
-																								 cc: ControllerComponents
-																							 ) extends BackendController(cc) {
+object GovUkTemplateRendererController extends GovUkTemplateRendererController {
+	override protected def mode: Mode = Play.current.mode
+
+	override protected def runModeConfiguration: Configuration = Play.current.configuration
+}
+
+trait GovUkTemplateRendererController extends BaseController with ServicesConfig {
 
 	def serveMustacheTemplate(): Action[AnyContent] = Action.async { implicit request =>
 
-		val tpl = if(runMode.env == "Test" || runMode.env == "Dev") {
+		val tpl = if(env == "Test" || env == "Dev") {
 			Source.fromInputStream(getClass.getResourceAsStream("/govuk-template.mustache.html")).mkString
 				.replaceAll("""href="/contact""",          """href="http://localhost:9250/contact""")
 				.replaceAll("""href="/template""",         """href="http://localhost:9310/template""")

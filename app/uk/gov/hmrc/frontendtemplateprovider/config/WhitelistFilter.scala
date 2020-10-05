@@ -16,15 +16,15 @@
 
 package uk.gov.hmrc.frontendtemplateprovider.config
 
+
 import akka.stream.Materializer
-import javax.inject.Inject
-import play.api.Configuration
+import play.api.Play
 import play.api.mvc.Call
 import uk.gov.hmrc.whitelist.AkamaiWhitelistFilter
 
-class WhitelistFilter @Inject()(runModeConfiguration: Configuration, materializer: Materializer) extends AkamaiWhitelistFilter {
-  override lazy val whitelist: Seq[String] = runModeConfiguration.getOptional[Seq[String]]("whitelistIps").getOrElse(Seq())
+object WhitelistFilter extends AkamaiWhitelistFilter {
+  override lazy val whitelist: Seq[String] = Play.current.configuration.getStringSeq("whitelistIps").getOrElse(Seq())
   override val destination: Call = Call("GET", "https://www.gov.uk")
 
-  override implicit def mat: Materializer = materializer
+  override implicit def mat: Materializer = Play.current.materializer
 }

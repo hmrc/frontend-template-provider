@@ -19,7 +19,8 @@ package uk.gov.hmrc.frontendtemplateprovider
 import java.io.{StringReader, StringWriter}
 
 import com.github.mustachejava.DefaultMustacheFactory
-import play.api.Application
+import play.api.{Configuration, Play}
+import play.api.Mode.Mode
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.frontendtemplateprovider.controllers.GovUkTemplateRendererController
@@ -39,11 +40,15 @@ trait CommonSetup {
     setObjectHandler(new com.twitter.mustache.ScalaObjectHandler)
   }
 
-  def c(implicit app: Application) = app.injector.instanceOf[GovUkTemplateRendererController]
+  lazy val c = new GovUkTemplateRendererController() {
+    override protected def mode: Mode = Play.current.mode
 
-  def r(implicit app: Application) = c.serveMustacheTemplate()(FakeRequest("GET", "/"))
+    override protected def runModeConfiguration: Configuration = Play.current.configuration
+  }
 
-  def outputText(implicit app: Application) = {
+  lazy val r = c.serveMustacheTemplate()(FakeRequest("GET", "/"))
+
+  lazy val outputText = {
     val sw = new StringWriter()
     val m = TestMustacheFactory.compile(new StringReader(contentAsString(r)), "template")
     m.execute(sw, inputMap)
