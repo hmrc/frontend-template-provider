@@ -16,13 +16,12 @@
 
 package controllers
 
-import javax.inject.Inject
 import play.api.http.HttpErrorHandler
 import play.api.mvc.{RequestHeader, Result}
 
 import scala.concurrent.Future
 
-class AssetsController @Inject()(metaData: AssetsMetadata) extends AssetsBuilder(new HttpErrorHandler {
+class AssetsController extends AssetsBuilder(new HttpErrorHandler {
 
   override def onServerError(request: RequestHeader, exception: Throwable): Future[Result] = {
     throw new RuntimeException(s"$getClass onServerError", exception)  //FIXME
@@ -31,4 +30,4 @@ class AssetsController @Inject()(metaData: AssetsMetadata) extends AssetsBuilder
   override def onClientError(request: RequestHeader, statusCode: Int, message: String): Future[Result] = {
     throw new RuntimeException(s"$getClass onClientError $statusCode : $message")  //FIXME
   }
-}, metaData)
+})
