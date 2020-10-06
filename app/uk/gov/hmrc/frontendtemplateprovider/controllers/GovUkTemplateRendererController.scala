@@ -23,12 +23,10 @@ import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
 import scala.concurrent.Future
 import scala.io.Source
-
 class GovUkTemplateRendererController @Inject()(
 																								 runMode: RunMode,
 																								 mcc: MessagesControllerComponents
 																							 ) extends FrontendController(mcc) {
-
 	def serveMustacheTemplate(): Action[AnyContent] = Action.async { implicit request =>
 
 		val tpl = if(runMode.env == "Test" || runMode.env == "Dev") {
