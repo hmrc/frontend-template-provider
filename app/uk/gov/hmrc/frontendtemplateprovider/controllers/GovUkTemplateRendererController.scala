@@ -19,15 +19,15 @@ package uk.gov.hmrc.frontendtemplateprovider.controllers
 import javax.inject.Inject
 import play.api.mvc._
 import uk.gov.hmrc.play.bootstrap.config.RunMode
-import uk.gov.hmrc.play.bootstrap.controller.BackendController
+import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
 import scala.concurrent.Future
 import scala.io.Source
 
 class GovUkTemplateRendererController @Inject()(
 																								 runMode: RunMode,
-																								 cc: ControllerComponents
-																							 ) extends BackendController(cc) {
+																								 mcc: MessagesControllerComponents
+																							 ) extends FrontendController(mcc) {
 
 	def serveMustacheTemplate(): Action[AnyContent] = Action.async { implicit request =>
 

@@ -1,13 +1,12 @@
-import uk.gov.hmrc._
-import DefaultBuildSettings._
-import uk.gov.hmrc.{SbtBuildInfo, ShellPrompt, SbtAutoBuildPlugin}
-import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin
-import uk.gov.hmrc.versioning.SbtGitVersioning
-import uk.gov.hmrc.SbtArtifactory
 import play.sbt.routes.RoutesKeys.routesGenerator
-import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin._
 import sbt._
-import sbt.Tests.{SubProcess, Group}
+import uk.gov.hmrc.DefaultBuildSettings._
+import uk.gov.hmrc.{SbtArtifactory, SbtAutoBuildPlugin, _}
+import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin
+import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin._
+import uk.gov.hmrc.versioning.SbtGitVersioning
+import de.heikoseeberger.sbtheader.{CommentBlockCreator, CommentStyle, FileType}
+import de.heikoseeberger.sbtheader.HeaderPlugin.autoImport.HeaderPattern.commentBetween
 
 val appName: String = "frontend-template-provider"
 
@@ -16,7 +15,7 @@ lazy val playSettings : Seq[Setting[_]] = Seq.empty
 
 lazy val microservice = Project(appName, file("."))
   .enablePlugins(Seq(play.sbt.PlayScala,SbtAutoBuildPlugin, SbtGitVersioning, SbtDistributablesPlugin, SbtArtifactory) ++ plugins : _*)
-  .settings(playSettings ,
+  .settings(playSettings,
     scalaSettings,
     publishingSettings,
     defaultSettings(),
@@ -27,6 +26,8 @@ lazy val microservice = Project(appName, file("."))
     evictionWarningOptions in update := EvictionWarningOptions.default.withWarnScalaVersionEviction(false),
     routesGenerator := InjectedRoutesGenerator,
     majorVersion := 0,
+    headerMappings := headerMappings.value + (FileType("html") ->
+      CommentStyle(new CommentBlockCreator("{{!", "  ", "}}"), commentBetween("\\{\\{!", "  ", "\\}\\}"))),
     unmanagedResourceDirectories in sbt.Compile += baseDirectory.value / "resources",
     resolvers ++= Seq(
       Resolver.bintrayRepo("hmrc", "releases"),
