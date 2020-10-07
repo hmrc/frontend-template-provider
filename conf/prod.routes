@@ -2,5 +2,4 @@ GET        /template/mustache           uk.gov.hmrc.frontendtemplateprovider.con
 
 ->         /                          health.Routes
 ->         /template                  template.Routes
-
 GET        /admin/metrics             @com.kenshoo.play.metrics.MetricsController.metrics

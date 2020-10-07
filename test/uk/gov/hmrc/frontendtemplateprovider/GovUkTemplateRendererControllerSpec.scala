@@ -17,26 +17,28 @@
 package uk.gov.hmrc.frontendtemplateprovider
 
 import org.scalatest.{Matchers, WordSpec}
+import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.mvc.Results
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.frontendtemplateprovider.controllers.GovUkTemplateRendererController
-import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 
-class GovUkTemplateRendererControllerControllerSpec extends WordSpec with Matchers  with WithFakeApplication with Results {
+class GovUkTemplateRendererControllerSpec extends WordSpec with Matchers with GuiceOneAppPerSuite with Results {
 
   val fakeRequest = FakeRequest("GET", "/")
+
+  lazy val sut = app.injector.instanceOf[GovUkTemplateRendererController]
 
 
   "GET /serve-template" should {
     "Return with an HTTP 200 status" in {
-      val result = GovUkTemplateRendererController.serveMustacheTemplate()(fakeRequest)
+      val result = sut.serveMustacheTemplate()(fakeRequest)
 
       status(result) shouldBe OK
     }
 
     "Render the template correctly" in {
-      val result = GovUkTemplateRendererController.serveMustacheTemplate()(fakeRequest)
+      val result = sut.serveMustacheTemplate()(fakeRequest)
       val bodyText = contentAsString(result)
 
       bodyText should not contain "@resolveUrl"
@@ -44,7 +46,7 @@ class GovUkTemplateRendererControllerControllerSpec extends WordSpec with Matche
     }
 
     "Serve the template with a \"text/html\" Content-type header" in {
-      val result = GovUkTemplateRendererController.serveMustacheTemplate()(fakeRequest)
+      val result = sut.serveMustacheTemplate()(fakeRequest)
       val mimetype = contentType(result).mkString
 
       mimetype should include("text/html")
