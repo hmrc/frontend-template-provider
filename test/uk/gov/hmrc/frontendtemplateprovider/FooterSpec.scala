@@ -104,65 +104,9 @@ class FooterSpec extends UnitSpec with OneAppPerSuite {
       outputText should not include("""<script type="text/javascript">var ssoUrl = """)
     }
 
-    "not show Google Analytics snippet when no googleAnalytics given SDT-475" in new CommonSetup {
+    "not show Google Analytics snippet" in new CommonSetup {
       override lazy val inputMap = Map[String, Any]()
       outputText should not include("""(window,document,'script','//www.google-analytics.com/analytics.js','ga')""")
-    }
-
-    "show Google Analytics snippet when googleAnalytics trackingId given SDT-475" in new CommonSetup {
-      override lazy val inputMap = Map(
-        "googleAnalytics" -> Map("trackingId" -> "UA-XXXX-Y")
-      )
-
-      outputText should include("""ga('create', 'UA-XXXX-Y', 'auto');""")
-    }
-
-    "do not add ga set if no gaSetParams given" in new CommonSetup {
-      override lazy val inputMap = Map[String, Any]()
-      outputText should not include("""ga('set'""")
-    }
-
-    "set the correct dimensions in ga" in new CommonSetup {
-      override lazy val inputMap = Map(
-        "googleAnalytics" -> Map(
-          "trackingId" -> "random",
-          "authProvider" -> "IDA",
-          "confidenceLevel" -> "200"
-        )
-      )
-
-      gaSetRegex.findAllIn(outputText).length shouldBe 2
-
-      outputText should include("'dimension38', 'IDA'")
-      outputText should include("'dimension39', '200'")
-    }
-
-    "not set the dimensions in ga when the data is blank" in new CommonSetup {
-      val authProvider = "IDA"
-      val confidenceLevel = "200"
-
-      override lazy val inputMap = Map(
-        "googleAnalytics" -> Map(
-          "trackingId" -> "random",
-          "authProvider" -> "IDA",
-          "confidenceLevel" -> null
-        )
-      )
-
-      gaSetRegex.findAllIn(outputText).length shouldBe 1
-
-      outputText should include("'dimension38', 'IDA'")
-    }
-
-    "support custom cookie domain for Google Analytics snippet SDT-475" in new CommonSetup {
-      override lazy val inputMap = Map(
-        "googleAnalytics" -> Map(
-          "trackingId" -> "UA-XXXX-Y",
-          "cookieDomain" -> "example.com"
-        )
-      )
-
-      outputText should include("""ga('create', 'UA-XXXX-Y', 'example.com');""")
     }
 
     "support inline script elements in the footer of the page" in new CommonSetup {
@@ -185,7 +129,7 @@ class FooterSpec extends UnitSpec with OneAppPerSuite {
 
     "should not include session timeout if set to true" in new CommonSetup {
       override lazy val inputMap = Map[String, Any]()
-      
+
       outputText should not include("""$.timeoutDialog({timeout: 900, countdown: 60, keep_alive_url: '/keepAliveUrl/', logout_url: '/logoutUrl/'});""")
     }
   }

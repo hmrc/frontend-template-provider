@@ -61,36 +61,11 @@ class HeadSpec extends UnitSpec with GuiceOneAppPerSuite {
       bodyTagRegex.findFirstIn(outputText).get should include("""class="clazz"""")
     }
 
-    "contains no optimizely script SDT-471" in new CommonSetup {
+    "contains no optimizely script" in new CommonSetup {
       override lazy val inputMap = Map[String, Any]()
 
       outputText should not include("optimizely")
       outputText should not include("<script src=''") // should not include a script with no src
-    }
-
-    "contain no optimizely script if only baseUrl is provided SDT-471" in new CommonSetup {
-      override lazy val inputMap = Map(
-        "optimizelyBaseUrl" -> "cdn.optimizely.com"
-      )
-
-      outputText should not include("cdn.optimizely.com")
-    }
-
-    "contain optimizely script if only projectId is provided SDT-471" in new CommonSetup {
-      override lazy val inputMap = Map(
-        "optimizelyProjectId" -> "id123"
-      )
-
-      outputText should include("""<script src="//cdn.optimizely.com/js/id123.js" type="text/javascript"></script>""")
-    }
-
-    "contain optimizely script if both url and projectId is provided SDT-470" in new CommonSetup {
-      override lazy val inputMap = Map(
-        "optimizelyBaseUrl" -> "cdn.optimizely.com/",
-        "optimizelyProjectId" -> "id123"
-      )
-
-      outputText should include("""<script src="cdn.optimizely.com/id123.js" type="text/javascript"></script>""")
     }
 
     "contain optimizely audience variable if provided" in new CommonSetup {
@@ -102,7 +77,6 @@ class HeadSpec extends UnitSpec with GuiceOneAppPerSuite {
       )
 
       outputText should include("var audience = \"userGroup\"")
-      outputText should include("""<script src="//cdn.optimizely.com/js/id123.js" type="text/javascript"></script>""")
     }
 
     "not contain optimizely audience variable if not provided" in new CommonSetup {
@@ -111,7 +85,6 @@ class HeadSpec extends UnitSpec with GuiceOneAppPerSuite {
       )
 
       outputText should not include("var audience")
-      outputText should include("""<script src="//cdn.optimizely.com/js/id123.js" type="text/javascript"></script>""")
     }
 
     "contain the default title no custom one is supplied" in new CommonSetup {
