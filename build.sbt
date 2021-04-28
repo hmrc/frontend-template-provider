@@ -30,7 +30,6 @@ lazy val microservice = Project(appName, file("."))
       CommentStyle(new CommentBlockCreator("{{!", "  ", "}}"), commentBetween("\\{\\{!", "  ", "\\}\\}"))),
     unmanagedResourceDirectories in sbt.Compile += baseDirectory.value / "resources",
     resolvers ++= Seq(
-      Resolver.bintrayRepo("hmrc", "releases"),
       Resolver.jcenterRepo
      )
   )
