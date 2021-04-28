@@ -31,5 +31,6 @@ lazy val microservice = Project(appName, file("."))
     unmanagedResourceDirectories in sbt.Compile += baseDirectory.value / "resources",
     resolvers ++= Seq(
       Resolver.jcenterRepo
-     )
+     ),
+      PlayCrossCompilation.playCrossCompilationSettings
   )
