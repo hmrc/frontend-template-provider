@@ -4,7 +4,7 @@ import play.core.PlayVersion
 
 object AppDependencies {
   
-  private val playVersion = "play-26"
+  private val playVersion = "play-27"
 
   val compile: Seq[ModuleID] = Seq(
     ws,
@@ -18,7 +18,7 @@ object AppDependencies {
     "org.scalatest"                     %% "scalatest"             % "3.0.8",
     "org.pegdown"                       %  "pegdown"               % "1.6.0",
     "com.typesafe.play"                 %% "play-test"             % PlayVersion.current,
-    "org.scalatestplus.play"            %% "scalatestplus-play"    % "3.1.3",
+    "org.scalatestplus.play"            %% "scalatestplus-play"    % "4.0.3",
     "com.github.spullara.mustache.java" %  "compiler"              % "0.9.6",
     "com.github.spullara.mustache.java" %  "scala-extensions-2.11" % "0.9.6"
   ).map(_ % "test")
