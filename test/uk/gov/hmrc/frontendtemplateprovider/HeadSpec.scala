@@ -16,25 +16,25 @@
 
 package uk.gov.hmrc.frontendtemplateprovider
 
+import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import uk.gov.hmrc.play.test.UnitSpec
 
-class HeadSpec extends UnitSpec with GuiceOneAppPerSuite {
+class HeadSpec extends PlaySpec with GuiceOneAppPerSuite {
 
-  "Head" should {
+  "Head" must {
     "contain IE links" in new CommonSetup {
       override lazy val inputMap = Map[String, Any]()
-      outputText should include("""<!--[if IE 6]><link href="http://localhost:9310/template/assets/stylesheets/govuk-template-ie6.css" media="screen" rel="stylesheet" type="text/css" /><![endif]-->""")
-      outputText should include("""<!--[if IE 7]><link href="http://localhost:9310/template/assets/stylesheets/govuk-template-ie7.css" media="screen" rel="stylesheet" type="text/css" /><![endif]-->""")
-      outputText should include("""<!--[if IE 8]><link href="http://localhost:9310/template/assets/stylesheets/govuk-template-ie8.css" media="screen" rel="stylesheet" type="text/css" /><![endif]-->""")
-      outputText should include("""<!--[if gt IE 8]><!--><link href="http://localhost:9310/template/assets/stylesheets/govuk-template.css" media="screen" rel="stylesheet" type="text/css" /><!--<![endif]-->""")
+      outputText must include("""<!--[if IE 6]><link href="http://localhost:9310/template/assets/stylesheets/govuk-template-ie6.css" media="screen" rel="stylesheet" type="text/css" /><![endif]-->""")
+      outputText must include("""<!--[if IE 7]><link href="http://localhost:9310/template/assets/stylesheets/govuk-template-ie7.css" media="screen" rel="stylesheet" type="text/css" /><![endif]-->""")
+      outputText must include("""<!--[if IE 8]><link href="http://localhost:9310/template/assets/stylesheets/govuk-template-ie8.css" media="screen" rel="stylesheet" type="text/css" /><![endif]-->""")
+      outputText must include("""<!--[if gt IE 8]><!--><link href="http://localhost:9310/template/assets/stylesheets/govuk-template.css" media="screen" rel="stylesheet" type="text/css" /><!--<![endif]-->""")
     }
 
     "contain links to assets-frontend CSS" in new CommonSetup {
       override lazy val inputMap = Map[String, Any]()
-      outputText should include("""<link rel="stylesheet" href="http://localhost:9032/assets/3.16.0/stylesheets/application-ie7.min.css" />""")
-      outputText should include("""<link rel="stylesheet" href="http://localhost:9032/assets/3.16.0/stylesheets/application-ie.min.css" />""")
-      outputText should include("""<link rel="stylesheet" href="http://localhost:9032/assets/3.16.0/stylesheets/application.min.css" />""")
+      outputText must include("""<link rel="stylesheet" href="http://localhost:9032/assets/3.16.0/stylesheets/application-ie7.min.css" />""")
+      outputText must include("""<link rel="stylesheet" href="http://localhost:9032/assets/3.16.0/stylesheets/application-ie.min.css" />""")
+      outputText must include("""<link rel="stylesheet" href="http://localhost:9032/assets/3.16.0/stylesheets/application.min.css" />""")
     }
 
     "contain links to a specified version of assets-frontend CSS" in new CommonSetup {
@@ -42,15 +42,15 @@ class HeadSpec extends UnitSpec with GuiceOneAppPerSuite {
         "assetsPath" -> "www.example.com/2/"
       )
 
-      outputText should include("""<link rel="stylesheet" href="www.example.com/2/stylesheets/application-ie7.min.css" />""")
-      outputText should include("""<link rel="stylesheet" href="www.example.com/2/stylesheets/application-ie.min.css" />""")
-      outputText should include("""<link rel="stylesheet" href="www.example.com/2/stylesheets/application.min.css" />""")
+      outputText must include("""<link rel="stylesheet" href="www.example.com/2/stylesheets/application-ie7.min.css" />""")
+      outputText must include("""<link rel="stylesheet" href="www.example.com/2/stylesheets/application-ie.min.css" />""")
+      outputText must include("""<link rel="stylesheet" href="www.example.com/2/stylesheets/application.min.css" />""")
     }
 
     "contain a body opening tag that does not contain a class if `bodyClass` is not specified" in new CommonSetup {
       override lazy val inputMap = Map[String, Any]()
 
-      bodyTagRegex.findFirstIn(outputText).get should not include("class")
+      bodyTagRegex.findFirstIn(outputText).get must not include("class")
     }
 
     "contain a body opening tag that contains a `bodyClass` if one is specified " in new CommonSetup {
@@ -58,14 +58,14 @@ class HeadSpec extends UnitSpec with GuiceOneAppPerSuite {
         "bodyClass" -> "clazz"
       )
 
-      bodyTagRegex.findFirstIn(outputText).get should include("""class="clazz"""")
+      bodyTagRegex.findFirstIn(outputText).get must include("""class="clazz"""")
     }
 
     "contains no optimizely script" in new CommonSetup {
       override lazy val inputMap = Map[String, Any]()
 
-      outputText should not include("optimizely")
-      outputText should not include("<script src=''") // should not include a script with no src
+      outputText must not include("optimizely")
+      outputText must not include("<script src=''") // must not include a script with no src
     }
 
     "contain optimizely audience variable if provided" in new CommonSetup {
@@ -76,7 +76,7 @@ class HeadSpec extends UnitSpec with GuiceOneAppPerSuite {
         )
       )
 
-      outputText should include("var audience = \"userGroup\"")
+      outputText must include("var audience = \"userGroup\"")
     }
 
     "not contain optimizely audience variable if not provided" in new CommonSetup {
@@ -84,13 +84,13 @@ class HeadSpec extends UnitSpec with GuiceOneAppPerSuite {
         "optimizelyProjectId" -> "id123"
       )
 
-      outputText should not include("var audience")
+      outputText must not include("var audience")
     }
 
     "contain the default title no custom one is supplied" in new CommonSetup {
       override lazy val inputMap = Map[String, Any]()
 
-      outputText should include("GOV.UK - The best place to find government services and information")
+      outputText must include("GOV.UK - The best place to find government services and information")
     }
 
     "contain custom title if one is supplied" in new CommonSetup {
@@ -98,7 +98,7 @@ class HeadSpec extends UnitSpec with GuiceOneAppPerSuite {
         "pageTitle" -> "My very own title."
       )
 
-      outputText should include("My very own title.")
+      outputText must include("My very own title.")
     }
 
     "contain link elements pointing to urls supplied in linkElems" in new CommonSetup {
@@ -109,8 +109,8 @@ class HeadSpec extends UnitSpec with GuiceOneAppPerSuite {
         )
       )
 
-      outputText should include("""<link rel="stylesheet" type="text/css" href="www.example.com/some.css" />""")
-      outputText should include("""<link rel="stylesheet" type="text/css" href="www.example.com/other.css" />""")
+      outputText must include("""<link rel="stylesheet" type="text/css" href="www.example.com/some.css" />""")
+      outputText must include("""<link rel="stylesheet" type="text/css" href="www.example.com/other.css" />""")
     }
 
     "contain link element for IE 8 if 'IE 8' is passed as a condition in linkElems" in new CommonSetup {
@@ -121,7 +121,7 @@ class HeadSpec extends UnitSpec with GuiceOneAppPerSuite {
         )
       )
 
-      outputText.filterNot(_=='\n').replaceAll(">[ ]*<","><") should include("""<!--[if IE 8]><link rel="stylesheet" type="text/css" href="www.example.com/ie8.css" /><![endif]-->""")
+      outputText.filterNot(_=='\n').replaceAll(">[ ]*<","><") must include("""<!--[if IE 8]><link rel="stylesheet" type="text/css" href="www.example.com/ie8.css" /><![endif]-->""")
     }
 
     "support specifying print media type for linkElems SDT-552" in new CommonSetup {
@@ -129,16 +129,16 @@ class HeadSpec extends UnitSpec with GuiceOneAppPerSuite {
         "linkElems" -> Map("url" -> "www.example.com/some.css", "print" -> true)
       )
 
-      outputText should include("""<link rel="stylesheet" type="text/css" href="www.example.com/some.css" media="print"/>""")
+      outputText must include("""<link rel="stylesheet" type="text/css" href="www.example.com/some.css" media="print"/>""")
     }
 
     "not contain navigation element if there is no navTitle specified SDT-474" in new CommonSetup {
       override lazy val inputMap = Map[String, Any]()
 
-      outputText should include("""<div class="header-proposition">""")
-      outputText should not include("""<a href="#proposition-links" class="js-header-toggle menu">Menu</a>""")
-      outputText should not include("""<ul id="proposition-links" class="header__menu__proposition-links">""")
-      outputText should not include("""<span class="header__menu__proposition-name">""")
+      outputText must include("""<div class="header-proposition">""")
+      outputText must not include("""<a href="#proposition-links" class="js-header-toggle menu">Menu</a>""")
+      outputText must not include("""<ul id="proposition-links" class="header__menu__proposition-links">""")
+      outputText must not include("""<span class="header__menu__proposition-name">""")
     }
 
     "contain correct navigation header when only navTitle is specified SDT-474" in new CommonSetup {
@@ -146,16 +146,16 @@ class HeadSpec extends UnitSpec with GuiceOneAppPerSuite {
         "navTitle" -> "My service"
       )
 
-      outputText should include("""<div class="header-proposition">""")
-      outputText should include("""<span class="header__menu__proposition-name">My service</span>""")
-      outputText should not include("""<a href="#proposition-links" class="js-header-toggle menu">Menu</a>""")
-      outputText should not include("""<ul id="proposition-links" class="header__menu__proposition-links">""")
+      outputText must include("""<div class="header-proposition">""")
+      outputText must include("""<span class="header__menu__proposition-name">My service</span>""")
+      outputText must not include("""<a href="#proposition-links" class="js-header-toggle menu">Menu</a>""")
+      outputText must not include("""<ul id="proposition-links" class="header__menu__proposition-links">""")
     }
 
     "not show proposition links element if showPropositionLinks not specified MTA-2897" in new CommonSetup {
       override lazy val inputMap = Map[String, Any]()
 
-      outputText should not include("""header__menu__proposition-links"""")
+      outputText must not include("""header__menu__proposition-links"""")
     }
 
     "not show proposition links element if showPropositionLinks set to false MTA-2897" in new CommonSetup {
@@ -163,7 +163,7 @@ class HeadSpec extends UnitSpec with GuiceOneAppPerSuite {
         "showPropositionLinks" -> false
       )
 
-      outputText should not include("""header__menu__proposition-links"""")
+      outputText must not include("""header__menu__proposition-links"""")
     }
 
     "show proposition links element if showPropositionLinks set to true MTA-2897" in new CommonSetup {
@@ -171,7 +171,7 @@ class HeadSpec extends UnitSpec with GuiceOneAppPerSuite {
         "showPropositionLinks" -> true
       )
 
-      outputText should include("""<ul id="proposition-links" class="header__menu__proposition-links">""")
+      outputText must include("""<ul id="proposition-links" class="header__menu__proposition-links">""")
     }
 
     "not show signout link in proposition menu if the account menu isn't hidden even if signout url is supplied" in new CommonSetup {
@@ -181,7 +181,7 @@ class HeadSpec extends UnitSpec with GuiceOneAppPerSuite {
         "hideAccountMenu" -> false
       )
 
-      outputText should not include("""<a id="logOutNavHref"""")
+      outputText must not include("""<a id="logOutNavHref"""")
     }
 
     "show signout link in proposition menu if the account menu is hidden and signout url is supplied" in new CommonSetup {
@@ -190,13 +190,13 @@ class HeadSpec extends UnitSpec with GuiceOneAppPerSuite {
         "signOutUrl" -> "/signout/url",
         "hideAccountMenu" -> true
       )
-      outputText should include("""<a id="logOutNavHref" href="/signout/url"""")
+      outputText must include("""<a id="logOutNavHref" href="/signout/url"""")
     }
 
     "not show the organisation logo if showOrganisationLogo is not supplied" in new CommonSetup {
       override lazy val inputMap = Map[String, Any]()
 
-      outputText should not include("""organisation-logo""")
+      outputText must not include("""organisation-logo""")
     }
 
     "not show the organisation logo showOrganisationLogo is false" in new CommonSetup {
@@ -204,7 +204,7 @@ class HeadSpec extends UnitSpec with GuiceOneAppPerSuite {
         "showOrganisationLogo" -> false
       )
 
-      outputText should not include("""organisation-logo""")
+      outputText must not include("""organisation-logo""")
     }
 
     "show the organisation logo showOrganisationLogo is true" in new CommonSetup {
@@ -212,36 +212,36 @@ class HeadSpec extends UnitSpec with GuiceOneAppPerSuite {
         "showOrganisationLogo" -> true
       )
 
-      outputText should include("""<span class="organisation-logo organisation-logo-medium">HM Revenue &amp; Customs</span>""")
+      outputText must include("""<span class="organisation-logo organisation-logo-medium">HM Revenue &amp; Customs</span>""")
     }
 
-    "Beta banner feedback form should be authenticated if user is authenticated" in new CommonSetup {
+    "Beta banner feedback form must be authenticated if user is authenticated" in new CommonSetup {
       override lazy val inputMap = Map(
         "betaBanner" -> true,
         "feedbackIdentifier" -> "test-service",
         "authenticatedUser" -> true
       )
 
-      outputText should include("""<a id="feedback-link" href="http://localhost:9250/contact/beta-feedback?service=""")
+      outputText must include("""<a id="feedback-link" href="http://localhost:9250/contact/beta-feedback?service=""")
     }
 
-    "Beta banner feedback form should be authenticated if user is not authenticated" in new CommonSetup {
+    "Beta banner feedback form must be authenticated if user is not authenticated" in new CommonSetup {
       override lazy val inputMap = Map(
         "betaBanner" -> true,
         "feedbackIdentifier" -> "test-service",
         "authenticatedUser" -> false
       )
 
-      outputText should include("""<a id="feedback-link" href="http://localhost:9250/contact/beta-feedback-unauthenticated?service=""")
+      outputText must include("""<a id="feedback-link" href="http://localhost:9250/contact/beta-feedback-unauthenticated?service=""")
     }
 
-    "Beta banner feedback form should be authenticated if user is not specified" in new CommonSetup {
+    "Beta banner feedback form must be authenticated if user is not specified" in new CommonSetup {
       override lazy val inputMap = Map(
         "betaBanner" -> true,
         "feedbackIdentifier" -> "test-service"
       )
 
-      outputText should include("""<a id="feedback-link" href="http://localhost:9250/contact/beta-feedback-unauthenticated?service=""")
+      outputText must include("""<a id="feedback-link" href="http://localhost:9250/contact/beta-feedback-unauthenticated?service=""")
     }
 
     "not contain language selection element if there is no langSelector specified MTA-2897" in new CommonSetup {
@@ -249,7 +249,7 @@ class HeadSpec extends UnitSpec with GuiceOneAppPerSuite {
         "showPropositionLinks" -> true
       )
 
-      outputText should not include("""class="language-select"""")
+      outputText must not include("""class="language-select"""")
     }
 
     "not contain language selection element if there is langSelector specified but no Welsh url MTA-2897" in new CommonSetup {
@@ -261,7 +261,7 @@ class HeadSpec extends UnitSpec with GuiceOneAppPerSuite {
         )
       )
 
-      outputText should not include("""class="language-select"""")
+      outputText must not include("""class="language-select"""")
     }
 
     "not contain language selection element if there is langSelector specified but no English url MTA-2897" in new CommonSetup {
@@ -273,7 +273,7 @@ class HeadSpec extends UnitSpec with GuiceOneAppPerSuite {
         )
       )
 
-      outputText should not include("""class="language-select"""")
+      outputText must not include("""class="language-select"""")
     }
 
     "contain correct language selection element if there are both English and Welsh Urls specified and the language is English MTA-2897" in new CommonSetup {
@@ -286,8 +286,8 @@ class HeadSpec extends UnitSpec with GuiceOneAppPerSuite {
         "isWelsh" -> false
       )
 
-      outputText should include("""<span class="faded-text--small bold" aria-hidden="true">English |</span>""")
-      outputText should include("""<a id="switchToWelsh" lang="cy" href="welsh-language-url" data-journey-click="link - click:lang-select:Cymraeg" aria-label="Dewiswch Cymraeg">Cymraeg</a>""")
+      outputText must include("""<span class="faded-text--small bold" aria-hidden="true">English |</span>""")
+      outputText must include("""<a id="switchToWelsh" lang="cy" href="welsh-language-url" data-journey-click="link - click:lang-select:Cymraeg" aria-label="Dewiswch Cymraeg">Cymraeg</a>""")
     }
 
     "contain correct language selection element if there are both English and Welsh Urls specified and the language is Welsh MTA-2897" in new CommonSetup {
@@ -301,8 +301,8 @@ class HeadSpec extends UnitSpec with GuiceOneAppPerSuite {
         "isWelsh" -> true
       )
 
-      outputText should include("""<a id="switchToEnglish" lang="en" href="english-language-url" data-journey-click="link - click:lang-select:English" aria-label="Select English">English</a>""")
-      outputText should include("""<span class="faded-text--small bold" aria-hidden="true">| Cymraeg</span>""")
+      outputText must include("""<a id="switchToEnglish" lang="en" href="english-language-url" data-journey-click="link - click:lang-select:English" aria-label="Select English">English</a>""")
+      outputText must include("""<span class="faded-text--small bold" aria-hidden="true">| Cymraeg</span>""")
     }
   }
 }
