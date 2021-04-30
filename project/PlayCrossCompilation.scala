@@ -1,5 +1,5 @@
 import uk.gov.hmrc.playcrosscompilation.AbstractPlayCrossCompilation
-import uk.gov.hmrc.playcrosscompilation.PlayVersion.{Play26, Play27}
+import uk.gov.hmrc.playcrosscompilation.PlayVersion.{Play26, Play27, Play28}
 
 object PlayCrossCompilation extends AbstractPlayCrossCompilation(defaultPlayVersion = Play26) {
   def version: String = playVersion match {
