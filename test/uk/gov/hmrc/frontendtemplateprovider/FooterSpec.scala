@@ -16,15 +16,15 @@
 
 package uk.gov.hmrc.frontendtemplateprovider
 
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import org.scalatestplus.play.{PlaySpec}
+import org.scalatestplus.play.OneAppPerSuite
+import uk.gov.hmrc.play.test.UnitSpec
 
-class FooterSpec extends PlaySpec with GuiceOneAppPerSuite {
+class FooterSpec extends UnitSpec with OneAppPerSuite {
 
-  "Footer" must {
+  "Footer" should {
     "contain links to assets-frontend JS" in new CommonSetup {
       override lazy val inputMap = Map[String, Any]()
-      outputText must include ("""<script src="http://localhost:9032/assets/3.16.0/javascripts/application.min.js" type="text/javascript"></script>""")
+      outputText should include ("""<script src="http://localhost:9032/assets/3.16.0/javascripts/application.min.js" type="text/javascript"></script>""")
     }
 
     "contain links to a specified version of assets-frontend JS" in new CommonSetup {
@@ -32,7 +32,7 @@ class FooterSpec extends PlaySpec with GuiceOneAppPerSuite {
         "assetsPath" -> "www.example.com/2/"
       )
 
-      outputText must include ("""<script src="www.example.com/2/javascripts/application.min.js" type="text/javascript"></script>""")
+      outputText should include ("""<script src="www.example.com/2/javascripts/application.min.js" type="text/javascript"></script>""")
     }
 
     "allow additional footer links to be specified SDT 477" in new CommonSetup {
@@ -40,7 +40,7 @@ class FooterSpec extends PlaySpec with GuiceOneAppPerSuite {
         "additionalFooterLinks" -> Map("url" -> "www.example.com", "text" -> "something")
       )
 
-      outputText must include("""<li><a href="www.example.com">something</a></li>""")
+      outputText should include("""<li><a href="www.example.com">something</a></li>""")
     }
 
     "allow multiple additional footer links to be specified SDT 477" in new CommonSetup {
@@ -51,8 +51,8 @@ class FooterSpec extends PlaySpec with GuiceOneAppPerSuite {
         )
       )
 
-      outputText must include("""<li><a href="www.example.com">something</a></li>""")
-      outputText must include("""<li><a href="www.other.com">anything</a></li>""")
+      outputText should include("""<li><a href="www.example.com">something</a></li>""")
+      outputText should include("""<li><a href="www.other.com">anything</a></li>""")
     }
 
     "show modified terms and condition link if 'termsAndConditionFooterLink' has value" in new CommonSetup {
@@ -60,15 +60,15 @@ class FooterSpec extends PlaySpec with GuiceOneAppPerSuite {
         "termsAndConditionFooterLink" -> Map("url" -> "www.example.com", "text" -> "something")
       )
 
-      outputText must include("""<li><a href="www.example.com" data-sso="false" data-journey-click="footer:Click:Terms and conditions">something</a></li>""")
+      outputText should include("""<li><a href="www.example.com" data-sso="false" data-journey-click="footer:Click:Terms and conditions">something</a></li>""")
     }
 
     "show default terms and condition link if 'termsAndConditionFooterLink' has no value" in new CommonSetup {
       override lazy val inputMap = Map(
         "termsAndConditionFooterLink" -> None)
 
-      outputText must include("""<a href="/help/terms-and-conditions" data-sso="false" data-journey-click="footer:Click:Terms and conditions">""")
-      outputText must include("""Terms and conditions""")
+      outputText should include("""<a href="/help/terms-and-conditions" data-sso="false" data-journey-click="footer:Click:Terms and conditions">""")
+      outputText should include("""Terms and conditions""")
     }
 
     "support additional script elements in the footer of the page SDT 578" in new CommonSetup {
@@ -76,7 +76,7 @@ class FooterSpec extends PlaySpec with GuiceOneAppPerSuite {
         "scriptElems" -> Map("url" -> "www.example.com")
       )
 
-      outputText must include("""<script src="www.example.com" type="text/javascript"></script>""")
+      outputText should include("""<script src="www.example.com" type="text/javascript"></script>""")
     }
 
     "support multiple additional script elements in the footer of the page SDT 578" in new CommonSetup {
@@ -87,8 +87,8 @@ class FooterSpec extends PlaySpec with GuiceOneAppPerSuite {
         )
       )
 
-      outputText must include("""<script src="www.example.com" type="text/javascript"></script>""")
-      outputText must include("""<script src="www.another.com" type="text/javascript"></script>""")
+      outputText should include("""<script src="www.example.com" type="text/javascript"></script>""")
+      outputText should include("""<script src="www.another.com" type="text/javascript"></script>""")
     }
 
     "support SSO Url SDT-473" in new CommonSetup {
@@ -96,17 +96,17 @@ class FooterSpec extends PlaySpec with GuiceOneAppPerSuite {
         "ssoUrl" -> "www.example.com"
       )
 
-      outputText must include("""<script type="text/javascript">var ssoUrl = "www.example.com";</script>""")
+      outputText should include("""<script type="text/javascript">var ssoUrl = "www.example.com";</script>""")
     }
 
     "no ssoUrl script when no ssoUrl given SDT-473" in new CommonSetup {
       override lazy val inputMap = Map[String, Any]()
-      outputText must not include("""<script type="text/javascript">var ssoUrl = """)
+      outputText should not include("""<script type="text/javascript">var ssoUrl = """)
     }
 
     "not show Google Analytics snippet" in new CommonSetup {
       override lazy val inputMap = Map[String, Any]()
-      outputText must not include("""(window,document,'script','//www.google-analytics.com/analytics.js','ga')""")
+      outputText should not include("""(window,document,'script','//www.google-analytics.com/analytics.js','ga')""")
     }
 
     "support inline script elements in the footer of the page" in new CommonSetup {
@@ -114,23 +114,23 @@ class FooterSpec extends PlaySpec with GuiceOneAppPerSuite {
         "inlineScript" -> "<script>console.log('hello world');</script>"
       )
 
-      outputText must include("""<script>console.log('hello world');</script>""")
+      outputText should include("""<script>console.log('hello world');</script>""")
     }
 
-    "must include session timeout if set to true" in new CommonSetup {
+    "should include session timeout if set to true" in new CommonSetup {
       override lazy val inputMap = Map(
         "sessionTimeout" -> Map(
           "keepAliveUrl" -> "/keepAliveUrl/",
           "logoutUrl" -> "/logoutUrl/"
         )
       )
-      outputText must include("""$.timeoutDialog({timeout: 900, countdown: 60, keep_alive_url: '/keepAliveUrl/', logout_url: '/logoutUrl/'});""")
+      outputText should include("""$.timeoutDialog({timeout: 900, countdown: 60, keep_alive_url: '/keepAliveUrl/', logout_url: '/logoutUrl/'});""")
     }
 
-    "must not include session timeout if set to true" in new CommonSetup {
+    "should not include session timeout if set to true" in new CommonSetup {
       override lazy val inputMap = Map[String, Any]()
 
-      outputText must not include("""$.timeoutDialog({timeout: 900, countdown: 60, keep_alive_url: '/keepAliveUrl/', logout_url: '/logoutUrl/'});""")
+      outputText should not include("""$.timeoutDialog({timeout: 900, countdown: 60, keep_alive_url: '/keepAliveUrl/', logout_url: '/logoutUrl/'});""")
     }
   }
 }
