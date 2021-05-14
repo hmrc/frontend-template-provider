@@ -17,7 +17,7 @@
 package uk.gov.hmrc.frontendtemplateprovider.controllers
 
 import javax.inject.Inject
-import play.api.Environment
+import play.api.{Environment, Mode}
 import play.api.mvc._
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
@@ -29,7 +29,7 @@ class GovUkTemplateRendererController @Inject()(
 																							 ) extends FrontendController(mcc) {
 	def serveMustacheTemplate(): Action[AnyContent] = Action.async { implicit request =>
 
-		val tpl = if(env == "Test" || env == "Dev") {
+		val tpl = if(env.mode == Mode.Test || env.mode == Mode.Dev) {
 			Source.fromInputStream(getClass.getResourceAsStream("/govuk-template.mustache.html")).mkString
 				.replaceAll("""href="/contact""",          """href="http://localhost:9250/contact""")
 				.replaceAll("""href="/template""",         """href="http://localhost:9310/template""")
