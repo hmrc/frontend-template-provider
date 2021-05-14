@@ -21,7 +21,7 @@ import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 
 class HeadSpec extends PlaySpec with GuiceOneAppPerSuite {
 
-  "Head" must {
+  "Head" should {
     "contain IE links" in new CommonSetup {
       override lazy val inputMap = Map[String, Any]()
       outputText must include("""<!--[if IE 6]><link href="http://localhost:9310/template/assets/stylesheets/govuk-template-ie6.css" media="screen" rel="stylesheet" type="text/css" /><![endif]-->""")
@@ -65,7 +65,7 @@ class HeadSpec extends PlaySpec with GuiceOneAppPerSuite {
       override lazy val inputMap = Map[String, Any]()
 
       outputText must not include("optimizely")
-      outputText must not include("<script src=''") // must not include a script with no src
+      outputText must not include("<script src=''") // should not include a script with no src
     }
 
     "contain optimizely audience variable if provided" in new CommonSetup {
@@ -215,7 +215,7 @@ class HeadSpec extends PlaySpec with GuiceOneAppPerSuite {
       outputText must include("""<span class="organisation-logo organisation-logo-medium">HM Revenue &amp; Customs</span>""")
     }
 
-    "Beta banner feedback form must be authenticated if user is authenticated" in new CommonSetup {
+    "Beta banner feedback form should be authenticated if user is authenticated" in new CommonSetup {
       override lazy val inputMap = Map(
         "betaBanner" -> true,
         "feedbackIdentifier" -> "test-service",
@@ -225,7 +225,7 @@ class HeadSpec extends PlaySpec with GuiceOneAppPerSuite {
       outputText must include("""<a id="feedback-link" href="http://localhost:9250/contact/beta-feedback?service=""")
     }
 
-    "Beta banner feedback form must be authenticated if user is not authenticated" in new CommonSetup {
+    "Beta banner feedback form should be authenticated if user is not authenticated" in new CommonSetup {
       override lazy val inputMap = Map(
         "betaBanner" -> true,
         "feedbackIdentifier" -> "test-service",
@@ -235,7 +235,7 @@ class HeadSpec extends PlaySpec with GuiceOneAppPerSuite {
       outputText must include("""<a id="feedback-link" href="http://localhost:9250/contact/beta-feedback-unauthenticated?service=""")
     }
 
-    "Beta banner feedback form must be authenticated if user is not specified" in new CommonSetup {
+    "Beta banner feedback form should be authenticated if user is not specified" in new CommonSetup {
       override lazy val inputMap = Map(
         "betaBanner" -> true,
         "feedbackIdentifier" -> "test-service"
