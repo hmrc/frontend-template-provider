@@ -16,20 +16,23 @@
 
 package uk.gov.hmrc.frontendtemplateprovider.controllers
 
+import play.api.Environment
+import play.api.Mode.{Dev, Test}
+
 import javax.inject.Inject
 import play.api.mvc._
-import uk.gov.hmrc.play.bootstrap.config.RunMode
-import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import scala.concurrent.Future
 import scala.io.Source
+
 class GovUkTemplateRendererController @Inject()(
-																								 runMode: RunMode,
+																								 environment: Environment,
 																								 mcc: MessagesControllerComponents
 																							 ) extends FrontendController(mcc) {
 	def serveMustacheTemplate(): Action[AnyContent] = Action.async { implicit request =>
 
-		val tpl = if(runMode.env == "Test" || runMode.env == "Dev") {
+		val tpl = if(environment.mode == Test || environment.mode == Dev) {
 			Source.fromInputStream(getClass.getResourceAsStream("/govuk-template.mustache.html")).mkString
 				.replaceAll("""href="/contact""",          """href="http://localhost:9250/contact""")
 				.replaceAll("""href="/template""",         """href="http://localhost:9310/template""")
