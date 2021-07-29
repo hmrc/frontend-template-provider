@@ -21,6 +21,8 @@ object AppDependencies {
     "org.scalatestplus.play"            %% "scalatestplus-play"    % "5.1.0",
     "com.github.spullara.mustache.java" %  "compiler"              % "0.9.6",
     "com.github.spullara.mustache.java" %  "scala-extensions-2.11" % "0.9.6",
+    "org.scalatestplus"                 %% "mockito-3-4"           % "3.2.3.0",
+    "org.mockito"                       %  "mockito-core"          % "3.6.28",
     "com.vladsch.flexmark"              % "flexmark-all"           % "0.35.10"
   ).map(_ % "test")
 

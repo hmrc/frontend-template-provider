@@ -16,20 +16,31 @@
 
 package uk.gov.hmrc.frontendtemplateprovider
 
+import config.ApplicationConfig
+import org.mockito.Mockito.when
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.wordspec.AnyWordSpec
+import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import play.api
+import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.mvc.Results
-import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import play.api.test.{FakeRequest, Injecting}
 import uk.gov.hmrc.frontendtemplateprovider.controllers.GovUkTemplateRendererController
 
-class GovUkTemplateRendererControllerSpec  extends AnyWordSpec with Matchers with GuiceOneAppPerSuite with Results {
+class GovUkTemplateRendererControllerSpec  extends AnyWordSpec with Matchers with GuiceOneAppPerSuite with Results with MockitoSugar with Injecting {
 
   val fakeRequest = FakeRequest("GET", "/")
 
-  lazy val sut = app.injector.instanceOf[GovUkTemplateRendererController]
+  lazy val sut = inject[GovUkTemplateRendererController]
 
+  override def fakeApplication() = new GuiceApplicationBuilder()
+    .overrides(
+      api.inject.bind[ApplicationConfig].toInstance(config)
+    ).build()
+
+  lazy val config = mock[ApplicationConfig]
 
   "GET /serve-template" must {
     "Return with an HTTP 200 status" in {
@@ -53,6 +64,25 @@ class GovUkTemplateRendererControllerSpec  extends AnyWordSpec with Matchers wit
       mimetype must include("text/html")
     }
 
+    "contain the dev template in the result" in {
+
+      when(config.environment).thenReturn("dev")
+
+      val result = sut.serveMustacheTemplate()(fakeRequest)
+      val bodyText = contentAsString(result)
+
+      bodyText must include("<a id=\"feedback-link\" href=\"http://localhost:9250/contact/beta-feedback-unauthenticated?service={{feedbackIdentifier}}\" data-sso=\"false\" data-journey-click=\"other-global:Click:Feedback\">")
+    }
+
+    "contain the base template in the result" in {
+
+      when(config.environment).thenReturn("")
+
+      val result = sut.serveMustacheTemplate()(fakeRequest)
+      val bodyText = contentAsString(result)
+
+      bodyText must include("<a id=\"feedback-link\" href=\"/contact/beta-feedback-unauthenticated?service={{feedbackIdentifier}}\" data-sso=\"false\" data-journey-click=\"other-global:Click:Feedback\">")
+    }
   }
 }
 
