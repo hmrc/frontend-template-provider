@@ -22,6 +22,5 @@ import javax.inject.Inject
 
 class ApplicationConfig @Inject()(runModeConfiguration: Configuration) {
 
-  lazy val environment: String = runModeConfiguration.get[String]("taas.environment")
-
+  lazy val environment: String = runModeConfiguration.getOptional[String]("taas.environment").getOrElse("")
 }

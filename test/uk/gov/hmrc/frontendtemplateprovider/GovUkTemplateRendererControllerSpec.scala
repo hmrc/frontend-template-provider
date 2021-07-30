@@ -71,7 +71,7 @@ class GovUkTemplateRendererControllerSpec  extends AnyWordSpec with Matchers wit
       val result = sut.serveMustacheTemplate()(fakeRequest)
       val bodyText = contentAsString(result)
 
-      bodyText must include("<a id=\"feedback-link\" href=\"http://localhost:9250/contact/beta-feedback-unauthenticated?service={{feedbackIdentifier}}\" data-sso=\"false\" data-journey-click=\"other-global:Click:Feedback\">")
+      bodyText must include("http://localhost:9250")
     }
 
     "contain the base template in the result" in {
@@ -81,7 +81,7 @@ class GovUkTemplateRendererControllerSpec  extends AnyWordSpec with Matchers wit
       val result = sut.serveMustacheTemplate()(fakeRequest)
       val bodyText = contentAsString(result)
 
-      bodyText must include("<a id=\"feedback-link\" href=\"/contact/beta-feedback-unauthenticated?service={{feedbackIdentifier}}\" data-sso=\"false\" data-journey-click=\"other-global:Click:Feedback\">")
+      bodyText must not include("http://localhost:9250")
     }
   }
 }
