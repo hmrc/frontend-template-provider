@@ -4,24 +4,26 @@ import play.core.PlayVersion
 
 object AppDependencies {
   
-  private val playVersion = "play-26"
+  private val playVersion = "play-28"
 
   val compile: Seq[ModuleID] = Seq(
     ws,
-    "uk.gov.hmrc" %% s"bootstrap-$playVersion" % "1.16.0",
-    "uk.gov.hmrc" %% "play-ui"                 % s"8.2.0-$playVersion",
-    "uk.gov.hmrc" %% "domain"                  % s"5.10.0-$playVersion",
-    "uk.gov.hmrc" %% "govuk-template"          % s"5.57.0-$playVersion"
+    "uk.gov.hmrc" %% s"bootstrap-frontend-$playVersion" % "5.7.0",
+    "uk.gov.hmrc" %% "play-ui"                 % s"9.6.0-$playVersion",
+    "uk.gov.hmrc" %% "domain"                  % s"6.1.0-$playVersion",
+    "uk.gov.hmrc" %% "govuk-template"          % s"5.69.0-$playVersion"
   )
 
   val test: Seq[ModuleID] = Seq(
-    "uk.gov.hmrc"                       %% "hmrctest"              % s"3.9.0-$playVersion" ,
-    "org.scalatest"                     %% "scalatest"             % "3.0.8",
+    "org.scalatest"                     %% "scalatest"             % "3.2.8",
     "org.pegdown"                       %  "pegdown"               % "1.6.0",
     "com.typesafe.play"                 %% "play-test"             % PlayVersion.current,
-    "org.scalatestplus.play"            %% "scalatestplus-play"    % "3.1.0",
+    "org.scalatestplus.play"            %% "scalatestplus-play"    % "5.1.0",
     "com.github.spullara.mustache.java" %  "compiler"              % "0.9.6",
-    "com.github.spullara.mustache.java" %  "scala-extensions-2.11" % "0.9.6"
+    "com.github.spullara.mustache.java" %  "scala-extensions-2.11" % "0.9.6",
+    "org.scalatestplus"                 %% "mockito-3-4"           % "3.2.3.0",
+    "org.mockito"                       %  "mockito-core"          % "3.6.28",
+    "com.vladsch.flexmark"              % "flexmark-all"           % "0.35.10"
   ).map(_ % "test")
 
   val all: Seq[ModuleID] = compile ++ test

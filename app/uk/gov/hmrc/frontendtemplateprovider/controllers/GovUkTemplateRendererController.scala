@@ -16,20 +16,22 @@
 
 package uk.gov.hmrc.frontendtemplateprovider.controllers
 
-import javax.inject.Inject
+import config.ApplicationConfig
 import play.api.mvc._
-import uk.gov.hmrc.play.bootstrap.config.RunMode
-import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
+import javax.inject.Inject
 import scala.concurrent.Future
 import scala.io.Source
+
 class GovUkTemplateRendererController @Inject()(
-																								 runMode: RunMode,
-																								 mcc: MessagesControllerComponents
+																								 mcc: MessagesControllerComponents,
+																								 config: ApplicationConfig
 																							 ) extends FrontendController(mcc) {
+
 	def serveMustacheTemplate(): Action[AnyContent] = Action.async { implicit request =>
 
-		val tpl = if(runMode.env == "Test" || runMode.env == "Dev") {
+		val tpl = if (config.environment == "dev") {
 			Source.fromInputStream(getClass.getResourceAsStream("/govuk-template.mustache.html")).mkString
 				.replaceAll("""href="/contact""",          """href="http://localhost:9250/contact""")
 				.replaceAll("""href="/template""",         """href="http://localhost:9310/template""")
@@ -41,12 +43,10 @@ class GovUkTemplateRendererController @Inject()(
 				.replaceAll("""href="/business-account""", """href="http://localhost:9020/business-account""")
 				.replaceAll("""href="/trusted-helpers""",  """href="http://localhost:9231/trusted-helpers""")
 				.replaceAll("""href="/contact""",          """href="http://localhost:9250/contact""")
-		}
-		else {
+		} else {
 			Source.fromInputStream(getClass.getResourceAsStream("/govuk-template.mustache.html")).mkString
 		}
 
 		Future.successful(Ok(tpl).as("text/html"))
 	}
-
 }

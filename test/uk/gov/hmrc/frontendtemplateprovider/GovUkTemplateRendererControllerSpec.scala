@@ -16,42 +16,73 @@
 
 package uk.gov.hmrc.frontendtemplateprovider
 
-import org.scalatest.{Matchers, WordSpec}
+import config.ApplicationConfig
+import org.mockito.Mockito.when
+import org.scalatest.matchers.must.Matchers
+import org.scalatest.wordspec.AnyWordSpec
+import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import play.api
+import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.mvc.Results
-import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import play.api.test.{FakeRequest, Injecting}
 import uk.gov.hmrc.frontendtemplateprovider.controllers.GovUkTemplateRendererController
 
-class GovUkTemplateRendererControllerSpec extends WordSpec with Matchers with GuiceOneAppPerSuite with Results {
+class GovUkTemplateRendererControllerSpec  extends AnyWordSpec with Matchers with GuiceOneAppPerSuite with Results with MockitoSugar with Injecting {
 
   val fakeRequest = FakeRequest("GET", "/")
 
-  lazy val sut = app.injector.instanceOf[GovUkTemplateRendererController]
+  lazy val sut = inject[GovUkTemplateRendererController]
 
+  override def fakeApplication() = new GuiceApplicationBuilder()
+    .overrides(
+      api.inject.bind[ApplicationConfig].toInstance(config)
+    ).build()
 
-  "GET /serve-template" should {
+  lazy val config = mock[ApplicationConfig]
+
+  "GET /serve-template" must {
     "Return with an HTTP 200 status" in {
       val result = sut.serveMustacheTemplate()(fakeRequest)
 
-      status(result) shouldBe OK
+      status(result) mustBe OK
     }
 
     "Render the template correctly" in {
       val result = sut.serveMustacheTemplate()(fakeRequest)
       val bodyText = contentAsString(result)
 
-      bodyText should not contain "@resolveUrl"
-      bodyText should include("html")
+      bodyText must not contain "@resolveUrl"
+      bodyText must include("html")
     }
 
     "Serve the template with a \"text/html\" Content-type header" in {
       val result = sut.serveMustacheTemplate()(fakeRequest)
       val mimetype = contentType(result).mkString
 
-      mimetype should include("text/html")
+      mimetype must include("text/html")
     }
 
+    "contain the dev template in the result" in {
+
+      when(config.environment).thenReturn("dev")
+
+      val result = sut.serveMustacheTemplate()(fakeRequest)
+      val bodyText = contentAsString(result)
+
+      bodyText must include("http://localhost:9250")
+    }
+
+    "contain the base template in the result" in {
+
+      when(config.environment).thenReturn("")
+
+      val result = sut.serveMustacheTemplate()(fakeRequest)
+      val bodyText = contentAsString(result)
+
+      bodyText must not include("http://localhost:9250")
+    }
   }
 }
 
