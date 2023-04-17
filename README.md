@@ -1,3 +1,7 @@
+# Deprecation
+
+:rotating_light: **Assets Frontend has been deprecated in favour of the [Play Frontend](https://www.github.com/hmrc/play-frontend-hmrc).** :rotating_light:
+
 # frontend-template-provider
 
 [![Build Status](https://travis-ci.org/hmrc/frontend-template-provider.svg)](https://travis-ci.org/hmrc/frontend-template-provider) [ ![Download](https://api.bintray.com/packages/hmrc/releases/frontend-template-provider/images/download.svg) ](https://bintray.com/hmrc/releases/frontend-template-provider/_latestVersion)
